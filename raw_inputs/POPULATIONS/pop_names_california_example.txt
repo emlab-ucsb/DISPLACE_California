@@ -1,0 +1,8 @@
+idx spp
+0 SAB
+1 MIP
+2 SJZ
+3 SJU
+4 EOJ
+5 SGO
+6 OTH

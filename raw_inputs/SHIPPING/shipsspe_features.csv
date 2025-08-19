@@ -1,0 +1,2 @@
+ship_name;imo;year_build;flag;type;type_code;kW;LOA;breadths;GT;nb_units;fuel_use_h;NOx_emission_gperkW;SOx_emission_percentpertotalfuelmass;GHG_emissions;PME_emission;max_speed;cruise_speed;ship_lane_id
+SHIP1;1000000;2006;Greece;Tanker;1;250;30000;45;60000;0;200;9;0.1;0.2;0;20;10;1

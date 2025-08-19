@@ -1,0 +1,60 @@
+  # GENERAL SETTINGS
+# 
+#    if (length(args) < 2) {
+#      if(.Platform$OS.type == "windows") {
+#        general$application           <- "MEESO" 
+#        general$main_path_gis         <- file.path("D:","FBA", paste("DISPLACE_input_gis_", general$application, sep=""))
+#        general$main.path.ibm         <- file.path("D:","FBA", paste("DISPLACE_input_", general$application, sep=''))
+#        general$igraph                <- 206 # 110  # caution: should be consistent with existing objects already built upon a given graph
+#       do_plot                        <- TRUE
+#    
+#      } else{
+#      if(Sys.info()["sysname"] == "Darwin") {
+#        general$application           <- "MEESO" 
+#        general$main_path_gis         <- file.path("usr","local","GitHub",paste("DISPLACE_input_gis_", general$application, sep=""))
+#        general$main.path.ibm         <- file.path("usr","local","Documents","GitHub", paste("DISPLACE_input_", general$application, sep=''))
+#        general$igraph                <- 1  # caution: should be consistent with existing objects already built upon a given graph
+#       do_plot                        <- TRUE
+#    
+#      } else {
+#        general$application           <- args[1]
+#        general$main_path_gis         <- args[2]
+#        general$main.path.ibm         <- args[3]
+#        general$igraph                <- args[4]  # caution: should be consistent with existing vessels already built upon a given graph
+#       do_plot                        <- FALSE
+#   }}}
+#   cat(paste("START \n"))
+#   
+
+  
+
+  dir.create(file.path(general$main.path.ibm, paste("shipsspe_", general$application, sep='')))
+
+
+  # read
+   shipsspe_features        <-  read.table(file.path(general$main_path_gis,"SHIPPING", "shipsspe_features.csv"), sep=";", header=TRUE)
+   shipsspe_lanes_longlat   <-  read.table(file.path(general$main_path_gis,"SHIPPING", "shipsspe_lanes_longlat.csv"), sep=";", header=TRUE)
+   cat(paste("Read shipping specs...done\n"))
+
+   shipsspe_lanes_lat <-  shipsspe_lanes_longlat[, c('ship_lane_number', 'lat_dec')]
+   shipsspe_lanes_lon <-  shipsspe_lanes_longlat[, c('ship_lane_number', 'lon_dec')]
+   
+  # write
+  write.table(shipsspe_features,   
+            file=file.path(general$main.path.ibm, paste("shipsspe_", general$application, sep=''), 
+              paste("shipsspe_features.dat",sep='')),
+                  col.names=FALSE,  row.names=FALSE, sep= '|', quote=FALSE, append=FALSE)
+  write.table(shipsspe_lanes_lat,   
+            file=file.path(general$main.path.ibm, paste("shipsspe_", general$application, sep=''), 
+              paste("shipsspe_lanes_lat.dat",sep='')),
+                  col.names=TRUE,  row.names=FALSE, sep= ' ', quote=FALSE, append=FALSE)
+  write.table(shipsspe_lanes_lon,   
+            file=file.path(general$main.path.ibm, paste("shipsspe_", general$application, sep=''), 
+              paste("shipsspe_lanes_lon.dat",sep='')),
+                  col.names=TRUE,  row.names=FALSE, sep= ' ', quote=FALSE, append=FALSE)
+   cat(paste("Write shipping-related files...done\n"))
+
+
+
+
+  cat(paste("..........done\n"))

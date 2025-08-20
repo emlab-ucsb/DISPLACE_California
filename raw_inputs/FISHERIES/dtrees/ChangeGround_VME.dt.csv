@@ -1,0 +1,19 @@
+#TreeVersion: 7
+#TreeType: ChangeGround
+# id,variable,posx,posy,nchld,children...,value
+0,vesselSizeIs,2343,2281,5,1,0,2,1,3,2,4,3,5,4,0
+1,feelingForCatchingElsewhere,2067,2522,2,6,0,7,1,0
+2,feelingForCatchingElsewhere,2220,2543,2,8,0,9,1,0
+3,feelingForCatchingElsewhere,2370,2543,2,10,0,11,1,0
+4,feelingForCatchingElsewhere,2513,2528,2,12,0,13,1,0
+5,feelingForCatchingElsewhere,2662,2528,2,14,0,15,1,0
+6,probability,2012,2650,0,0.05
+7,probability,2143,2642,0,0.05
+8,probability,2190,2693,0,0.05
+9,probability,2263,2744,0,0.05
+10,probability,2349,2700,0,0.05
+11,probability,2437,2753,0,0.05
+12,probability,2508,2697,0,0.05
+13,probability,2581,2751,0,0.05
+14,probability,2680,2697,0,0.05
+15,probability,2776,2629,0,0.05

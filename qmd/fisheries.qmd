@@ -1,0 +1,317 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+# Fleet data {#sec-fleet}
+
+```{r, echo = FALSE, results = FALSE, message = FALSE, warning = FALSE, cache = FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE, cache = FALSE)
+```
+
+
+This section describes the raw input datasets and parameters used to run the R routines related to fleet characteristics. These include information on individual fishing vessels, gears, métiers, vessel economics, and related aspects. The files should be stored and loaded from `raw_inputs/FISHERIES`. Most of the information can be derived from available VMS, landing receipts, vessel registry data, and stock assessments. 
+
+>**Note:** The data included in this repository and presented here is example data only. It is derived from the actual case study but does not represent real data.
+
+
+## FE distribution
+
+
+- `Gear`: Despite the name of the variable, this field does not contain the actual gear used by the vessel but rather the name of the `.shp` file that spatially defines the fishing effort for that specific gear or gear group. These spatial files must be available inside `DISPLACE_raw_inputs/{project-name}/FISHERIES/SpatialLayers`. In this analysis, we used declaration codes from VMS rather than the gear information available in the fish tickets. Therefore, this analysis relies on the gear information and fishing distribution associated with each declaration code indicated in variable `dcf_gear`.
+
+    To define effort distributions, we applied the methodology used to generate the effort maps from @wang2024high on the VMS-tix merged data by declaration codes and filtering values for our target species. Additionally, we accounted only for vessels operating from our harbors of interest.
+
+    For the declaration codes of interest, we generated a fishing effort density map for each except for declaration code 231, for which we follow a similar approach to that taken by @wang2024high, and aggregate with declaration code 230 (both related to trawl) since the former had very low overall fishing effort. Thus, 6 different `Gear` levels were defined to represent the métiers included in this analysis. These levels were assigned by matching the file names with the relevant declaration codes or combinations of codes, specifying whether the vessel in question is involved in that fishery. These spatial layers were saved as DISPLACE inputs in `shp` format.
+
+    The values from @wang2024high are expressed in $km/km^2/year$. However, DISPLACE outputs represent fishing effort as cumulative fishing time in hours. To allow comparison with the DISPLACE outputs, we have adapted the methods described in @wang2024high. Additionally, DISPLACE uses this fishing distribution to assess the probability that a simulated fishing vessel will fish at a given node. In discussions with Bastardie, we assessed the need to input such FE distributions in probability units. However, after testing the R routines with two different FE shapefile inputs—one based on cumulative times and the other on probabilities—we found that both approaches, given their identical distributions, produce nearly identical `vesselsspe_freq_fgrounds_quarter1.dat` files—the ones read by DISPLACE defining fishing probabilities.
+
+
+```{r}
+#| label: fig-fe-gear
+#| fig-cap: Fishing effort distribution by declaration code from 2010-2017 (probability of fishing). Filtered by species of interest. Cells visited by three or fewer vessels are not displayed to comply with the rule of three.
+#| fig-height: 12
+
+
+# Adjust the margins of each plot to make them closer together
+fe_maps_no_legend <- lapply(fe_maps_book[c(1, 2, 4, 5, 6, 8)], function(p) {
+  p + theme(
+            # legend.position = "none",
+            legend.position = c(0.8, 0.85),  # Move legend to top right within the plot
+            legend.text = element_text(size = 6),  # Reduce legend text size
+            legend.title = element_text(size = 8),  # Adjust legend title font size
+            legend.background = element_rect(fill = alpha('white', 0.7),color = NA),
+            plot.margin = unit(c(1, 0.1, 0.1, 0.1), "cm"))  # Reduce margins
+})
+
+# Arrange the modified plots in a grid with less space between them
+grid.arrange(grobs = fe_maps_no_legend, ncol = 2, nrow = 3)
+```
+
+## Vessels specifications
+
+
+In this study, we focused on vessels participating in the DTS fishery off the coast of California (hereafter DTS vessels).
+
+The DISPLACE input file containing information for each of the vessels included is in `vessels_specifications_per_harbour_metiers.csv`. Information can also be inputed by group of vessels. Each individual or grouped vessel characteristics are disagregated by harbor and metier (i.e., each vessel could be repeated in more than observation in this table if it belongs to more than one metier or lands in different ports). Métier is defined as a combination of gear and target species or fisheries that are distinctly defined. For our case study we included 12 ports and five metiers.
+
+The variables included in this dataset are detailed below:
+
+-   `VesselId`: This variable corresponds to the vessel ID. It may be represented with a VMS ID, IMO number, or any other identifier used to distinguish individual vessels or groups of vessels. In DISPLACE, vessel IDs follow a specific nomenclature consisting of the country code followed by a numeric code (e.g., `USA0001`, `USA0002`, etc.), which allows disaggregating DISPLACE outputs from the GUI by country fleet.
+
+- `nb_vessels`: This is the number of vessels represented by a unique ID. If we have information on all vessels available, this will have a value of 1. If we have limited information at an individual vessel level or want to simplify the analysis, we can group several vessels under the same ID and characteristics and specify here the number of vessels in each group.
+
+- `Port`: This is the port from where the vessels operate. If a vessel operates in more than one port, we should create two distinct observations for that vessel, distinguishing between one harbor and another. 
+
+-   `dcf_gear` and `Gear`: Both variables contain the same métier names. This redundancy comes from legacy versions of the R routines. The métier names included here will be consistent across all analyses and inputs, and they condition other inputs such as decision trees or the disaggregation of outputs. As with `harbour`, the dataset should contain different rows for the same vessel when it operates under different métiers.
+
+
+-   `RelativeEffort`: Defines the share of fishing effort exerted by a vessel or group of vessels for a given métier and/or port grouping. When a vessel appears in multiple rows of the dataset (e.g., across different métiers or ports), its effort is distributed across those rows, and the values must sum to `1`. The proportional contribution for each row is calculated as the ratio of time at sea for that métier and/or port to the vessel’s total time at sea.
+
+
+-   `name_gis_file_for_fishing_effort_per_polygon`: This variable specifies the name of the `.shp` file from which the fishing effort distribution information is read.
+
+- `name_gis_layer_field`: parameter defining the variable in `.shp` expressing fishing effort, in our case `fe`. The units are not important since it can be interpreted in relative terms depending on what we specify in variable `is_gis_layer_field_relative_numbers`.
+
+-   `is_gis_layer_field_relative_numbers`: Indicates whether the effort variable represents relative values. The default is `FALSE`. If relative values are available, you can still use the R routines designed for absolute values by adjusting the GIS layer to reflect relative importance on a linear scale. For example, if some areas are 100 times more likely to be visited than others, assign a value of `1` to the less frequented polygon and `100` to the more frequented one.
+
+- `xfold_gis_layer_field`: Default value `1`.
+
+-   `{population code}_kg_h`: Defines the catching capacity per fishing hour of a vessel or group of vessels for each population included in the analysis. Each population has its own variable. For example, our analysis includes `SAB_kg_h`, `SJU_kg_h`, `SJZ_kg_h`, `MIP_kg_h`, `EOJ_kg_h`, `SGO_kg_h`, and `OTH_kg_h`.  
+
+    This variable is used in the simulation to define the fishing rate and to determine how much time is required to fill each vessel’s storage capacity. For explicitly defined species, these rates adapt to the simulated abundances provided by the population model. Since implicit stocks are not dynamically modeled, their catch is only represented using fixed catch rates derived from historical data.
+
+
+- `VE_LEN` and `Tonnage`: These parameters correspond to vessel length (m) and vessel tonnage (any unit).Tonnage values are not used as DISPLACE inputs, but included as a references. However, as for our case study we use tonnage values to extrapolate other parameters such as engine power or fuel tank capacity. Neither the VMS nor fish ticket data contain much information on vessel characteristics. To obtain such information, in our study we have web scraped information from the [USCG Port State Information Exchange website](https://cgmix.uscg.mil/psix/psixsearch.aspx) and the [NOAA limited entry dataset](https://www.webapps.nwfsc.noaa.gov/apex/ifq/f?p=112:23). 
+
+-   `mean_kW`: Mean engine power of the vessel. This variable influences the fuel consumption of simulated trips. In our case study, engine power values were only available for a few vessels. To estimate engine power for the rest, we used registry data from 2,043 vessels and predicted engine power from tonnage and length using a model we developed.
+
+-   `kW`: Represents the same information as `mean_kW`. If we lack engine power data and we recorded as `0` or `NA`, the script `06_GenerateVesselsConfigFiles.r` will assign a value based on the model `DanishkWvsLOAModel.Rdata` instead, used in other DISPLACE applications by Bastardie et al.
+
+- `fishing.speed.knots` and `cruise.speed.knots`: Average speed when the vessel is fishing and average speed when the vessel is steaming. We got these values from the VMS data by discriminating fishing pings from the rest. This values were adjusted for calibrating the model as discussed in the calibration section.
+
+-   `fuel.tank.liter`: Fuel tank capacity of the vessel. This parameter is important because it influences trip duration. A half-empty fuel tank will trigger the vessel to return to port. Other reasons for returning to port include a full fish hold or reaching the end of the day if the vessel is set to perform daily trips (i.e., when trip duration is set to <30h).
+
+    In our case study, vessel-specific fuel tank capacities were not available for our vessels of interest. Instead, we built a model from a limited dataset to infer tank capacity based on vessel length. Alternatively, the case example in this repository provides a model to calculate tank capacity as a function of length using the nonlinear regression model `DanishFuelTankCapModel.Rdata`, which has been applied in other DISPLACE applications by Bastardie et al, and it is already integrated within `06_GenerateVesselsConfigFiles.r`.
+
+-   `fuel.cons.h`: Fuel consumption per hour. Like `fuel.tank.liter`, this parameter is critical because it determines trip duration, fuel availability, and the variable costs of a trip.  
+
+    For this parameter, we use the consumption expression from @bastardie2013integrating. It is already implemented within `06_GenerateVesselsConfigFiles.r`, where a linear model is built using data from `IBM_datainput_engine_consumption.txt`. This expression defines fuel consumption per hour based on engine power (kW). Consumption is adjusted within the simulation using multipliers for different operational phases.
+
+-   `Operational phase multipliers`: Multipliers applied to fuel consumption per hour depending on the phase of a trip, since fuel use varies across different activities.  
+
+    -   `multip.fuel.steaming`: Adjusts fuel consumption when the vessel is steaming, i.e., traveling to or from fishing grounds.  
+    -   `multip.fuel.fishing`: Adjusts fuel consumption when the vessel is actively fishing. Consumption can vary depending on gear type and fishing method.  
+    -   `multip.fuel.ret.port.fish`: Adjusts fuel consumption when the vessel is returning to port with its catch. Extra weight from the catch can slightly increase fuel use.  
+    -   `multip.fuel.inactive`: Adjusts fuel consumption when the vessel is inactive (e.g., docked at port, anchored, or for gillnetters setting nets at very low speeds).  
+
+    In the absence of specific information, all multipliers can be set to `1`. For our case study, we use the values from @bastardie2013integrating: Fishing: `1`; Steaming: `0.8`; Inactive: `0.1`. For returning to port with catch, we use `1.1`, as applied in other DISPLACE analyses from the Bastardie repository, to reflect slightly higher consumption when carrying landed fish.
+
+-   `ave.storage.fish.kg`: Fish storage capacity of the vessel. This defines another trigger for when a vessel must return to port, once no more fish can be stored the trip ends.  
+
+    Storage capacity can be defined as the highest observed historical catch for a given vessel, creating an artificial ceiling for total potential catches. However, actual storage capacity in weight may vary across trips depending on catch volume and other conditions. For this reason, using the maximum observed value across all trips in the time series may not always be ideal. Due this, the storage capacity variable was also adjusted during the calibration process, as described later.
+
+-   `nb_pings_per_trip`: Defines the frequency of changing fishing grounds within a trip. This value can be `1` or higher. If greater than `1`, the vessel may shift between several fishing grounds instead of remaining in a single node. This behavior also depends on the use of a Change Fishing Ground Decision Tree, which sets the probabilities for moving to other grounds. If the value is `1`, the vessel will fish only in a single node and will not switch grounds, reducing navigation time and concentrating all fishing pressure for that particular simulated trip within that node. In our case study, we use a value of `1`. However, an example decision tree file is provided in the repository: `dtrees/ChangeGround_VME.dt.csv`.
+
+-   `trip.duration.h`: Average trip duration per métier. This parameter affects the time at sea in the simulation. While maximum trip duration could be used instead to test effects or for calibration purposes, this was not applied in our study. When calculating, we group only by `vesselid` (not by `port` or `gear`), assuming that trip duration reflects the vessel’s overall capacity regardless of the type of fishing activity.
+
+-   `Gamma_shape` and `Gamma_scale`: Parameters used to draw the resting time in port between consecutive trips. In our DISPLACE application, these parameters are not used directly because a *GoFishing* decision tree defines this behavior. Nevertheless, we must still populate them, so we include the default values from other DISPLACE applications (Bastardie et al.): `0.4485` and `336.7618`, respectively. These values are ignored if the *GoFishing* decision tree is active.
+
+-   `weekEndStartDay`, `weekEndEndDay`, `WorkHoursStart`, `WorkHoursEnd`: Variables that can be used along the `stopFishing` decision tree if such a tree is provided in the `dtree` folder and activated in the `processed_inputs/simusspe` scenario `.dat` file.  
+
+    If no decision tree is used, return-to-port events are instead triggered by conditions such as a half-empty fuel tank, full fish storage, or the end of a daily trip. In this case, trip duration can be flexible, potentially lasting more than a week and not following a regular weekly pattern. If applied, weekdays are represented by numbers `1` to `7`, and hours by numbers `1` to `24`.
+
+-   `vessel_range_km`: Vessel range in kilometers, defining how far a vessel can travel. In the R routines, this parameter determines which nodes are accessible to a vessel from a given port; nodes outside that range cannot be visited.  
+
+    We calculate this by taking the maximum distance traveled across all trips and dividing it by 2 to account for the round-trip distance. Alternatively, it could be estimated as the straight-line distance from the farthest point on a trip to the port, or as the mean distance traveled per trip. Due to dependencies in the R routines, any value above 4,500 km will yield an error.
+
+
+## Economic data
+
+DISPLACE includes a wide range of economic parameters that can be used to more accurately estimate the profitability, and cost efficiency of each vessel. Besides stock prices already described in the population section, DISPLACE requires to inform vessel-specific economic parameters and fuel prices.
+
+### Fuel prices
+
+Fuel price values in currency unit per liter, need to be hardcoded in the `GenerateVesselsConfigFiles.r` and `GenerateHarboursFiles.r` routines and must be updated for each analysis if different estimates are used. These values remain fixed across the simulated time series. They can be defined by vessel size (if different fuel types apply to different vessel classes) or assigned differently by port, in which case the R routines would need to be modified accordingly.
+
+**For our case study**, fuel prices were obtained from the Fisheries Economics Data Program (PSMFC 2025). Since fuel price values and trends are consistent across ports, we applied a uniform price across all primary ports included in our study based on the data for the primary ports available in the fuel dataset. For our analysis, we assigned the same average fuel price across all ports and vessels from 2010 to 2023, converted from dollars per gallon to dollars per liter. These prices reflect the values at the time they were collected, so we adjusted them for inflation to 2023 using the `priceR` package. The inflation-adjusted average price was $4.47 per gallon, or $1.18 per liter. These prices are reported before tax. The same dataset references a 8.5% fuel tax applied in Eureka in 2011. We use this value as our reference, since other tax information refers to periods prior to 2010. Applying this tax results in a final fuel cost of $1.28 per liter, which we use to represent the fuel-related cost in the model.
+
+```{r}
+#| label: fig-fuel-prices
+#| fig-cap: Fuel prices time series of ports of interest (USD/gallon).
+
+knitr::include_graphics(here::here("docs/figures/fuel_price_series.png"))
+```
+
+
+### Vessel-specific economic variables
+
+
+
+
+
+Economic data has been extracted from NOAA's fisheries explorer platform [FISHEYE](https://connect.fisheries.noaa.gov/WestCoastCatchShares/). This platform provides access to metrics describing certain vessel economic characteristics and groundfish fisheries, with data aggregated by gear groups, harbors, or size classes. Access to more granular data, preferably at the vessel level, has been requested and is still under consideration. In the meantime, we have used mean values, first assigning them by ports where available, and for the remaining cases, using the available gear group data. For vessels operating with more than one gear or from more than one port, average values have been applied.
+
+There are two files related to economic data describing individual vessels and fisheries. We do not have information for these two yet. (WORK IN PROGRESS)
+
+- `STECF/Economics_fs.csv`: Using default values from [MEESO study](https://github.com/frabas?tab=repositories). The values displayed do not reflect actual data from the West Coast or anywhere else in the United States.
+
+  - `Annual_depreciation_rate`: the percentage by which an asset's value decreases over the course of a year. It represents how much of the asset’s original cost is expensed as depreciation each year, based on its expected useful life.
+    
+    From the FISHEYE data, we can obtain both the vessel_market_value and vessel_replacement_value. Using these values, we could estimate the depreciation rate by calculating the percentage difference between the two. To estimate the annual depreciation rate, we would divide this percentage by the number of years from the vessel's build year to the latest year for which FISHEYE provides information (i.e., 2022).
+    
+    **NOTE: Confirm with Bastardie if this refers only to the vessel or also the gear. FISHEYE includes both vessel and gear in this estimates (Confirm). Also, confirm the units, whether in % or per one.**
+
+
+  - `Annual_discount_rate`: In 2023, the U.S. Office of Management and Budget (OMB) provided guidance on discount rates through Circular A-94. The recommended discount rates remained consistent with previous years, with a 3% rate for projects involving public investments or intergenerational impacts. Therefore, we will use this value for our analysis.
+
+  - `Annual_insurance_costs_per_crew`: variable `Crew payments` in FISHEYE include wages, bonuses, benefits, payroll taxes, and unemployment insurance.
+
+
+```{r}
+#| label: tbl-economics-fs-example
+#| tbl-cap: Sample of the STECF/Economics_fs.csv input file. Adapted from the MEESO study. Not related to this study.
+
+
+df <- economics_fs
+# Mask the last 4 digits of fs_name for confidentiality
+df$fs_name <- paste0("******")
+df %>% head(3) %>% kable()
+```
+
+
+- `fisheries_economics_variables.csv`: Using default values from [MEESO study](https://github.com/frabas?tab=repositories). The values displayed do not reflect actual data from the West Coast or anywhere else in the United States.
+
+```{r}
+#| label: tbl-fisheries-economics-variables-example
+#| tbl-cap: Sample of the fisheries_economics_variables.csv input file. Adapted from the MEESO study. Not related to this study.
+
+df <- fisheries_economics_variables
+# Mask the last 4 digits of VE_REF for confidentiality
+df$VE_REF <- paste0("******")
+df %>% head(3) %>% kable()
+```
+
+### Harbors
+
+We will generate the `harbours.dat` file containing the harbors of interest based on the selection performed before.
+
+```{r}
+#| label: tbl-port-details
+#| tbl-cap: Harbors details.
+
+generate_harbors_oi %>% kable()
+```
+
+```{r}
+states <- map_data("state", region = c("california"))
+
+states_bbox <- st_bbox(st_as_sf(states, coords = c("long", "lat"), crs = 4326))
+
+# Load ggrepel for avoiding label overlaps
+
+
+ggplot() +
+  # Add harbor points
+  geom_point(data = generate_harbors_oi, aes(x = lon, y = lat), 
+             color = "red3", size = 2) +
+  # Add harbor labels with ggrepel
+  geom_text_repel(data = generate_harbors_oi, aes(x = lon, y = lat, label = port_name),
+                  size = 3, hjust = 1.2, direction = "y", 
+                  box.padding = 0.3, point.padding = 0.3, max.overlaps = 10) +
+  # Add state boundaries
+  geom_polygon(data = states, aes(x = long, y = lat, group = group), 
+               fill = NA, color = "black", linewidth = 0.1) +
+  # Set map bounds
+  coord_sf(xlim = c(states_bbox["xmin"] - 2, states_bbox["xmax"] - 3), 
+           ylim = c(states_bbox["ymin"], states_bbox["ymax"])) +
+  # Adjust x-axis breaks
+  scale_x_continuous(breaks = c(-118, -123, -128)) +
+  # Apply minimal theme
+  theme_minimal() +
+  theme(
+    axis.title = element_blank(),
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+    plot.title = element_text(size = 10),  # Adjust title size
+    legend.title = element_text(size = 8),  # Adjust legend title size
+    legend.text = element_text(size = 7),   # Adjust legend label size
+    legend.position = c(0.82, 0.75),  # Position legend inside the plot (top right corner)
+    legend.background = element_rect(fill = alpha('white', 0.6), color = NA)  # Transparent legend background
+  )
+
+
+```
+
+
+### Selectivity
+
+The file `fishing_gear_selectivity_ogives_per_stock.csv` contains the selectivity of each gear for each species by size bin. This information was extracted from the respective stock assessments. However, due to the lack of data from the original assessments, selectivity curves were approximated based on the following figures: Figure 33 from @johnson2023sablefish for sablefish, Figure 85 from @wetzel2021doversole for Dover sole, Figure 43 from @stephens2014longspine for longspine thornyhead, and Figure 22 from @zahner2023shortspine for shortspine thornyhead.
+
+```{r}
+#| label: fig-selectivity-mip
+#| fig-cap: Dover Sole selectivity across all gears.
+#| fig-height: 3
+
+selectivity_functions$plots$dover_sole_selectivity_curve
+```
+
+```{r}
+#| label: fig-selectivity-sab
+#| fig-cap: Sablefish selectivity by gear. Values were adapted to length using the von Bertalanffy growth function.
+#| fig-height: 3
+
+
+# Adjust the y-axis limits for both plots
+sablefish_trawl_plot <- selectivity_functions$plots$sablefish_trawl_selectivity_curve +
+  ylim(0, 1)
+
+sablefish_fixedgear_plot <- selectivity_functions$plots$sablefish_fixedgear_selectivity_curve +
+  ylim(0, 1)
+
+# Arrange the plots in a grid
+grid.arrange(
+  sablefish_trawl_plot,
+  sablefish_fixedgear_plot,
+  ncol = 2, nrow = 1
+)
+```
+
+```{r}
+#| label: fig-selectivity-sjz
+#| fig-cap: Longspine thornyhead selectivity across all gears.
+#| fig-height: 3
+
+selectivity_functions$plots$longspine_selectivity_curve
+```
+
+```{r}
+#| label: fig-selectivity-sju
+#| fig-cap: Shortspine thornyhead selectivity by gear.
+#| fig-height: 3
+
+
+# Adjust the y-axis limits for both plots
+sju_trawl_plot <- selectivity_functions$plots$shortspine_trawl_selectivity_curve +
+  ylim(0, 1)
+
+sju_fixedgear_plot <- selectivity_functions$plots$shortspine_nontrawl_selectivity_curve +
+  ylim(0, 1)
+
+# Arrange the plots in a grid
+grid.arrange(
+  sju_trawl_plot,
+  sju_fixedgear_plot,
+  ncol = 2, nrow = 1
+)
+```
+
+```{r}
+#| label: tbl-selectivity-table
+#| tbl-cap: Sample of the selectivity values by metier available in fishing_gear_selectivity_ogives_per_stock.csv.
+
+selectivity_table %>% head() %>% kable()
+```
+
+
+

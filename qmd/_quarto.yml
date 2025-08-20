@@ -13,7 +13,7 @@ book:
   chapters:
     - index.qmd
     - populations.qmd
-    # - fisheries.qmd
+    - fisheries.qmd
     # - results.qmd
     # - references.qmd
 
@@ -23,7 +23,7 @@ format:
   html:
     theme: cosmo
     toc: true          
-    toc_depth: 5 
+    toc_depth: 5
 execute:
   cache: true
 editor: visual

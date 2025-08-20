@@ -1,0 +1,30 @@
+project:
+  type: book
+  # Use docs if published to github pages
+  # Otherwise, publish to emLab's nextcloud directory
+  output-dir: ../docs
+  # output-dir: /Users/Shared/nextcloud/emLab/projects/current-projects/ocean-ghg/project-materials/quarto-book
+
+book:
+  title: "DISPLACE West Coast documentation"
+  author: emLab, UCSB
+  date: last-modified
+  date-format: "[Last Updated on] MMMM DD, YYYY"
+  chapters:
+    - index.qmd
+    - populations.qmd
+    # - fisheries.qmd
+    # - results.qmd
+    # - references.qmd
+
+# bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+    toc: true          
+    toc_depth: 5 
+execute:
+  cache: true
+editor: visual
+

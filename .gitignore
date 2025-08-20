@@ -54,6 +54,6 @@ raw_inputs/FISHERIES/vessels_config_files
 raw_inputs/POPULATIONS/pops_config_files
 outputs/
 processed_inputs/
-qmd/
-docs/
+# qmd/
+# docs/
 data/

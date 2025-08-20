@@ -1,0 +1,118 @@
+# Introduction {.unnumbered}
+
+This notebook summarizes the progress related to running the DISPLACE modeling framework and the associated R routines, as well as the discussion of the data used and its sources.
+
+## Working environment
+
+The current project uses DISPLACE version 1.2.3 on Windows 11. The R routines run on R version 4.3.2 and Rtools 35, using specific package versions installed as specified in` r/dependencies.R`. To manage package dependencies, we use the `renv`. When you first clone this repo onto your machine, run `renv::restore()` to ensure you have all correct package versions installed in the project.
+
+Regarding the repository and data structure, this project's datasets and scripts are hosted in mixed sources. The private GitHub repository ([DISPLACE WestCoast BOEM](https://github.com/pcarbomestre/DISPLACE_WestCoast_BOEM)) contains only the associated scripts and the DISPLACE R routines, but no input or results data. Most input data is stored in the emLab NextCloud storage under the projects folder. Data under sharing agreements is only available locally, and its preprocessing is conducted on an offline machine.
+
+- GitHub basic structure:  
+```
+DISPLACE_WestCoast_BOEM
+  |__ docs
+  |__ qmd
+  |__ data
+  |__ r
+  |__ sql
+  |__ python
+  |__ renv
+  |__ DISPLACE
+    |__ DISPLACE_R_inputs
+    
+```
+
+- EmLab NextCloud storage space uses the following basic structure:  
+```
+data/DISPLACE
+  |__ raw
+  |__ DISPLACE_WestCoast_BOEM_data
+    |__ _targets
+    |__ DISPLACE_raw_inputs
+      |__ {application name}
+    |__ DISPLACE_outputs
+      |__ {application name}
+    |__ DISPLACE_input_{application name}
+```
+
+## DISPLACE R routines
+
+The R routines used for this project are:
+```
+- GeneratePopulationsFeatures.R
+- GeneratePopulationsConfigFiles.R
+- RunPopulationsConfigFiles.R
+- GeneratePopulationsPreferencesPerSpeciesMatrix_simplified.R
+- GeneratePopulationsVariousFiles.R
+- GenerateVesselsConfigFiles.R
+- RunVesselsConfigFiles.R
+- GenerateVesselsEconomicsFile.R
+- GenerateOtherCatchesOnNodes.R
+- GenerateMetiersSelectivityPerStockFiles.R
+- GenerateMetiersVariousFiles.R
+- GenerateHarboursFiles.R
+- GenerateShippingFiles.R
+- GenerateFishfarmsFiles.R
+- GenerateWindmillsFiles.R
+- GenerateFirmsFiles.R
+- GenerateSimulationsConfigFiles.R
+- GenerateBenthosLandscapeOnNodes.R
+```
+
+Original routines used to prepare DISPLACE inputs were modified to run under the latest R versions. Among all the updates conducted, the most noticeable one is related to dataframe management and indexing of the base functions, preventing proper reading of the coord and graphs files.
+
+- Original script:
+```{r, eval = FALSE}
+ # For older versions of R
+coord <- read.table(file=file.path(general$main_path_gis, "GRAPH", "shapefiles_and_graphs",
+                                   paste("coord", general$igraph, ".dat", sep=""))) # build from the c++ gui
+coord <- as.matrix(as.vector(coord))
+coord <- matrix(coord, ncol=3)
+coord <- cbind(coord, 1:nrow(coord))
+colnames(coord) <- c('x', 'y', 'harb', 'pt_graph')
+colnames(coord) <- c('x', 'y', 'harb', 'pt_graph')
+
+if(do_plot) plot(coord[,1], coord[,2])
+
+saved_coord <- coord
+  
+graph <- read.table(file=file.path(general$main_path_gis, "GRAPH", "shapefiles_and_graphs",
+                                   paste("graph", general$igraph, ".dat", sep=""))) # build from the c++ gui
+graph <- as.matrix(as.vector(graph))
+graph <- matrix(graph, ncol=3)
+if(do_plot) segments(coord[graph[,1]+1,1], coord[graph[,1]+1,2], coord[graph[,2]+1,1], coord[graph[,2]+1,2], col=4) # CAUTION: +1, because c++ to R
+```
+
+- Updated script: 
+```{r, eval = FALSE}
+# Updated from frabas to work on newest R versions
+coord <- read.table(file=file.path(general$main.path.param.gis, "GRAPH", "shapefiles_and_graphs",
+                                   paste("coord", general$igraph, ".dat", sep=""))) # build from the c++ gui
+coord <- unlist(coord)
+part_length <- length(coord) %/% 3
+x <- as.numeric(coord[1:part_length])
+y <- as.numeric(coord[(part_length + 1):(2 * part_length)])
+harb <- as.numeric(coord[(2 * part_length + 1):(3 * part_length)])
+coord <- cbind(x,y , harb, pt_graph= 1:length(x))
+
+if(do_plot) plot(coord[,1], coord[,2])
+
+saved_coord <- coord
+
+graph <- read.table(file=file.path(general$main.path.param.gis , "GRAPH", "shapefiles_and_graphs",
+                                   paste("graph", general$igraph, ".dat", sep=""))) # build from the c++ gui
+graph <- unlist(graph)
+part_length <- length(graph) %/% 3
+x <- as.numeric(graph[1:part_length])
+y <- as.numeric(graph[(part_length + 1):(2 * part_length)])
+harb <- as.numeric(graph[(2 * part_length + 1):(3 * part_length)])
+graph <- cbind(x,y , harb)
+
+if(do_plot) segments(coord[graph[,1]+1,1], coord[graph[,1]+1,2], coord[graph[,2]+1,1], coord[graph[,2]+1,2], col=4) # CAUTION: +1, because c++ to R
+```
+
+Additional updates were made in other routines, such as in `GenerateFishfarmsFiles.R`, which was not generating the `size_per_farm.dat` file.
+
+Routines associated with fishfarms, shipping, forms, offshore wind, and benthos were set to default 0 values, as they are not relevant for our analysis.
+

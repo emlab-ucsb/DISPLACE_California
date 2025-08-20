@@ -1,0 +1,583 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Populations data {#sec-populations}
+
+```{r, echo = FALSE, results = FALSE, message = FALSE, warning = FALSE, cache = FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
+
+library(sf)
+library(tidyverse)
+library(knitr)
+library(gridExtra)
+```
+
+This section includes a description of the raw input datasets and the parameters considered to run the R routines for the target species population characteristics. These files should be stored and loaded from `DISPLACE_raw_inputs/{project-name}/POPULATIONS`.
+
+There are four main inputs to explicitly characterize the stock populations: their biological traits, their abundances structured by size and age and their spatial distribution. Although not directly life-history parameters, stock price information is also provided in the same folder. Species can also be implicitly characterized in the model, where simulated fishing is not coupled with their simulated population dynamics, but rather defined by a constant catch rate, as explained in the fleet section. However, such implicit species still need to be included in the inputs to feed the routine code, and their parameters can be filled with dummy data.
+
+Below, we describe the contents of each required file.
+
+
+## Abundance inputs
+
+DISPLACE requires abundances (in thousands of individuals) within 14 size bins. These 14 bins are evenly spaced in length and are identical for all explicit species, despite their differences in body size. Abundances by size are provided in `Stock_abundances_at_szgroup.csv`. Alternatively, abundances can be specified in 13 age bins using `Stock_abundances_at_age.csv`. Both files must exist in the input directory. However, only one needs to contain actual data.
+
+**For our case study**, we define abundances by size group and therefore populate `Stock_abundances_at_szgroup.csv`. The age-based file, `Stock_abundances_at_age.csv`, is included but filled with zeros. Implicit species must be listed in both files, although can be filled with dummy data. In our example, we populate the implicit species’ abundance rows by repeating the values from the first explicit specie. This is required for the R routines to run. However, these repeated inputs are not used by the model and do not affect the results.
+
+The number of fish at length defines the initial populations in the simulation. We obtained these values from the stock assessment estimates of number-at-length in the “natlen” table of the SS3 model output (@fig-abundances), and then adjusted them to fit the 14 size bins required by DISPLACE.
+
+```{r}
+#| label: fig-abundances
+#| fig-cap: The number of fish at length in 2010 by species.
+
+knitr::include_graphics(here::here("docs/figures/dts_number_at_length.png"))
+```
+
+Because the stock assessments represent populations across the entire U.S. West Coast, we scale the abundances to represent the proportion of the stock falling within waters off the coast of California. We determined the average percent of the population falling within California waters using the proportions in the bottom trawl survey data (Keller et al. 2017). The annual percent of biomass observed in the survey is shown in @fig-prop-in-ca below with the average from 2010-2018 highlighted. The values are as follows: Dover sole (52.3%), longspine thornyhead (72.5%), sablefish (53.7%), shortspine thornyhead (48.1%). 
+
+```{r}
+#| label: fig-prop-in-ca
+#| fig-cap: The percent of each DTS species falling within California waters based on analysis of the West Coast Groundfish Bottom Trawl Survey with the average from 2010-2018 marked.
+
+knitr::include_graphics(here::here("docs/figures/dts_prop_in_ca.png"))
+```
+
+## Biological traits
+
+This section describes the contents of the file `Stock_biological_traits.csv` and how we populated it for our case study. The file requires actual information only for the explicit species. Implicit species were also included but filled with dummy data, consistent with the approach used for the abundance files, to ensure the R routines can run.
+
+We obtained the life history parameters from the most recent stock assessments available for each modeled species: the 2023 sablefish assessment (Johnson et al., 2023), the 2021 Dover sole assessment (Wetzel and Berger, 2021), the 2019 longspine thornyhead assessment (Adams et al., 2019), and the 2023 shortspine thornyhead assessment (Zahner et al., 2023). These parameters were extracted directly from the Stock Synthesis output files using the `r4ss` package (Taylor et al., 2021).
+
+
+
+### Growth parameterizations
+
+The growth parameters included in `Stock_biological_traits.csv` are:  
+
+-   `Linf`: von Bertalanffy asymptotic length. 
+-   `CV_Linf`: coefficient of variation of the von Bertalanffy asymptotic length.
+-   `K`: Von Bertalanffy $K$. 
+-   `t0`: Theoretical age of the von Bertalanffy growth function (VBGF) at which fish would have a size of zero.
+
+
+DISPLACE expects growth to be specified using a three-parameter von Bertalanffy growth function (VBGF):
+$$
+L_t = L_\infty \left(1 - e^{-K\,(t - t_0)}\right)
+$$
+
+where $L_t$ is the length at age $t$, $L_\infty$ is the average asymptotic length, $K$ is the growth coefficient, and $t_0$ is the hypothetical age at which length is zero.
+
+However, many stock assessments specify growth using the five-parameter Schnute parameterization (here shown in the $b=1$ special case commonly used in assessments):
+
+$$
+L_t = L_1 + (L_2 - L_1)\;
+\frac{1 - e^{-K\,(t - A_1)}}{1 - e^{-K\,(A_2 - A_1)}}
+$$
+
+where $A_1$ is the age at length $L_1$, $A_2$ is the age at length $L_2$, and $K$ is the growth coefficient. Although assessment reports often do not list the three VBGF parameters explicitly, they are provided in the model output files and can also be derived from the Schnute parameters using:
+
+$$
+L_\infty = L_2 - \frac{L_1\, e^{-K\,(A_2 - A_1)}}{1 - e^{-K\,(A_2 - A_1)}}
+$$
+
+$$
+t_0 = A_1 + \frac{1}{K}\,
+\log\!\left(\frac{L_2 - L_1}{L_2 - L_1\, e^{-K\,(A_2 - A_1)}}\right)
+$$
+
+DISPLACE also requires the CV of $L_\infty$. Because growth is specified via the Schnute form in the assessments, this CV is not reported directly. Stock assessments typically record (1) the CV of length-at-age for old fish and (2) the maximum CV of length-at-age (which usually occurs among older ages). We use the CV of length-at-age for old fish as a proxy for $CV(L_\infty)$ when it is valid (non-negative). In the few cases where that value was negative (e.g., longspine thornyhead; Dover sole—males), we substitute the maximum CV of length-at-age.
+
+We provide both sets of parameters in @tbl-growth-params below.
+
+```{r}
+#| label: tbl-growth-params
+#| tbl-cap: Growth parameters for the study species
+
+growth_params <- data.frame(
+  Species = c(
+    "Sablefish", "Sablefish", "Sablefish",
+    "Dover sole", "Dover sole", "Dover sole",
+    "Longspine thornyhead", "Longspine thornyhead", "Longspine thornyhead",
+    "Shortspine thornyhead", "Shortspine thornyhead", "Shortspine thornyhead"
+  ),
+  Sex = c(
+    "Males", "Females", "Average",
+    "Males", "Females", "Average",
+    "Males", "Females", "Average",
+    "Males", "Females", "Average"
+  ),
+  A1_yr = c(
+    0.5, 0.5, NA,
+    1, 1, NA,
+    3, 3, NA,
+    2, 2, NA
+  ),
+  A2_yr = c(
+    30, 30, NA,
+    60, 60, NA,
+    40, 40, NA,
+    100, 100, NA
+  ),
+  L1_cm = c(
+    26.62, 25.26, NA,
+    10.35, 7.99, NA,
+    8.57, 8.57, NA,
+    9.17, 11.38, NA
+  ),
+  L2_cm = c(
+    56.11, 61.13, NA,
+    41.97, 48.05, NA,
+    27.83, 27.83, NA,
+    66.07, 73.61, NA
+  ),
+  t0 = c(
+    -1.19, -0.95, -1.07,
+    -1.06, -0.38, -0.72,
+    -0.34, -0.34, -0.34,
+    -5.12, -8.70, -6.91
+  ),
+  k = c(
+    0.381, 0.367, 0.374,
+    0.138, 0.132, 0.135,
+    0.109, 0.109, 0.109,
+    0.017, 0.010, 0.013
+  ),
+  Linf_cm = c(
+    56.11, 61.13, 58.62,
+    41.97, 48.05, 45.01,
+    28.18, 28.18, 28.18,
+    79.68, 111.59, 95.64
+  ),
+  CV_Linf = c(
+    0.078, 0.103, 0.091,
+    0.078, 0.080, 0.027,
+    0.054, 0.054, 0.054,
+    0.109, 0.109, 0.109
+  ),
+  stringsAsFactors = FALSE
+)
+
+growth_params |> kable()
+```
+
+The growth relationships are visualized in @fig-growth-relationship below.
+
+```{r}
+#| label: fig-growth-relationship
+#| fig-cap: The von Bertalanffy growth relationship for each species.
+
+knitr::include_graphics(here::here("docs/figures/dts_growth_relationship.png"))
+```
+
+
+#### Length-weight relationship
+
+DISPLACE requires a length–weight relationship. The parameters included in `Stock_biological_traits.csv` are:  
+
+-   `a`: Weight-length relationship coefficient.
+-   `b`: Weight-length relationship exponent.
+
+We extracted the parameters for the following standard form from the stock assessment output files:
+
+$$
+W = a L^b
+$$
+
+where $W$ is weight at length $L$, and $a$ and $b$ are the parameters of the exponential relationship. The parameters are listed in @tbl-l-w-params. These values convert length (cm) to weight (kg).  
+
+To convert length in centimeters to weight in grams, as required in DISPLACE, the parameter $a$ is multiplied by 1000.
+
+```{r}
+#| label: tbl-l-w-params
+#| tbl-cap: Length-weight parameters for each species.
+
+
+lw_params <- data.frame(
+  Species = c(
+    "Sablefish", "Sablefish", "Sablefish",
+    "Dover sole", "Dover sole", "Dover sole",
+    "Longspine thornyhead", "Longspine thornyhead", "Longspine thornyhead",
+    "Shortspine thornyhead", "Shortspine thornyhead", "Shortspine thornyhead"
+  ),
+  Sex = c(
+    "Males", "Females", "Average",
+    "Males", "Females", "Average",
+    "Males", "Females", "Average",
+    "Males", "Females", "Average"
+  ),
+  a = c(
+    0.0000033709, 0.0000033155, 0.0000033432,
+    0.0000026000, 0.0000029700, 0.0000027850,
+    0.0000043000, 0.0000043000, 0.0000043000,
+    0.0000049600, 0.0000048600, 0.0000049100
+  ),
+  b = c(
+    3.2701, 3.2726, 3.2714,
+    3.3710, 3.3320, 3.3515,
+    3.3520, 3.3520, 3.3520,
+    3.2500, 3.2600, 3.2550
+  ),
+  stringsAsFactors = FALSE
+)
+
+lw_params |> kable()
+
+```
+
+The length-weight relationships are visualized in @fig-l-w-relationship below.
+
+```{r}
+#| label: fig-l-w-relationship
+#| fig-cap: The von Bertalanffy growth relationship for each species.
+
+knitr::include_graphics(here::here("docs/figures/dts_length_weight_relationship.png"))
+```
+
+
+
+
+
+#### Maturity
+
+-   `L50`: Length 50% mature.
+-   `mat_B`: slope of maturity ogive.
+-   `mat_cat`: This corresponds to the size DISPLACE category at the `L50`. Given `0:13` size bins if `sz_bin_cm` is 6 cm, and `L50` is 55 cm, then `mat_cat` will be `8`.
+
+Length–weight parameters are input in cm–g, and within the R routines they are transformed to cm–kg.
+
+#### Recruitment parameters {#sec-recruitmet-intro}
+
+Recruitment can be defined in DISPLACE** using the Ricker recruitment model, Beverton–Holt (B&H), or a fixed recruitment.  
+
+To define fixed recruitment, see the files within  
+`raw_inputs/POPULATIONS/SSB_R_parameters`, which include an example of the required format and content. For example, in the input file for population 0 (e.g., `0spe_SSB_R_parameters_biolsce1.dat`), there are three rows corresponding to  recruits (in thousands), default value of 0, and the recruitment code type used by DISPLACE. Recruitment codes are `0` = Ricker, `1` = Beverton–Holt, and `2` = Fixed.
+
+While **fixed recruitment** must be specified manually, for **Ricker** and **B&H**, the `.dat` files are generated automatically within the R routine `GeneratePopulationsFeatures.R`.  To update to Ricker or B&H, set the value of the object `recruit_method` to the corresponding code number in that script. For the dynamic recruitment, three variables must be defined in `Stock_biological_traits.csv`:  
+
+- `alpha` and `beta`: Parameters for the Ricker or B&H models  
+- `CV_recru`: Coefficient of variation in recruitment  
+
+The updated `{sp_code}spe_SSB_R_parameters_biolsce.dat` file for dynamic recruitment (in the processed inputs) will include four rows corresponding to `alpha`, `beta`, `CV_recru` and the recruitment type code. 
+
+Other recruitment related paramenters are:
+
+-   `r_age`: Age of recruitment. This variable is used to dispatch overall recruits into the size bins.
+-   `ssb_assessment`: This variable is not used but it is included as a reference. It corresponds to the total weight of the sexually mature part of a fish population in mT. 
+
+#### Natural mortality
+
+-   `nat_M`: natural mortality rate.
+
+#### Management parameters
+
+-   `FMSY`: Fishing mortality rate that produces the maximum sustainable yield. This value is also given to `F_target`.
+
+-   `B_trigger`: The biomass trigger is a reference point that initiates specific management actions when the biomass of a fish stock falls below or exceeds a certain threshold. This value is expressed as a percentage. For our study case, there is no trigger leading to specific management actions, so we set it to `0`. This does not affect the analysis (`B_trigger = 0`).  
+
+-   `mls` and `mls_cat`: minimum landing size (the smallest legal size at which a fish can be caught, kept, and sold) and the corresponding DISPLACE size category (i.e., following the same categorization used for `mat_cat`). In our study case, there is no minimum individual size for DTS, so both values are set to 0.
+
+-   `tac_tons`: Total Allowable Catch. It represents the maximum quantity of fish that can be legally harvested from a particular fishery over a specified period. For the U.S. fisheries management system this parameter corresponds to the Annual Catch Limit (ACL). We can get ACL from the [Groundfish biennial harvest specifications and management measures](https://www.pcouncil.org/harvest-specifications-regulations-and-seasons/) of the Pacific Fishery Management Council.
+
+-   `TAC_percent`: This variable represents the maximum allowed change in TAC from one year to the next. In other words, TAC in year \$year\_{y+1} \$ cannot differ by more than $XX\%$ of TAC in year \$year_y \$. Here we used the ACL values from above, we calculate an average year-to-year change. Values within `Stock_biological_traits.csv` are expressed in per one. (This value is also applied to `F_percent`).
+
+-   `fbar_assessment`: Average annual fishing mortality, calculated as the mean F across a range of ages (fully exploited age classes). In our case, we used the fishing mortality rate, which some assessments refer to as relative fishing intensity. If fishing mortality was not provided, we alternatively used exploitation rates. Exploitation rate is a closely related concept—it expresses a proportion rather than a rate. When data were presented as a time series, we averaged across our validation period to obtain the estimate of interest.
+
+-   `fbar_age_min` and `fbar_age_max`: these refer to the minimum and maximum ages used to calculate the mean fishing mortality rate (fbar_assessment). These correspond to the youngest and oldest age classes included in the calculation. As a proxy we used the range of ages selected by the fishery based on gear selectivity.
+
+#### SizeSpectra option parameters
+
+The following parameters can be ignored by setting them to 0 if we are not considering trophic interactions (@blanchard2017sizespectra): `Winf`, `k`, `etha_m`, `kappa`, `q`, `n` and `fzeroest`. We can account for trophic interactions by enabling the `sizeSpectra` option.
+
+#### Additional variables
+
+-   `UseIt`: values Yes/No, indicating whether it is considered in the analysis or not.
+-   `unit_sizebin`: Defines the size unit for bins. For example, 1 = cm, 0.1 = mm, etc. The same units are applied in the abundance-by-size-class files.
+-   `stock`: code of the population. For our study case this corresponds to the FAO code.
+-   `species`: Species scientific name. This is included just as a reference and it is not considered within the routines.
+-   `Source_Biology` and `Source_Stock`: references from where the values are taken. These are included just as a reference and are not considered within the routines.
+
+### Life history parameterization
+
+In this section, we detail the parametrization for our case study, to populate `Stock_biological_traits.csv`. We obtained the life history parameters from the most recent stock assessments available for each modeled species: the 2023 sablefish assessment (Johnson et al., 2023), the 2021 Dover sole assessment (Wetzel and Berger, 2021), the 2019 longspine thornyhead assessment (Adams et al., 2019), and the 2023 shortspine thornyhead assessment (Zahner et al., 2023). These parameters were extracted directly from the Stock Synthesis output files using the r4ss package (Taylor et al., 2021).
+
+
+#### Maturity
+
+DISPLACE uses a logistic maturity ogive to specify maturity at length, defined as:
+
+$$
+P_{mat} = \frac{1}{1 + e^{-B\,(L - L_{50})}}
+$$
+
+where $P_{mat}$ is the proportion of individuals that are mature at length $L$, $L_{50}$ is the length at which 50% of individuals are mature, and $B$ is the slope of the maturity ogive.  
+
+We extracted both parameters directly from the stock assessment output files. The values are reported in @tbl-mat-params.
+
+```{r}
+#| label: tbl-mat-params
+#| tbl-cap: Parameters for the maturity ogive for each species.
+
+maturity_params <- data.frame(
+  Species = c(
+    "Sablefish",
+    "Dover sole",
+    "Longspine thornyhead",
+    "Shortspine thornyhead"
+  ),
+  L50_cm = c(
+    55.190,
+    32.840,
+    17.826,
+    31.425
+  ),
+  B = c(
+    -0.4210,
+    -0.2780,
+    -1.7900,
+    -0.1773
+  ),
+  stringsAsFactors = FALSE
+)
+
+maturity_params |> kable()
+```
+
+The maturity ogives are visualized in @fig-mat-ogives below.
+
+```{r}
+#| label: fig-mat-ogives
+#| fig-cap: The maturity ogive for each species. The vertical dotted line indicates the length at which 50% of individuals are mature (L50).
+
+knitr::include_graphics(here::here("docs/figures/dts_maturity_ogive.png"))
+```
+
+#### Recruitment
+
+DISPLACE expects the stock–recruitment relationship to be specified using a **Beverton–Holt parameterization**. However the stock assessments assume the steepness form:
+
+$$
+R = \frac{R_0 \, h \, SSB}{SSB_0 \, (1 - h) + (5h - 1)\, SSB}
+$$
+
+where recruitment ($R$) is a function of the unfished recruitment level ($R_0$), steepness ($h$), which is the proportion of unfished recruitment produced when the spawning biomass is at 20% of the unfished level, the unfished spawning stock biomass ($SSB_0$), and the current spawning stock biomass ($SSB$).  
+
+In contrast, the Beverton–Holt parameterization is:
+
+$$
+R = \frac{a \, SSB}{1 + b \, SSB}
+$$
+
+where $a$ sets the initial slope of the recruitment curve and $b$ controls the strength of density dependence.  
+
+The Beverton–Holt parameters can be directly converted from the steepness parameters using:
+
+$$
+a = \frac{4h R_0}{SSB_0 (1 - h)}
+$$
+
+$$
+b = \frac{5h - 1}{SSB_0 (1 - h)}
+$$
+
+We used the $SSB_0$ estimate directly from the stock assessments, except for shortspine thornyhead. For this specie, the assessments estimate spawners in terms of eggs rather than biomass.
+
+DISPLACE also requires a CV to describe variability around the stock–recruitment relationship. We derived this from the fixed $\sigma_R$ parameter (the process variability standard deviation of log-normal recruitment deviations) assumed in each stock assessment. We converted $\sigma_R$ to a CV of arithmetic recruitment as:
+
+$$
+CV = \sqrt{e^{\sigma^2} - 1}
+$$
+
+The parameters for both stock–recruitment parameterizations are reported in @tbl-recruit-params.
+
+```{r}
+#| label: tbl-recruit-params
+#| tbl-cap: Stock recruitment parameters for each species. Age = age at recruitment into the population and CV = coefficient of variation around the stock-recruit relationship.
+
+recruitment_params <- data.frame(
+  Species = c(
+    "Sablefish",
+    "Dover sole",
+    "Shortspine thornyhead",
+    "Longspine thornyhead"
+  ),
+  R0 = c(
+    19453.8,
+    213096.4,
+    12580.2,
+    136530.0
+  ),
+  h = c(
+    0.70,
+    0.80,
+    0.72,
+    0.60
+  ),
+  SSB0 = c(
+    186534.0,
+    294070.0,
+    103727.4,
+    39134.0
+  ),
+  BH_a = c(
+    0.9734,
+    11.5943,
+    1.247466,
+    20.9327
+  ),
+  BH_b = c(
+    0.00004467,
+    0.00005101,
+    0.00008952,
+    0.00012777
+  ),
+  CV = c(
+    2.470,
+    0.361,
+    0.533,
+    0.658
+  ),
+  Age_yr = c(
+    0.5,
+    1.0,
+    2.0,
+    1.0
+  ),
+  stringsAsFactors = FALSE
+)
+
+recruitment_params |> kable()
+```
+
+The stock recruitment relationships are visualized in @fig-recruit-params below.
+
+```{r}
+#| label: fig-recruit-params
+#| fig-cap: The stock-recruit relationship for each species. Note that the parameters in Table S8 and used in the analysis are for 1000s of recruits and metric tons of biomass; axes are scaled to millions of recruits and 1000s of metric tons of spawners for visual ease.
+
+knitr::include_graphics(here::here("docs/figures/dts_stock_recruit_relationship.png"))
+```
+
+#### Natural mortality
+
+The natural mortality rates assumed by each assessment are provided in @tbl-mort-params below.
+
+```{r}
+#| label: tbl-mort-params
+#| tbl-cap: Natural mortality rate of each species.
+
+natural_mortality <- data.frame(
+  Species = c(
+    "Sablefish", "Sablefish", "Sablefish",
+    "Dover sole", "Dover sole", "Dover sole",
+    "Longspine thornyhead", "Longspine thornyhead", "Longspine thornyhead",
+    "Shortspine thornyhead", "Shortspine thornyhead", "Shortspine thornyhead"
+  ),
+  Sex = c(
+    "Males", "Females", "Average",
+    "Males", "Females", "Average",
+    "Males", "Females", "Average",
+    "Males", "Females", "Average"
+  ),
+  M = c(
+    0.0592, 0.0711, 0.0652,
+    0.1140, 0.1080, 0.1110,
+    0.1113, 0.1113, 0.1113,
+    0.0400, 0.0400, 0.0400
+  ),
+  Tmax_yr = c(
+    70, 70, 70,
+    60, 60, 60,
+    80, 80, 80,
+    100, 100, 100
+  ),
+  stringsAsFactors = FALSE
+)
+
+natural_mortality |> kable()
+
+```
+
+
+### Species distribution
+
+Population distribution inputs need to be located in `POPULATIONS/SpatialLayers` to run DISPLACE. The R routines can interpret biomass density on any unit and at a continuous scale. For our case study we use species distribution data from @liu2023species (@fig-sp-distribution). 
+
+These inputs need to be provided in `.shp` format. For our case study, we clipped the spatial density of the species to a grid of interest and exported it as a shapefile. In addition to the geometry information of each polygon (i.e., the square cells in our grid), the abundance or biomass density must be specified in a variable named `GRIDCODE`, which is then read by the routines as shown in @tbl-sp-dis-file.
+
+```{r}
+shp_path <- here::here("raw_inputs/POPULATIONS/SpatialLayers")
+shp_files <- list.files(shp_path, pattern = "\\.shp$", full.names = TRUE)
+shp_list <- lapply(shp_files, function(f) st_read(f, quiet = TRUE))
+names(shp_list) <- tools::file_path_sans_ext(basename(shp_files))
+```
+```{r}
+#| label: tbl-sp-dis-file
+#| tbl-cap: Sample of the structure of the shapefile containing the species distributioin values
+
+shp_list[[1]][,2:3] %>% head(10) %>% kable()
+```
+
+We can also specify disaggregated spatial distribution inputs by size group (i.e., `large`, `medium`, or `small`) each defined using a set of the 14 size bins employed by DISPLACE. The division of size groups can be tailored to each analysis, but it must remain consistent throughout a same DISPLACE application.  
+
+To be correctly read and interpreted by the R routines, the naming format of these files must follow the structure:  
+`contour{sp_code_number}_{size_group}_{size_bins_considered}`  
+
+For example, for Sablefish (SAB), corresponding in our analysis to species code `0`, the input files would be: `contour0_large_10-11-12-13`, `contour0_medium_6-7-8-9`, `contour0_small_0-1-2-3-4-5`.
+
+All three files must be provided for each species. However, since we lack spatial distribution data by size group, in our case all three files contain the same information.
+
+```{r}
+# Function to create a map for each shapefile
+create_map <- function(shapefile, custom_palette, title) {
+  # Extract state boundaries
+  states <- map_data("state", region = c("washington", "oregon", "california"))
+  
+  # Get the bounding box of the states
+  states_bbox <- st_bbox(st_as_sf(states, coords = c("long", "lat"), crs = 4326))
+  
+  # Plot using ggplot2
+  p <- ggplot(data = shapefile) +
+    geom_sf(aes(fill = GRIDCODE), color = NA, linewidth = 0) +  # color = NA for no outline
+    geom_polygon(data = states, aes(x = long, y = lat, group = group), fill = NA, color = "black", linewidth = 0.1) +
+    scale_fill_distiller(palette = "YlOrRd", name = "kg/km²", direction = 1) +  # Use YlOrRd color scale
+    coord_sf(xlim = c(states_bbox["xmin"]-2, states_bbox["xmax"]-3), ylim = c(states_bbox["ymin"], states_bbox["ymax"])) +
+    scale_x_continuous(breaks = c(-118, -123, -128)) +  # Set breaks at whole numbers
+    theme_minimal() +
+    theme(
+      # legend.position = "none",  # Remove individual legends
+      legend.position = c(0.8, 0.85),  # Move legend to top right within the plot
+      legend.text = element_text(size = 6),  # Reduce legend text size
+      legend.title = element_text(size = 8),  # Adjust legend title font size
+      legend.background = element_rect(fill = alpha('white', 0.7),color = NA),  # Transparent legend background
+      axis.title = element_blank(),
+      axis.text = element_blank(),
+      axis.ticks = element_blank()
+    )  +
+    ggtitle(title)  # Add title to the plot
+
+  return(p)
+}
+
+species_distribution <- shp_list[c("contour0_large_10-11-12-13", "contour1_large_10-11-12-13", "contour2_large_10-11-12-13", "contour3_large_10-11-12-13")]
+
+code_map <- c(`0` = "SAB", `1` = "MIP", `2` = "SJZ", `3` = "SJU")
+nm <- names(species_distribution)
+digits <- sub("^contour([0-3]).*$", "\\1", nm)
+hits <- grepl("^contour[0-3]", nm)
+nm[hits] <- unname(code_map[digits[hits]])
+names(species_distribution) <- nm
+
+# Create a list of plots with titles
+plot_list <- mapply(function(sf, name) create_map(sf, custom_palette, name), species_distribution, names(species_distribution), SIMPLIFY = FALSE)
+```
+
+```{r}
+#| label: fig-sp-distribution
+#| fig-cap: Species distribution in a continous scale from mean biomass values (kg/km2).
+
+grid.arrange(grobs = plot_list, ncol = 4, nrow = 1)
+```

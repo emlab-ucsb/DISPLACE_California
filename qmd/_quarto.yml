@@ -12,6 +12,7 @@ book:
   date-format: "[Last Updated on] MMMM DD, YYYY"
   chapters:
     - index.qmd
+    - spatial_extend.qmd
     - populations.qmd
     - fisheries.qmd
     # - results.qmd

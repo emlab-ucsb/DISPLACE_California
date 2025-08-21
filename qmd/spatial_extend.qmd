@@ -1,0 +1,48 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+# Spatial extend {#sec-fleet}
+
+```{r, echo = FALSE, results = FALSE, message = FALSE, warning = FALSE, cache = FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE, cache = FALSE)
+
+source(here::here("r/config.R"))
+```
+
+The spatial domain of DISPLACE is represented by a network of nodes on which simulated vessels navigate and fish. The extent of this domain must be defined based on historical fishing effort and the harbors from which vessels operate. This section provides context on the inputs required to define the study’s spatial domain.
+
+## Graph of nodes
+
+The [DISPLACE project](https://displace-project.org/blog/tutorials/) provides tutorials on using DISPLACE. Among them is a guide to [setting up a new graph of nodes](https://displace-project.org/blog/wp-content/uploads/2014/11/DISPLACE-step-by-step-guideline-Set-up-a-new-graph-of-node1.pdf) that explains step by step how to use the DISPLACE GUI to create the node graph, an input required by the R routines and the model.
+
+To do so, at least two `.shp` files are required: one defining the area extent for simulating vessel behavior, and an inverted shape to prevent the generation of nodes outside the area of interest. Example files are provided in this repository under `raw_inputs/GRAPH/shp` as `graph_area.shp` and `exclusion_area.shp`. Using these, you can generate the graph of nodes, which is already available for this example application in `raw_inputs/GRAPH` as `graph0.dat` and its associated files.
+
+**For this study**, we focus on the waters off the coast of California using a spatial domain that spans latitudinally from roughly the US/Mexico EEZ border to Cape Blanco (32.0° to 42.6°) and longitudinally from -125.1° to -117.3°. Nodes are 4 km apart (@fig-spatial-domain).
+
+```{r}
+#| label: fig-spatial-domain
+#| fig-cap: DISPLACE study area. The spatial extent for this study is determined by the spatial distribution of DTS vessel fishing effort, informed by the merged VMS-fish ticket dataset. This results in a latitudinal extent of 32.0° to 42.6°, and longitudinal extent of -125.1° to -117.3°. Nodes are 4 km apart, and the twelve ports depicted are those included in the simulations. OSW areas are shaded in grey.
+
+knitr::include_graphics(here::here("docs/figures/spatial_domain.jpg"))
+```
+
+
+## Harbors
+
+As detailed in the [graph of nodes tutorial](https://displace-project.org/blog/wp-content/uploads/2014/11/DISPLACE-step-by-step-guideline-Set-up-a-new-graph-of-node1.pdf) the generated nodes of the stidy area (graph0.dat) need to be associated to the harbors from where the vessels operate in the simulation. Such, vessels need to be specified in the file `GRAPH/harbours.dat`, with the port name with no blank spaces, a port id and the latitude and lon coordinates as shown in @tbl-harbours.
+
+```{r}
+#| label: tbl-harbours
+#| tbl-cap: Details of the `harbour.dat` file contents for this case study.
+
+harbours <- read.table(here::here("raw_inputs/GRAPH/harbours.dat"), 
+                       header = TRUE,   
+                       sep = ";",       
+                       stringsAsFactors = FALSE)
+
+harbours |> kable()
+```
+
+The final updated graph, with nodes connected to the ports of interest, has already been generated and is available at `GRAPH/graph1.dat` along with its associated files. This is the graph that will be used to run DISPLACE. Additionally, `GRAPH/graph2.dat` contains the updated graph that defines the lease areas closure scenario.

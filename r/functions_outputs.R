@@ -283,6 +283,120 @@ agg_pop_stats_year_sim <- generate_popstats_dis_baseline_output(
 
 # Simulated fishing effort map ----
 
+generate_notebook_fe_maps <- function(fe_distribution) {
+  # ---- Static pieces used for all plots ----
+  custom_palette <- c(
+    "#d9d9d9",
+    "#b2e2e2",
+    "#66c2a4",
+    "#fecc5c",
+    "#fd8d3c",
+    "#f03b20",
+    "#bd0026"
+  )
+
+  # State boundaries (California)
+  states_df <- ggplot2::map_data("state", region = c("california"))
+  xlim <- range(states_df$long, na.rm = TRUE)
+  ylim <- range(states_df$lat, na.rm = TRUE)
+
+  # ---- Helper to build one plot ----
+  build_one_plot <- function(displace_fe_sf, plot_title) {
+    if (!inherits(displace_fe_sf, "sf")) {
+      stop("All selected items must be 'sf' objects.")
+    }
+
+    if (!("fe_cumT" %in% names(displace_fe_sf))) {
+      stop("Each 'sf' object must contain a 'fe_cumT' column.")
+    }
+
+    # Natural breaks for fe_cumT
+    brks_obj <- classIntervals(
+      displace_fe_sf$fe_cumT,
+      n = length(custom_palette) - 1,
+      style = "quantile"
+    )
+    breaks <- brks_obj$brks
+
+    # Round breaks; increase precision if duplicates appear
+    decimal_places <- 0
+    rounded_breaks <- round(breaks, decimal_places)
+    guard <- 0
+    while (length(unique(rounded_breaks)) < length(breaks) && guard < 10) {
+      decimal_places <- decimal_places + 1
+      rounded_breaks <- round(breaks, decimal_places)
+      guard <- guard + 1
+    }
+
+    # Labels like "low-high"
+    labels <- paste(
+      head(rounded_breaks, -1),
+      tail(rounded_breaks, -1),
+      sep = "-"
+    )
+
+    # Categorize
+    displace_fe_sf$fe_cat <- cut(
+      displace_fe_sf$fe_cumT,
+      breaks = breaks,
+      include.lowest = TRUE,
+      labels = labels
+    )
+
+    # Map
+    ggplot(displace_fe_sf) +
+      geom_polygon(
+        data = states_df,
+        aes(x = long, y = lat, group = group),
+        fill = NA,
+        color = "black",
+        linewidth = 0.1
+      ) +
+      geom_sf(aes(fill = fe_cat), color = NA) +
+      scale_fill_manual(
+        values = custom_palette,
+        name = "",
+        na.translate = FALSE
+      ) +
+      coord_sf(
+        xlim = c(xlim[1] - 1, xlim[2] - 3),
+        ylim = c(ylim[1] - 0.1, ylim[2])
+      ) +
+      scale_x_continuous(breaks = c(-120, -123)) +
+      labs(title = plot_title) +
+      theme_minimal() +
+      theme(
+        axis.title = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        plot.title = element_text(size = 11),
+        strip.text = element_text(hjust = 0, vjust = 3),
+        panel.spacing = unit(-3, "lines"),
+        legend.title = element_text(size = 9),
+        legend.text = element_text(size = 8),
+        legend.key.size = unit(0.5, "cm"),
+        legend.spacing.y = unit(0.1, "cm"),
+        legend.position = "top",
+        legend.background = element_rect(
+          fill = alpha('white', 0.6),
+          color = NA
+        ),
+        legend.box = "horizontal",
+        plot.caption.position = "panel"
+      )
+  }
+
+  # ---- Build plots for every element in fe_distribution ----
+  plots <- mapply(
+    build_one_plot,
+    displace_fe_sf = fe_distribution,
+    plot_title = names(fe_distribution),
+    SIMPLIFY = FALSE
+  )
+
+  return(plots) # named list of ggplot objects
+}
+
 generate_fe_displace_map_report_figures <- function(
   fe_dis_baseline_output_sf,
   blocks_shore_eez_file,

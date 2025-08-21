@@ -46,3 +46,9 @@ harbours |> kable()
 ```
 
 The final updated graph, with nodes connected to the ports of interest, has already been generated and is available at `GRAPH/graph1.dat` along with its associated files. This is the graph that will be used to run DISPLACE. Additionally, `GRAPH/graph2.dat` contains the updated graph that defines the lease areas closure scenario.
+
+
+
+
+
+

@@ -46,5 +46,4 @@ DISPLACE_California
 
 If you use this repository or any reference from the notebook in your work, please cite this repository:  
 
-**Citation**  
 Carbó-Mestre, P., Free & Mangin, T. (2025). *DISPLACE California Case Study Example* [Documentation & repository]. DISPLACE . [https://github.com/pcarbomestre/DISPLACE_California](https://github.com/pcarbomestre/DISPLACE_California)

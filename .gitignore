@@ -52,10 +52,9 @@ rsconnect/
 # Additional files
 raw_inputs/FISHERIES/vessels_config_files
 raw_inputs/POPULATIONS/pops_config_files
-outputs/*
-!outputs/.gitkeep
-processed_inputs/*
-!processed_inputs/.gitkeep
+
+# outputs/*
+# processed_inputs/*
 # qmd/
 # docs/
 data/

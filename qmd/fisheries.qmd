@@ -268,7 +268,7 @@ knitr::include_graphics("figures/fuel_price_series.png")
 
 DISPLACE requires specific vessel-level economic variables to individually characterize the economic features that define each vessel’s fishing operations. This information must be provided in two files: `fisheries_economics_variables.csv` and `STECF/Economics_fs.csv`. The contents of both files are identical. This redundancy exists due to legacy versions of the routines. Both files must be present for the routines to generate the proper DISPLACE inputs.
 
-**For our case study**, most economic values are derived from Steiner et al. (2021) and accessed through the Fisheries Economics Explorer (FISHEyE), part of NOAA’s Economic Data Collection (EDC). Revenue and cost data are inflation-adjusted to 2023 (Steiner et al., 2021). The EDC dataset is aggregated at a relatively coarse level, limiting the ability to get individual vessel characteristics or detailed group-level information. Nonetheless, it provides average estimates by broader categories. For our study, we use the following available aggregation categories: economic metrics by available ports of interest (i.e., Crescent City, Eureka, Fort Bragg, San Francisco, and Morro Bay/Monterey), vessel size categories (i.e., less than 60 ft, between 60 and 80 ft, and greater than 80 ft), and fishery type (i.e., groundfish using trawl gear, and groundfish fixed gear vessels with a trawl endorsement). We then match these economic metrics to individual vessels in our dataset according to their operating ports, metier, and vessel size categories. When vessel specifications can’t be matched to any category, we use average values.
+**For our case study**, most economic values are derived from @steiner2021evaluating and accessed through the Fisheries Economics Explorer (FISHEyE), part of NOAA’s Economic Data Collection (EDC). Revenue and cost data are inflation-adjusted to 2023 (@steiner2021evaluating). The EDC dataset is aggregated at a relatively coarse level, limiting the ability to get individual vessel characteristics or detailed group-level information. Nonetheless, it provides average estimates by broader categories. For our study, we use the following available aggregation categories: economic metrics by available ports of interest (i.e., Crescent City, Eureka, Fort Bragg, San Francisco, and Morro Bay/Monterey), vessel size categories (i.e., less than 60 ft, between 60 and 80 ft, and greater than 80 ft), and fishery type (i.e., groundfish using trawl gear, and groundfish fixed gear vessels with a trawl endorsement). We then match these economic metrics to individual vessels in our dataset according to their operating ports, metier, and vessel size categories. When vessel specifications can’t be matched to any category, we use average values.
 
 The variables required in `fisheries_economics_variables.csv` and `STECF/Economics_fs.csv` are:
 
@@ -281,7 +281,7 @@ The variables required in `fisheries_economics_variables.csv` and `STECF/Economi
 -   `Landing_costs_percent`: Percentage of landing costs associated with taxes, if any, on income from landings, which may be collected by the port or the state. In California, landing fees are paid by buyers or intermediaries rather than by fishers (CDFW 2025). Therefore, for this analysis the value is set to `0`.
 
 
-- `Crewshare_and_unpaid_labour_costs_percent`: This represents the percentage share of landing income that goes to the crew. In Vastenhoud et al. (2023), this corresponds to the sum of personnel costs and the value of unpaid labor.
+- `Crewshare_and_unpaid_labour_costs_percent`: This represents the percentage share of landing income that goes to the crew. In @vastenhoud2023economic, this corresponds to the sum of personnel costs and the value of unpaid labor.
 
     This variable represents labor costs as a share of GVA, and it is used to define there economic parameters in DISPLACE within `Vessel.cpp`:
 
@@ -312,7 +312,7 @@ $$
 Crewshare\_and\_unpaid\_labour\_costs\_percent = \dfrac{labor}{GVA} \times 100
 $$
 
-- `Other_variable_costs_per_unit_effort`: This variable represents other variable costs beyond fuel and labor. It should be expressed per unit of effort. In Vastenhoud et al. (2023), this is calculated as (Other variable costs + Repair & maintenance costs) / (Days at sea × 24 hours). In `Vessel.cpp`, this defines `TotVarCosts`, which is used to calculate both BER (as detailed above) and GVA:
+- `Other_variable_costs_per_unit_effort`: This variable represents other variable costs beyond fuel and labor. It should be expressed per unit of effort. In @vastenhoud2023economic, this is calculated as (Other variable costs + Repair & maintenance costs) / (Days at sea × 24 hours). In `Vessel.cpp`, this defines `TotVarCosts`, which is used to calculate both BER (as detailed above) and GVA:
 
 ```{cpp,  echo = TRUE}
 GVA = (TotLandingIncome+(annual_other_income* (double)tstep/8761) - TotFuelCosts - TotVarCosts - (other_annual_fixed_costs* (double)tstep/8761)
@@ -342,7 +342,7 @@ $$
 CapitalOpportunityCosts = (vessel_value * opportunity_interest_rate/100.0) * (double)tstep/8761
 ```
 
-- `Standard_labour_hour_opportunity_costs`: A labour hour's opportunity cost is what a worker or an economy gives up to use that hour in a specific way. Vastenhoud et al. (2023) uses hourly labour costs for Denmark. For our case study, the hourly opportunity costs are based on estimates from the Employer Costs for Employee Compensation reported by the Bureau of Labor Statistics (BLS, 2024). According to the latest report, the average employer cost for private industry workers on the West Coast is $52.84 per hour. This value is entered per crew member, not aggregated or adjusted to the entire crew. This is used to define the labour oportunity costs in `Vessel.cpp`:
+- `Standard_labour_hour_opportunity_costs`: A labour hour's opportunity cost is what a worker or an economy gives up to use that hour in a specific way. @vastenhoud2023economic uses hourly labour costs for Denmark. For our case study, the hourly opportunity costs are based on estimates from the Employer Costs for Employee Compensation reported by the Bureau of Labor Statistics (BLS, 2024). According to the latest report, the average employer cost for private industry workers on the West Coast is $52.84 per hour. This value is entered per crew member, not aggregated or adjusted to the entire crew. This is used to define the labour oportunity costs in `Vessel.cpp`:
 
 ```{cpp,  echo = TRUE}
 LabourOpportunityCosts = standard_labour_hour_opportunity_costs * this_vessel_nb_crew * TotHoursAtSea
@@ -360,11 +360,11 @@ NetProfit = GrossProfit - CapitalOpportunityCosts - (vessel_value * (1-((100.0-a
 RoFTA = (NetProfit + CapitalOpportunityCosts) / (vessel_value* ((100.0-annual_depreciation_rate)/100.0)*((double)tstep/8761)
 ```
 
-For the vessel's annual depreciation rate, we follow Kitts et al. (2022), which applies a depreciation rate of 4% for vessels less than 25 years old. This value is also adopted in the NOAA Fisheries Best Practices for Measuring the Economic Performance of Fishing Businesses report (Kitts et al., 2022), and also used in a different fishery context by Vastenhoud et al. (2023).
+For the vessel's annual depreciation rate, we follow @kitts2020techno, which applies a depreciation rate of 4% for vessels less than 25 years old. This value is also adopted in the NOAA Fisheries Best Practices for Measuring the Economic Performance of Fishing Businesses report (@kitts2022noaa), and also used in a different fishery context by @vastenhoud2023economic.
 
-- `Opportunity_interest_rate`: This variable is used to calculate the Capital Opportunity Costs. We define the opportunity interest rate using Moody’s BAA corporate bond rate as a reference (Lian, 2012; Kitts et al., 2022). BAA-rated corporate bond yields have fluctuated over the past decades and are currently above 6%. However, we adopt a 5% rate to maintain consistency with prior fisheries economic assessments.
+- `Opportunity_interest_rate`: This variable is used to calculate the Capital Opportunity Costs. We define the opportunity interest rate using Moody’s BAA corporate bond rate as a reference (@lian2012west; @kitts2022noaa). BAA-rated corporate bond yields have fluctuated over the past decades and are currently above 6%. However, we adopt a 5% rate to maintain consistency with prior fisheries economic assessments.
 
-- `Annual_discount_rate`: In 2023 the U.S. Office of Management and Budget (OMB) recommended a 3% rate for evaluating public investments or projects with intergenerational impacts. Horsch et al. (2023) discuss a broader range of discount rates and note that NOAA and other trustees have commonly used a 3% rate in similar contexts. Feist et al. (2025), however, applied a 5.2% discount rate when evaluating fisheries economic activity from 2011 to 2020. This same 5.2% rate is also used to discount future economic activity from fisheries when calculating the present value of total economic output. For consistency with Feist et al. (2025), we adopt a 5.2% discount rate in this analysis.
+- `Annual_discount_rate`: In 2023 the U.S. Office of Management and Budget (OMB) recommended a 3% rate for evaluating public investments or projects with intergenerational impacts. @horsch2023discounting discuss a broader range of discount rates and note that NOAA and other trustees have commonly used a 3% rate in similar contexts. @feist2025mapping, however, applied a 5.2% discount rate when evaluating fisheries economic activity from 2011 to 2020. This same 5.2% rate is also used to discount future economic activity from fisheries when calculating the present value of total economic output. For consistency with @feist2025mapping, we adopt a 5.2% discount rate in this analysis.
 
 
 

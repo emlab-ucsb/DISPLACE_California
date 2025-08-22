@@ -14,7 +14,7 @@ book:
     - fisheries.qmd
     - routines.qmd
     - results.qmd
-    # - references.qmd
+    - references.qmd
 
 # bibliography: references.bib
 

@@ -172,6 +172,12 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Results</span></span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -276,7 +282,7 @@ Figure&nbsp;2.2: The number of fish at length in 2010 by species.
 </div>
 </div>
 </div>
-<p>Because the stock assessments represent populations across the entire U.S. West Coast, we scale the abundances to represent the proportion of the stock falling within waters off the coast of California. We determined the average percent of the population falling within California waters using the proportions in the bottom trawl survey data (Keller et al.&nbsp;2017). The annual percent of biomass observed in the survey is shown in <a href="#fig-prop-in-ca" class="quarto-xref">Figure&nbsp;<span>2.3</span></a> below with the average from 2010-2018 highlighted. The values are as follows: Dover sole (52.3%), longspine thornyhead (72.5%), sablefish (53.7%), shortspine thornyhead (48.1%).</p>
+<p>Because the stock assessments represent populations across the entire U.S. West Coast, we scale the abundances to represent the proportion of the stock falling within waters off the coast of California. We determined the average percent of the population falling within California waters using the proportions in the bottom trawl survey data (<span class="citation" data-cites="keller2017northwest">@keller2017northwest</span>). The annual percent of biomass observed in the survey is shown in <a href="#fig-prop-in-ca" class="quarto-xref">Figure&nbsp;<span>2.3</span></a> below with the average from 2010-2018 highlighted. The values are as follows: Dover sole (52.3%), longspine thornyhead (72.5%), sablefish (53.7%), shortspine thornyhead (48.1%).</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-prop-in-ca" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -295,7 +301,7 @@ Figure&nbsp;2.3: The percent of each DTS species falling within California water
 <section id="biological-traits" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="biological-traits"><span class="header-section-number">2.2</span> Biological traits</h2>
 <p>This section describes the contents of the file <code>Stock_biological_traits.csv</code> and how we populated it for our case study. The file requires actual information only for the explicit species. Implicit species were also included but filled with dummy data, consistent with the approach used for the abundance files, to ensure the R routines can run.</p>
-<p>We obtained the life history parameters from the most recent stock assessments available for each modeled species: the 2023 sablefish assessment (Johnson et al., 2023), the 2021 Dover sole assessment (Wetzel and Berger, 2021), the 2019 longspine thornyhead assessment (Adams et al., 2019), and the 2023 shortspine thornyhead assessment (Zahner et al., 2023). These parameters were extracted directly from the Stock Synthesis output files using the <code>r4ss</code> package (Taylor et al., 2021).</p>
+<p>We obtained the life history parameters from the most recent stock assessments available for each modeled species: the 2023 sablefish assessment (<span class="citation" data-cites="johnson2023status">@johnson2023status</span>), the 2021 Dover sole assessment (<span class="citation" data-cites="wetzel2021status">@wetzel2021status</span>), the 2019 longspine thornyhead assessment (<span class="citation" data-cites="adams2019catch">@adams2019catch</span>), and the 2023 shortspine thornyhead assessment (<span class="citation" data-cites="zahner2023status">@zahner2023status</span>). These parameters were extracted directly from the Stock Synthesis output files using the <code>r4ss</code> package (<span class="citation" data-cites="taylor2021beyond">@taylor2021beyond</span>).</p>
 <section id="growth-parameterization" class="level3" data-number="2.2.1">
 <h3 data-number="2.2.1" class="anchored" data-anchor-id="growth-parameterization"><span class="header-section-number">2.2.1</span> Growth parameterization</h3>
 <p>The growth parameters included in <code>Stock_biological_traits.csv</code> are:</p>

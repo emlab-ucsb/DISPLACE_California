@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>2&nbsp; Populations data – DISPLACE California documentation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./fisheries.html" rel="next">
+<link href="./spatial_extend.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-485d01fc63b59abcd3ee1bf1e8e2748d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./populations.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Populations data</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">DISPLACE California documentation</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./spatial_extend.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Spatial extend</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./populations.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Populations data</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fisheries.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Fleet data</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./routines.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">R routines</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Results</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#abundance-inputs" id="toc-abundance-inputs" class="nav-link active" data-scroll-target="#abundance-inputs"><span class="header-section-number">2.1</span> Abundance inputs</a></li>
+  <li><a href="#biological-traits" id="toc-biological-traits" class="nav-link" data-scroll-target="#biological-traits"><span class="header-section-number">2.2</span> Biological traits</a>
+  <ul class="collapse">
+  <li><a href="#growth-parameterization" id="toc-growth-parameterization" class="nav-link" data-scroll-target="#growth-parameterization"><span class="header-section-number">2.2.1</span> Growth parameterization</a></li>
+  <li><a href="#length-weight-relationship" id="toc-length-weight-relationship" class="nav-link" data-scroll-target="#length-weight-relationship"><span class="header-section-number">2.2.2</span> Length-weight relationship</a></li>
+  <li><a href="#maturity" id="toc-maturity" class="nav-link" data-scroll-target="#maturity"><span class="header-section-number">2.2.3</span> Maturity</a></li>
+  <li><a href="#sec-recruitmet-intro" id="toc-sec-recruitmet-intro" class="nav-link" data-scroll-target="#sec-recruitmet-intro"><span class="header-section-number">2.2.4</span> Recruitment parameters</a></li>
+  <li><a href="#natural-mortality" id="toc-natural-mortality" class="nav-link" data-scroll-target="#natural-mortality"><span class="header-section-number">2.2.5</span> Natural mortality</a></li>
+  <li><a href="#management-parameters" id="toc-management-parameters" class="nav-link" data-scroll-target="#management-parameters"><span class="header-section-number">2.2.6</span> Management parameters</a></li>
+  <li><a href="#sizespectra-option-parameters" id="toc-sizespectra-option-parameters" class="nav-link" data-scroll-target="#sizespectra-option-parameters"><span class="header-section-number">2.2.7</span> SizeSpectra option parameters</a></li>
+  <li><a href="#additional-variables" id="toc-additional-variables" class="nav-link" data-scroll-target="#additional-variables"><span class="header-section-number">2.2.8</span> Additional variables</a></li>
+  </ul></li>
+  <li><a href="#species-distribution" id="toc-species-distribution" class="nav-link" data-scroll-target="#species-distribution"><span class="header-section-number">2.3</span> Species distribution</a></li>
+  <li><a href="#stock-prices-data" id="toc-stock-prices-data" class="nav-link" data-scroll-target="#stock-prices-data"><span class="header-section-number">2.4</span> Stock prices data</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-populations" class="quarto-section-identifier"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Populations data</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This section includes a description of the raw input datasets and the parameters considered to run the R routines for the target species population characteristics. These files should be stored and loaded from <code>raw_inputs/{project-name}/POPULATIONS</code>.</p>
+<p>There are four main inputs to explicitly characterize the stock populations: their biological traits, their abundances structured by size and age and their spatial distribution. Although not directly life-history parameters, stock price information is also provided in the same folder. Species can also be implicitly characterized in the model, where simulated fishing is not coupled with their simulated population dynamics, but rather defined by a constant catch rate, as explained in the fleet section. However, such implicit species still need to be included in the inputs to feed the routine code, and their parameters can be filled with dummy data.</p>
+<p>For our case study, we focus on the DTS complex fisheries. We selected these species because they are the most important groundfish fisheries by volume for trips fishing within the lease areas. The DTS complex is composed of four species in the Pacific Groundfish Fishery, <strong>explicitly</strong> defined in this analysis:</p>
+<ul>
+<li>Sablefish (<em>Anoplopoma fimbria</em>) — FAO code <strong>SAB</strong><br>
+</li>
+<li>Dover Sole (<em>Microstomus pacificus</em>) — FAO code <strong>MIP</strong><br>
+</li>
+<li>Longspine Thornyhead (<em>Sebastolobus altivelis</em>) — FAO code <strong>SJZ</strong><br>
+</li>
+<li>Shortspine Thornyhead (<em>Sebastolobus alascanus</em>) — FAO code <strong>SJU</strong></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-species-ilustration" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-species-ilustration-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../docs/figures/dts_species_ilustration.png" class="img-fluid figure-img" width="1196">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-species-ilustration-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.1: Explicit species included in this analysis.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>We also included two <strong>implicitly</strong> modeled stocks, based on their significant and trackable landings within lease areas, as well as a broader “catch-all” group representing additional catch from our fleet of interest:</p>
+<ul>
+<li>Petrale Sole (<em>Eopsetta jordani</em>) — FAO code <strong>EOJ</strong><br>
+</li>
+<li>Chilipepper Rockfish (<em>Sebastes goodei</em>) — FAO code <strong>SGO</strong><br>
+</li>
+<li>Catch-all “other” stock — analysis code <strong>OTH</strong></li>
+</ul>
+<p>Below, we describe the contents of each required file to run our analysis.</p>
+<section id="abundance-inputs" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="abundance-inputs"><span class="header-section-number">2.1</span> Abundance inputs</h2>
+<p>DISPLACE requires abundances (in thousands of individuals) within 14 size bins. These 14 bins are evenly spaced in length and are identical for all explicit species, despite their differences in body size. Abundances by size are provided in <code>Stock_abundances_at_szgroup.csv</code>. Alternatively, abundances can be specified in 13 age bins using <code>Stock_abundances_at_age.csv</code>. Both files must exist in the input directory. However, only one needs to contain actual data.</p>
+<p>The size bins also define three broader size categories (<code>small</code>, <code>medium</code>, and <code>large</code>) which are relevant when specifying other input files such as spatial distribution and stock process files. In our case study, we grouped bins <code>0:5</code> as <code>small</code>, <code>6:9</code> as <code>medium</code>, and <code>10:13</code> as <code>large</code>.</p>
+<p><strong>For our case study</strong>, we define abundances by size group and therefore populate <code>Stock_abundances_at_szgroup.csv</code>. The age-based file, <code>Stock_abundances_at_age.csv</code>, is included but filled with zeros. Implicit species must be listed in both files, although can be filled with dummy data. In our example, we populate the implicit species’ abundance rows by repeating the values from the first explicit specie. This is required for the R routines to run. However, these repeated inputs are not used by the model and do not affect the results.</p>
+<p>The number of fish at length defines the initial populations in the simulation. We obtained these values from the stock assessment estimates of number-at-length in the “natlen” table of the SS3 model output (<a href="#fig-abundances" class="quarto-xref">Figure&nbsp;<span>2.2</span></a>), and then adjusted them to fit the 14 size bins required by DISPLACE.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-abundances" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-abundances-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../docs/figures/dts_number_at_length.png" class="img-fluid figure-img" width="1950">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-abundances-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.2: The number of fish at length in 2010 by species.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Because the stock assessments represent populations across the entire U.S. West Coast, we scale the abundances to represent the proportion of the stock falling within waters off the coast of California. We determined the average percent of the population falling within California waters using the proportions in the bottom trawl survey data (Keller et al.&nbsp;2017). The annual percent of biomass observed in the survey is shown in <a href="#fig-prop-in-ca" class="quarto-xref">Figure&nbsp;<span>2.3</span></a> below with the average from 2010-2018 highlighted. The values are as follows: Dover sole (52.3%), longspine thornyhead (72.5%), sablefish (53.7%), shortspine thornyhead (48.1%).</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-prop-in-ca" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-prop-in-ca-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../docs/figures/dts_prop_in_ca.png" class="img-fluid figure-img" width="1201">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-prop-in-ca-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.3: The percent of each DTS species falling within California waters based on analysis of the West Coast Groundfish Bottom Trawl Survey with the average from 2010-2018 marked.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="biological-traits" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="biological-traits"><span class="header-section-number">2.2</span> Biological traits</h2>
+<p>This section describes the contents of the file <code>Stock_biological_traits.csv</code> and how we populated it for our case study. The file requires actual information only for the explicit species. Implicit species were also included but filled with dummy data, consistent with the approach used for the abundance files, to ensure the R routines can run.</p>
+<p>We obtained the life history parameters from the most recent stock assessments available for each modeled species: the 2023 sablefish assessment (Johnson et al., 2023), the 2021 Dover sole assessment (Wetzel and Berger, 2021), the 2019 longspine thornyhead assessment (Adams et al., 2019), and the 2023 shortspine thornyhead assessment (Zahner et al., 2023). These parameters were extracted directly from the Stock Synthesis output files using the <code>r4ss</code> package (Taylor et al., 2021).</p>
+<section id="growth-parameterization" class="level3" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="growth-parameterization"><span class="header-section-number">2.2.1</span> Growth parameterization</h3>
+<p>The growth parameters included in <code>Stock_biological_traits.csv</code> are:</p>
+<ul>
+<li><code>Linf</code>: von Bertalanffy asymptotic length.</li>
+<li><code>CV_Linf</code>: coefficient of variation of the von Bertalanffy asymptotic length.</li>
+<li><code>K</code>: Von Bertalanffy <span class="math inline">\(K\)</span>.</li>
+<li><code>t0</code>: Theoretical age of the von Bertalanffy growth function (VBGF) at which fish would have a size of zero.</li>
+</ul>
+<p>DISPLACE expects growth to be specified using a three-parameter von Bertalanffy growth function (VBGF): <span class="math display">\[
+L_t = L_\infty \left(1 - e^{-K\,(t - t_0)}\right)
+\]</span></p>
+<p>where <span class="math inline">\(L_t\)</span> is the length at age <span class="math inline">\(t\)</span>, <span class="math inline">\(L_\infty\)</span> is the average asymptotic length, <span class="math inline">\(K\)</span> is the growth coefficient, and <span class="math inline">\(t_0\)</span> is the hypothetical age at which length is zero.</p>
+<p>However, many stock assessments specify growth using the five-parameter Schnute parameterization (here shown in the <span class="math inline">\(b=1\)</span> special case commonly used in assessments):</p>
+<p><span class="math display">\[
+L_t = L_1 + (L_2 - L_1)\;
+\frac{1 - e^{-K\,(t - A_1)}}{1 - e^{-K\,(A_2 - A_1)}}
+\]</span></p>
+<p>where <span class="math inline">\(A_1\)</span> is the age at length <span class="math inline">\(L_1\)</span>, <span class="math inline">\(A_2\)</span> is the age at length <span class="math inline">\(L_2\)</span>, and <span class="math inline">\(K\)</span> is the growth coefficient. Although assessment reports often do not list the three VBGF parameters explicitly, they are provided in the model output files and can also be derived from the Schnute parameters using:</p>
+<p><span class="math display">\[
+L_\infty = L_2 - \frac{L_1\, e^{-K\,(A_2 - A_1)}}{1 - e^{-K\,(A_2 - A_1)}}
+\]</span></p>
+<p><span class="math display">\[
+t_0 = A_1 + \frac{1}{K}\,
+\log\!\left(\frac{L_2 - L_1}{L_2 - L_1\, e^{-K\,(A_2 - A_1)}}\right)
+\]</span></p>
+<p>DISPLACE also requires the CV of <span class="math inline">\(L_\infty\)</span>. Because growth is specified via the Schnute form in the assessments, this CV is not reported directly. Stock assessments typically record (1) the CV of length-at-age for old fish and (2) the maximum CV of length-at-age (which usually occurs among older ages). We use the CV of length-at-age for old fish as a proxy for <span class="math inline">\(CV(L_\infty)\)</span> when it is valid (non-negative). In the few cases where that value was negative (e.g., longspine thornyhead; Dover sole—males), we substitute the maximum CV of length-at-age.</p>
+<p>We provide both sets of parameters in <a href="#tbl-growth-params" class="quarto-xref">Table&nbsp;<span>2.1</span></a> below.</p>
+<div class="cell">
+<div id="tbl-growth-params" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-growth-params-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2.1: Growth parameters for the study species
+</figcaption>
+<div aria-describedby="tbl-growth-params-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 26%">
+<col style="width: 9%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 9%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Species</th>
+<th style="text-align: left;">Sex</th>
+<th style="text-align: right;">A1_yr</th>
+<th style="text-align: right;">A2_yr</th>
+<th style="text-align: right;">L1_cm</th>
+<th style="text-align: right;">L2_cm</th>
+<th style="text-align: right;">t0</th>
+<th style="text-align: right;">k</th>
+<th style="text-align: right;">Linf_cm</th>
+<th style="text-align: right;">CV_Linf</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Sablefish</td>
+<td style="text-align: left;">Males</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">26.62</td>
+<td style="text-align: right;">56.11</td>
+<td style="text-align: right;">-1.19</td>
+<td style="text-align: right;">0.381</td>
+<td style="text-align: right;">56.11</td>
+<td style="text-align: right;">0.078</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sablefish</td>
+<td style="text-align: left;">Females</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">25.26</td>
+<td style="text-align: right;">61.13</td>
+<td style="text-align: right;">-0.95</td>
+<td style="text-align: right;">0.367</td>
+<td style="text-align: right;">61.13</td>
+<td style="text-align: right;">0.103</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sablefish</td>
+<td style="text-align: left;">Average</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">-1.07</td>
+<td style="text-align: right;">0.374</td>
+<td style="text-align: right;">58.62</td>
+<td style="text-align: right;">0.091</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dover sole</td>
+<td style="text-align: left;">Males</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">10.35</td>
+<td style="text-align: right;">41.97</td>
+<td style="text-align: right;">-1.06</td>
+<td style="text-align: right;">0.138</td>
+<td style="text-align: right;">41.97</td>
+<td style="text-align: right;">0.078</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Dover sole</td>
+<td style="text-align: left;">Females</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">7.99</td>
+<td style="text-align: right;">48.05</td>
+<td style="text-align: right;">-0.38</td>
+<td style="text-align: right;">0.132</td>
+<td style="text-align: right;">48.05</td>
+<td style="text-align: right;">0.080</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dover sole</td>
+<td style="text-align: left;">Average</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">-0.72</td>
+<td style="text-align: right;">0.135</td>
+<td style="text-align: right;">45.01</td>
+<td style="text-align: right;">0.027</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Longspine thornyhead</td>
+<td style="text-align: left;">Males</td>
+<td style="text-align: right;">3.0</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">8.57</td>
+<td style="text-align: right;">27.83</td>
+<td style="text-align: right;">-0.34</td>
+<td style="text-align: right;">0.109</td>
+<td style="text-align: right;">28.18</td>
+<td style="text-align: right;">0.054</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Longspine thornyhead</td>
+<td style="text-align: left;">Females</td>
+<td style="text-align: right;">3.0</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">8.57</td>
+<td style="text-align: right;">27.83</td>
+<td style="text-align: right;">-0.34</td>
+<td style="text-align: right;">0.109</td>
+<td style="text-align: right;">28.18</td>
+<td style="text-align: right;">0.054</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Longspine thornyhead</td>
+<td style="text-align: left;">Average</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">-0.34</td>
+<td style="text-align: right;">0.109</td>
+<td style="text-align: right;">28.18</td>
+<td style="text-align: right;">0.054</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Shortspine thornyhead</td>
+<td style="text-align: left;">Males</td>
+<td style="text-align: right;">2.0</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">9.17</td>
+<td style="text-align: right;">66.07</td>
+<td style="text-align: right;">-5.12</td>
+<td style="text-align: right;">0.017</td>
+<td style="text-align: right;">79.68</td>
+<td style="text-align: right;">0.109</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Shortspine thornyhead</td>
+<td style="text-align: left;">Females</td>
+<td style="text-align: right;">2.0</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">11.38</td>
+<td style="text-align: right;">73.61</td>
+<td style="text-align: right;">-8.70</td>
+<td style="text-align: right;">0.010</td>
+<td style="text-align: right;">111.59</td>
+<td style="text-align: right;">0.109</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Shortspine thornyhead</td>
+<td style="text-align: left;">Average</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">-6.91</td>
+<td style="text-align: right;">0.013</td>
+<td style="text-align: right;">95.64</td>
+<td style="text-align: right;">0.109</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>The growth relationships are visualized in <a href="#fig-growth-relationship" class="quarto-xref">Figure&nbsp;<span>2.4</span></a> below.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-growth-relationship" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-growth-relationship-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../docs/figures/dts_growth_relationship.png" class="img-fluid figure-img" width="1950">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-growth-relationship-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.4: The von Bertalanffy growth relationship for each species.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="length-weight-relationship" class="level3" data-number="2.2.2">
+<h3 data-number="2.2.2" class="anchored" data-anchor-id="length-weight-relationship"><span class="header-section-number">2.2.2</span> Length-weight relationship</h3>
+<p>DISPLACE requires a length–weight relationship. The parameters included in <code>Stock_biological_traits.csv</code> are:</p>
+<ul>
+<li><code>a</code>: Weight-length relationship coefficient.</li>
+<li><code>b</code>: Weight-length relationship exponent.</li>
+</ul>
+<p>We extracted the parameters for the following standard form from the stock assessment output files:</p>
+<p><span class="math display">\[
+W = a L^b
+\]</span></p>
+<p>where <span class="math inline">\(W\)</span> is weight at length <span class="math inline">\(L\)</span>, and <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are the parameters of the exponential relationship. The parameters are listed in <a href="#tbl-l-w-params" class="quarto-xref">Table&nbsp;<span>2.2</span></a>. These values convert length (cm) to weight (kg). Length–weight parameters are input in cm–g, and within the R routines they are transformed to cm–kg. To convert length in centimeters to weight in grams, as required in DISPLACE, the parameter <span class="math inline">\(a\)</span> is multiplied by 1000.</p>
+<div class="cell">
+<div id="tbl-l-w-params" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-l-w-params-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2.2: Length-weight parameters for each species.
+</figcaption>
+<div aria-describedby="tbl-l-w-params-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Species</th>
+<th style="text-align: left;">Sex</th>
+<th style="text-align: right;">a</th>
+<th style="text-align: right;">b</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Sablefish</td>
+<td style="text-align: left;">Males</td>
+<td style="text-align: right;">3.4e-06</td>
+<td style="text-align: right;">3.2701</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sablefish</td>
+<td style="text-align: left;">Females</td>
+<td style="text-align: right;">3.3e-06</td>
+<td style="text-align: right;">3.2726</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sablefish</td>
+<td style="text-align: left;">Average</td>
+<td style="text-align: right;">3.3e-06</td>
+<td style="text-align: right;">3.2714</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dover sole</td>
+<td style="text-align: left;">Males</td>
+<td style="text-align: right;">2.6e-06</td>
+<td style="text-align: right;">3.3710</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Dover sole</td>
+<td style="text-align: left;">Females</td>
+<td style="text-align: right;">3.0e-06</td>
+<td style="text-align: right;">3.3320</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dover sole</td>
+<td style="text-align: left;">Average</td>
+<td style="text-align: right;">2.8e-06</td>
+<td style="text-align: right;">3.3515</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Longspine thornyhead</td>
+<td style="text-align: left;">Males</td>
+<td style="text-align: right;">4.3e-06</td>
+<td style="text-align: right;">3.3520</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Longspine thornyhead</td>
+<td style="text-align: left;">Females</td>
+<td style="text-align: right;">4.3e-06</td>
+<td style="text-align: right;">3.3520</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Longspine thornyhead</td>
+<td style="text-align: left;">Average</td>
+<td style="text-align: right;">4.3e-06</td>
+<td style="text-align: right;">3.3520</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Shortspine thornyhead</td>
+<td style="text-align: left;">Males</td>
+<td style="text-align: right;">5.0e-06</td>
+<td style="text-align: right;">3.2500</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Shortspine thornyhead</td>
+<td style="text-align: left;">Females</td>
+<td style="text-align: right;">4.9e-06</td>
+<td style="text-align: right;">3.2600</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Shortspine thornyhead</td>
+<td style="text-align: left;">Average</td>
+<td style="text-align: right;">4.9e-06</td>
+<td style="text-align: right;">3.2550</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>The length-weight relationships are visualized in <a href="#fig-l-w-relationship" class="quarto-xref">Figure&nbsp;<span>2.5</span></a> below.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-l-w-relationship" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-l-w-relationship-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../docs/figures/dts_length_weight_relationship.png" class="img-fluid figure-img" width="1950">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-l-w-relationship-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.5: The von Bertalanffy growth relationship for each species.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="maturity" class="level3" data-number="2.2.3">
+<h3 data-number="2.2.3" class="anchored" data-anchor-id="maturity"><span class="header-section-number">2.2.3</span> Maturity</h3>
+<p>The maturity parameters included in <code>Stock_biological_traits.csv</code> are:</p>
+<ul>
+<li><code>L50</code>: Length 50% mature.</li>
+<li><code>mat_B</code>: slope of maturity ogive.</li>
+<li><code>mat_cat</code>: This corresponds to the size DISPLACE category at the <code>L50</code>. Given <code>0:13</code> size bins if <code>sz_bin_cm</code> is 6 cm, and <code>L50</code> is 55 cm, then <code>mat_cat</code> will be <code>8</code>.</li>
+</ul>
+<p>DISPLACE uses a logistic maturity ogive to specify maturity at length, defined as:</p>
+<p><span class="math display">\[
+P_{mat} = \frac{1}{1 + e^{-B\,(L - L_{50})}}
+\]</span></p>
+<p>where <span class="math inline">\(P_{mat}\)</span> is the proportion of individuals that are mature at length <span class="math inline">\(L\)</span>, <span class="math inline">\(L_{50}\)</span> is the length at which 50% of individuals are mature, and <span class="math inline">\(B\)</span> is the slope of the maturity ogive.</p>
+<p>We extracted both parameters directly from the stock assessment output files. The values are reported in <a href="#tbl-mat-params" class="quarto-xref">Table&nbsp;<span>2.3</span></a>.</p>
+<div class="cell">
+<div id="tbl-mat-params" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-mat-params-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2.3: Parameters for the maturity ogive for each species.
+</figcaption>
+<div aria-describedby="tbl-mat-params-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Species</th>
+<th style="text-align: right;">L50_cm</th>
+<th style="text-align: right;">B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Sablefish</td>
+<td style="text-align: right;">55.190</td>
+<td style="text-align: right;">-0.4210</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dover sole</td>
+<td style="text-align: right;">32.840</td>
+<td style="text-align: right;">-0.2780</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Longspine thornyhead</td>
+<td style="text-align: right;">17.826</td>
+<td style="text-align: right;">-1.7900</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Shortspine thornyhead</td>
+<td style="text-align: right;">31.425</td>
+<td style="text-align: right;">-0.1773</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>The maturity ogives are visualized in <a href="#fig-mat-ogives" class="quarto-xref">Figure&nbsp;<span>2.6</span></a> below.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-mat-ogives" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-mat-ogives-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../docs/figures/dts_maturity_ogive.png" class="img-fluid figure-img" width="1950">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-mat-ogives-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.6: The maturity ogive for each species. The vertical dotted line indicates the length at which 50% of individuals are mature (L50).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="sec-recruitmet-intro" class="level3" data-number="2.2.4">
+<h3 data-number="2.2.4" class="anchored" data-anchor-id="sec-recruitmet-intro"><span class="header-section-number">2.2.4</span> Recruitment parameters</h3>
+<p>Recruitment can be defined in DISPLACE using the Ricker recruitment model, Beverton–Holt (B&amp;H), or a fixed recruitment.</p>
+<p>To define fixed recruitment, see the files within <code>raw_inputs/POPULATIONS/SSB_R_parameters</code>, which include an example of the required format and content. For example, in the input file for population 0 (e.g., <code>0spe_SSB_R_parameters_biolsce1.dat</code>), there are three rows corresponding to recruits (in thousands), default value of 0, and the recruitment code type used by DISPLACE. Recruitment codes are <code>0</code> = Ricker, <code>1</code> = Beverton–Holt, and <code>2</code> = Fixed.</p>
+<p>While fixed recruitment must be specified manually, for Ricker and B&amp;H, the <code>.dat</code> files are generated automatically within the R routine <code>GeneratePopulationsFeatures.R</code>. To update to Ricker or B&amp;H, set the value of the object <code>recruit_method</code> to the corresponding code number in that script. For the dynamic recruitment, three variables must be defined in <code>Stock_biological_traits.csv</code>:</p>
+<ul>
+<li><code>alpha</code> and <code>beta</code>: Parameters for the Ricker or B&amp;H models<br>
+</li>
+<li><code>CV_recru</code>: Coefficient of variation in recruitment</li>
+</ul>
+<p>The updated <code>{sp_code}spe_SSB_R_parameters_biolsce.dat</code> file for dynamic recruitment (in the processed inputs) will include four rows corresponding to <code>alpha</code>, <code>beta</code>, <code>CV_recru</code> and the recruitment type code.</p>
+<p>Other recruitment related paramenters are:</p>
+<ul>
+<li><code>r_age</code>: Age of recruitment. This variable is used to dispatch overall recruits into the size bins.</li>
+<li><code>ssb_assessment</code>: This variable is not used but it is included as a reference. It corresponds to the total weight of the sexually mature part of a fish population in mT.</li>
+</ul>
+<p><strong>For our case study</strong>, we will specify the stock–recruitment relationship using a <strong>Beverton–Holt parameterization</strong>. However the stock assessments assume the steepness form:</p>
+<p><span class="math display">\[
+R = \frac{R_0 \, h \, SSB}{SSB_0 \, (1 - h) + (5h - 1)\, SSB}
+\]</span></p>
+<p>where recruitment (<span class="math inline">\(R\)</span>) is a function of the unfished recruitment level (<span class="math inline">\(R_0\)</span>), steepness (<span class="math inline">\(h\)</span>), which is the proportion of unfished recruitment produced when the spawning biomass is at 20% of the unfished level, the unfished spawning stock biomass (<span class="math inline">\(SSB_0\)</span>), and the current spawning stock biomass (<span class="math inline">\(SSB\)</span>).</p>
+<p>In contrast, the Beverton–Holt parameterization is:</p>
+<p><span class="math display">\[
+R = \frac{a \, SSB}{1 + b \, SSB}
+\]</span></p>
+<p>where <span class="math inline">\(a\)</span> sets the initial slope of the recruitment curve and <span class="math inline">\(b\)</span> controls the strength of density dependence.</p>
+<p>The Beverton–Holt parameters can be directly converted from the steepness parameters using:</p>
+<p><span class="math display">\[
+a = \frac{4h R_0}{SSB_0 (1 - h)}
+\]</span></p>
+<p><span class="math display">\[
+b = \frac{5h - 1}{SSB_0 (1 - h)}
+\]</span></p>
+<p>We used the <span class="math inline">\(SSB_0\)</span> estimate directly from the stock assessments, except for shortspine thornyhead. For this specie, the assessments estimate spawners in terms of eggs rather than biomass.</p>
+<p>DISPLACE also requires a CV to describe variability around the stock–recruitment relationship. We derived this from the fixed <span class="math inline">\(\sigma_R\)</span> parameter (the process variability standard deviation of log-normal recruitment deviations) assumed in each stock assessment. We converted <span class="math inline">\(\sigma_R\)</span> to a CV of arithmetic recruitment as:</p>
+<p><span class="math display">\[
+CV = \sqrt{e^{\sigma^2} - 1}
+\]</span></p>
+<p>The parameters for both stock–recruitment parameterizations are reported in <a href="#tbl-recruit-params" class="quarto-xref">Table&nbsp;<span>2.4</span></a>.</p>
+<div class="cell">
+<div id="tbl-recruit-params" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-recruit-params-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2.4: Stock recruitment parameters for each species. Age = age at recruitment into the population and CV = coefficient of variation around the stock-recruit relationship.
+</figcaption>
+<div aria-describedby="tbl-recruit-params-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 28%">
+<col style="width: 11%">
+<col style="width: 6%">
+<col style="width: 11%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 7%">
+<col style="width: 8%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Species</th>
+<th style="text-align: right;">R0</th>
+<th style="text-align: right;">h</th>
+<th style="text-align: right;">SSB0</th>
+<th style="text-align: right;">BH_a</th>
+<th style="text-align: right;">BH_b</th>
+<th style="text-align: right;">CV</th>
+<th style="text-align: right;">Age_yr</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Sablefish</td>
+<td style="text-align: right;">19453.8</td>
+<td style="text-align: right;">0.70</td>
+<td style="text-align: right;">186534.0</td>
+<td style="text-align: right;">0.973400</td>
+<td style="text-align: right;">0.0000447</td>
+<td style="text-align: right;">2.470</td>
+<td style="text-align: right;">0.5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dover sole</td>
+<td style="text-align: right;">213096.4</td>
+<td style="text-align: right;">0.80</td>
+<td style="text-align: right;">294070.0</td>
+<td style="text-align: right;">11.594300</td>
+<td style="text-align: right;">0.0000510</td>
+<td style="text-align: right;">0.361</td>
+<td style="text-align: right;">1.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Shortspine thornyhead</td>
+<td style="text-align: right;">12580.2</td>
+<td style="text-align: right;">0.72</td>
+<td style="text-align: right;">103727.4</td>
+<td style="text-align: right;">1.247466</td>
+<td style="text-align: right;">0.0000895</td>
+<td style="text-align: right;">0.533</td>
+<td style="text-align: right;">2.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Longspine thornyhead</td>
+<td style="text-align: right;">136530.0</td>
+<td style="text-align: right;">0.60</td>
+<td style="text-align: right;">39134.0</td>
+<td style="text-align: right;">20.932700</td>
+<td style="text-align: right;">0.0001278</td>
+<td style="text-align: right;">0.658</td>
+<td style="text-align: right;">1.0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>The stock recruitment relationships are visualized in <a href="#fig-recruit-params" class="quarto-xref">Figure&nbsp;<span>2.7</span></a> below.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-recruit-params" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-recruit-params-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../docs/figures/dts_stock_recruit_relationship.png" class="img-fluid figure-img" width="1950">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-recruit-params-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.7: The stock-recruit relationship for each species. Note that the parameters in Table S8 and used in the analysis are for 1000s of recruits and metric tons of biomass; axes are scaled to millions of recruits and 1000s of metric tons of spawners for visual ease.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="natural-mortality" class="level3" data-number="2.2.5">
+<h3 data-number="2.2.5" class="anchored" data-anchor-id="natural-mortality"><span class="header-section-number">2.2.5</span> Natural mortality</h3>
+<p>The natural mortality rates, defined as <code>nat_M</code> in <code>Stock_biological_traits.csv</code>, are extracted from each assessment and provided in <a href="#tbl-mort-params" class="quarto-xref">Table&nbsp;<span>2.5</span></a> below.</p>
+<div class="cell">
+<div id="tbl-mort-params" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-mort-params-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2.5: Natural mortality rate of each species.
+</figcaption>
+<div aria-describedby="tbl-mort-params-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Species</th>
+<th style="text-align: left;">Sex</th>
+<th style="text-align: right;">M</th>
+<th style="text-align: right;">Tmax_yr</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Sablefish</td>
+<td style="text-align: left;">Males</td>
+<td style="text-align: right;">0.0592</td>
+<td style="text-align: right;">70</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sablefish</td>
+<td style="text-align: left;">Females</td>
+<td style="text-align: right;">0.0711</td>
+<td style="text-align: right;">70</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sablefish</td>
+<td style="text-align: left;">Average</td>
+<td style="text-align: right;">0.0652</td>
+<td style="text-align: right;">70</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dover sole</td>
+<td style="text-align: left;">Males</td>
+<td style="text-align: right;">0.1140</td>
+<td style="text-align: right;">60</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Dover sole</td>
+<td style="text-align: left;">Females</td>
+<td style="text-align: right;">0.1080</td>
+<td style="text-align: right;">60</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dover sole</td>
+<td style="text-align: left;">Average</td>
+<td style="text-align: right;">0.1110</td>
+<td style="text-align: right;">60</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Longspine thornyhead</td>
+<td style="text-align: left;">Males</td>
+<td style="text-align: right;">0.1113</td>
+<td style="text-align: right;">80</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Longspine thornyhead</td>
+<td style="text-align: left;">Females</td>
+<td style="text-align: right;">0.1113</td>
+<td style="text-align: right;">80</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Longspine thornyhead</td>
+<td style="text-align: left;">Average</td>
+<td style="text-align: right;">0.1113</td>
+<td style="text-align: right;">80</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Shortspine thornyhead</td>
+<td style="text-align: left;">Males</td>
+<td style="text-align: right;">0.0400</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Shortspine thornyhead</td>
+<td style="text-align: left;">Females</td>
+<td style="text-align: right;">0.0400</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Shortspine thornyhead</td>
+<td style="text-align: left;">Average</td>
+<td style="text-align: right;">0.0400</td>
+<td style="text-align: right;">100</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+</section>
+<section id="management-parameters" class="level3" data-number="2.2.6">
+<h3 data-number="2.2.6" class="anchored" data-anchor-id="management-parameters"><span class="header-section-number">2.2.6</span> Management parameters</h3>
+<p>The fishery management parameters included in <code>Stock_biological_traits.csv</code> are:</p>
+<ul>
+<li><p><code>FMSY</code>: Fishing mortality rate that produces the maximum sustainable yield. This value is also given to <code>F_target</code>.</p></li>
+<li><p><code>B_trigger</code>: The biomass trigger is a reference point that initiates specific management actions when the biomass of a fish stock falls below or exceeds a certain threshold. This value is expressed as a percentage. For our study case, there is no trigger leading to specific management actions, so we set it to <code>0</code>. This does not affect the analysis (<code>B_trigger = 0</code>).</p></li>
+<li><p><code>mls</code> and <code>mls_cat</code>: minimum landing size (the smallest legal size at which a fish can be caught, kept, and sold) and the corresponding DISPLACE size category (i.e., following the same categorization used for <code>mat_cat</code>). In our study case, there is no minimum individual size for DTS, so both values are set to 0.</p></li>
+<li><p><code>tac_tons</code>: Total Allowable Catch. It represents the maximum quantity of fish that can be legally harvested from a particular fishery over a specified period. For the U.S. fisheries management system this parameter corresponds to the Annual Catch Limit (ACL). We can get ACL from the <a href="https://www.pcouncil.org/harvest-specifications-regulations-and-seasons/">Groundfish biennial harvest specifications and management measures</a> of the Pacific Fishery Management Council.</p></li>
+<li><p><code>TAC_percent</code>: This variable represents the maximum allowed change in TAC from one year to the next. In other words, TAC in year $year_{y+1} $ cannot differ by more than <span class="math inline">\(XX\%\)</span> of TAC in year $year_y $. Here we used the ACL values from above, we calculate an average year-to-year change. Values within <code>Stock_biological_traits.csv</code> are expressed in per one. (This value is also applied to <code>F_percent</code>).</p></li>
+<li><p><code>fbar_assessment</code>: Average annual fishing mortality, calculated as the mean F across a range of ages (fully exploited age classes). In our case, we used the fishing mortality rate, which some assessments refer to as relative fishing intensity. If fishing mortality was not provided, we alternatively used exploitation rates. Exploitation rate is a closely related concept—it expresses a proportion rather than a rate. When data were presented as a time series, we averaged across our validation period to obtain the estimate of interest.</p></li>
+<li><p><code>fbar_age_min</code> and <code>fbar_age_max</code>: these refer to the minimum and maximum ages used to calculate the mean fishing mortality rate (fbar_assessment). These correspond to the youngest and oldest age classes included in the calculation. As a proxy we used the range of ages selected by the fishery based on gear selectivity.</p></li>
+</ul>
+</section>
+<section id="sizespectra-option-parameters" class="level3" data-number="2.2.7">
+<h3 data-number="2.2.7" class="anchored" data-anchor-id="sizespectra-option-parameters"><span class="header-section-number">2.2.7</span> SizeSpectra option parameters</h3>
+<p>The following parameters can be ignored by setting them to 0 if we are not considering trophic interactions (<span class="citation" data-cites="blanchard2017sizespectra">@blanchard2017sizespectra</span>): <code>Winf</code>, <code>k</code>, <code>etha_m</code>, <code>kappa</code>, <code>q</code>, <code>n</code> and <code>fzeroest</code>. We can account for trophic interactions by enabling the <code>sizeSpectra</code> option.</p>
+</section>
+<section id="additional-variables" class="level3" data-number="2.2.8">
+<h3 data-number="2.2.8" class="anchored" data-anchor-id="additional-variables"><span class="header-section-number">2.2.8</span> Additional variables</h3>
+<p><code>Stock_biological_traits.csv</code> includes the following additional variables:</p>
+<ul>
+<li><code>UseIt</code>: values Yes/No, indicating whether it is considered in the analysis or not.</li>
+<li><code>unit_sizebin</code>: Defines the size unit for bins. For example, 1 = cm, 0.1 = mm, etc. The same units are applied in the abundance-by-size-class files.</li>
+<li><code>stock</code>: code of the population. For our study case this corresponds to the FAO code.</li>
+<li><code>species</code>: Species scientific name. This is included just as a reference and it is not considered within the routines.</li>
+<li><code>Source_Biology</code> and <code>Source_Stock</code>: references from where the values are taken. These are included just as a reference and are not considered within the routines.</li>
+</ul>
+</section>
+</section>
+<section id="species-distribution" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="species-distribution"><span class="header-section-number">2.3</span> Species distribution</h2>
+<p>Population distribution inputs need to be located in <code>POPULATIONS/SpatialLayers</code> to run DISPLACE. The R routines can interpret biomass density on any unit and at a continuous scale. For our case study we use species distribution data from <span class="citation" data-cites="liu2023species">@liu2023species</span> (<a href="#fig-sp-distribution" class="quarto-xref">Figure&nbsp;<span>2.8</span></a>).</p>
+<p>These inputs need to be provided in <code>.shp</code> format. For our case study, we clipped the spatial density of the species to a grid of interest and exported it as a shapefile. In addition to the geometry information of each polygon (i.e., the square cells in our grid), the abundance or biomass density must be specified in a variable named <code>GRIDCODE</code>, which is then read by the routines as shown in <a href="#tbl-sp-dis-file" class="quarto-xref">Table&nbsp;<span>2.6</span></a>.</p>
+<div class="cell">
+<div id="tbl-sp-dis-file" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-sp-dis-file-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2.6: Example of the structure of the shapefile containing the species distributioin values
+</figcaption>
+<div aria-describedby="tbl-sp-dis-file-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">GRIDCODE</th>
+<th style="text-align: left;">geometry</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">424.3856</td>
+<td style="text-align: left;">POLYGON ((-119.35 32.05, -1…</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">386.2080</td>
+<td style="text-align: left;">POLYGON ((-119.25 32.05, -1…</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">353.0033</td>
+<td style="text-align: left;">POLYGON ((-119.15 32.05, -1…</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>We can also specify disaggregated spatial distribution inputs by size group (i.e., <code>large</code>, <code>medium</code>, or <code>small</code>) each defined using a set of the 14 size bins employed by DISPLACE. The division of size groups can be tailored to each analysis, but it must remain consistent throughout a same DISPLACE application.</p>
+<p>To be correctly read and interpreted by the R routines, the naming format of these files must follow the structure:<br>
+<code>contour{sp_code_number}_{size_group}_{size_bins_considered}</code></p>
+<p>For example, for Sablefish (SAB), corresponding in our analysis to species code <code>0</code>, the input files would be: <code>contour0_large_10-11-12-13</code>, <code>contour0_medium_6-7-8-9</code>, <code>contour0_small_0-1-2-3-4-5</code>.</p>
+<p>All three files must be provided for each species. However, since we lack spatial distribution data by size group, in our case all three files contain the same information.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-sp-distribution" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sp-distribution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="populations_files/figure-html/fig-sp-distribution-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sp-distribution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.8: Population distribution of our four species of interest along the West Coast, with biomass values expressed in kg/km2.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="stock-prices-data" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="stock-prices-data"><span class="header-section-number">2.4</span> Stock prices data</h2>
+<p>The file <code>Stock_prices_data.csv</code> contains prices per kilogram for three length categories,<code>small</code>, <code>medium</code>, and <code>large</code>, in any currency unit (USD in our case study).</p>
+<p><strong>For our case study</strong>, we do not have price information by length, so we apply the same price across all length categories for each species. To calculate stock prices, we determine the average price per kilogram for each species based on the landing receipts over the entire time series (<a href="#tbl-stock-prices-data" class="quarto-xref">Table&nbsp;<span>2.7</span></a>).</p>
+<div class="cell">
+<div id="tbl-stock-prices-data" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-stock-prices-data-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2.7: Stock_prices_data.csv input file contects
+</figcaption>
+<div aria-describedby="tbl-stock-prices-data-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">stock</th>
+<th style="text-align: right;">small</th>
+<th style="text-align: right;">medium</th>
+<th style="text-align: right;">large</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">SAB</td>
+<td style="text-align: right;">7.698486</td>
+<td style="text-align: right;">7.698486</td>
+<td style="text-align: right;">7.698486</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MIP</td>
+<td style="text-align: right;">1.714999</td>
+<td style="text-align: right;">1.714999</td>
+<td style="text-align: right;">1.714999</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SJZ</td>
+<td style="text-align: right;">3.911902</td>
+<td style="text-align: right;">3.911902</td>
+<td style="text-align: right;">3.911902</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SJU</td>
+<td style="text-align: right;">12.458488</td>
+<td style="text-align: right;">12.458488</td>
+<td style="text-align: right;">12.458488</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">EOJ</td>
+<td style="text-align: right;">2.813573</td>
+<td style="text-align: right;">2.813573</td>
+<td style="text-align: right;">2.813573</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SGO</td>
+<td style="text-align: right;">2.311579</td>
+<td style="text-align: right;">2.311579</td>
+<td style="text-align: right;">2.311579</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">OTH</td>
+<td style="text-align: right;">7.500386</td>
+<td style="text-align: right;">7.500386</td>
+<td style="text-align: right;">7.500386</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./spatial_extend.html" class="pagination-link" aria-label="Spatial extend">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Spatial extend</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./fisheries.html" class="pagination-link" aria-label="Fleet data">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Fleet data</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

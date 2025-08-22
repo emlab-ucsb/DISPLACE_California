@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>3&nbsp; Fleet data – DISPLACE California documentation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./routines.html" rel="next">
+<link href="./populations.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-485d01fc63b59abcd3ee1bf1e8e2748d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./fisheries.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Fleet data</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">DISPLACE California documentation</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./spatial_extend.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Spatial extend</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./populations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Populations data</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fisheries.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Fleet data</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./routines.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">R routines</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Results</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#fishing-effort-distribution" id="toc-fishing-effort-distribution" class="nav-link active" data-scroll-target="#fishing-effort-distribution"><span class="header-section-number">3.1</span> Fishing effort distribution</a></li>
+  <li><a href="#vessels-specifications" id="toc-vessels-specifications" class="nav-link" data-scroll-target="#vessels-specifications"><span class="header-section-number">3.2</span> Vessels specifications</a></li>
+  <li><a href="#economic-data" id="toc-economic-data" class="nav-link" data-scroll-target="#economic-data"><span class="header-section-number">3.3</span> Economic data</a>
+  <ul class="collapse">
+  <li><a href="#fuel-prices" id="toc-fuel-prices" class="nav-link" data-scroll-target="#fuel-prices"><span class="header-section-number">3.3.1</span> Fuel prices</a></li>
+  <li><a href="#vessel-specific-economic-variables" id="toc-vessel-specific-economic-variables" class="nav-link" data-scroll-target="#vessel-specific-economic-variables"><span class="header-section-number">3.3.2</span> Vessel-specific economic variables</a></li>
+  <li><a href="#selectivity" id="toc-selectivity" class="nav-link" data-scroll-target="#selectivity"><span class="header-section-number">3.3.3</span> Selectivity</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-fleet" class="quarto-section-identifier"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Fleet data</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This section describes the raw input datasets and parameters used to run the R routines related to fleet characteristics. These include information on individual fishing vessels, gears, métiers, vessel economics, and related aspects. The files should be stored and loaded from <code>raw_inputs/FISHERIES</code>. Most of the information can be derived from available VMS, landing receipts, vessel registry data, and stock assessments.</p>
+<blockquote class="blockquote">
+<p><strong>Note:</strong> The data included in this repository and presented here is example data only. It is derived from the actual case study but does not represent real data.</p>
+</blockquote>
+<section id="fishing-effort-distribution" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="fishing-effort-distribution"><span class="header-section-number">3.1</span> Fishing effort distribution</h2>
+<p>DISPLACE requires spatial object inputs defining fishing effort distributions. These can be provided at different levels of aggregation, ranging from overall fleet-wide fishing effort to distributions by port of operation, by métier, or even by individual vessels. The more disaggregated the inputs, the more accurately DISPLACE can emulate the fleet and vessel behaviour.</p>
+<p>These files must be available in <code>.shp</code> format within <code>FISHERIES/SpatialLayers</code>, and their names must match those specified in the <code>name_gis_file_for_fishing_effort_per_polygon</code> variable from <code>vessels_specifications_per_harbour_metiers.csv</code>, as detailed in the following section. Fishing effort values can be defined either in absolute terms (using any unit) or as relative values. However, since DISPLACE outputs express effort as cumulative fishing time, we recommend transforming input effort values to that unit to enable direct comparison.</p>
+<p>For our case study, we used vessel-specific fishing effort distributions by métier. Thus, if a vessel operated with more than one gear, we provided a separate spatial file of associated fishing effort for each métier for that vessel.</p>
+<p>The figure below shows the overall input fishing distribution for our fleet, along with examples of individual inputs used in this analysis.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-fe-distribution" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fe-distribution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="fisheries_files/figure-html/fig-fe-distribution-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fe-distribution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.1: Fishing effort distribution input examples. The left panel shows overall fishing effort, expressed as total hours summed across the entire fleet (all vessels considered in this study). The center and right panels illustrate fishing effort for vessel USA0028 and its associated métiers. Input data are provided on a continuous scale in DISPLACE but have been discretized here for visualization purposes.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="vessels-specifications" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="vessels-specifications"><span class="header-section-number">3.2</span> Vessels specifications</h2>
+<p>In this study, we focused on vessels participating in the DTS fishery off the coast of California (hereafter DTS vessels).</p>
+<p>The DISPLACE input file containing information for each of the vessels included is in <code>vessels_specifications_per_harbour_metiers.csv</code>. Information can also be inputed by group of vessels. Each individual or grouped vessel characteristics are disagregated by harbor and metier (i.e., each vessel could be repeated in more than observation in this table if it belongs to more than one metier or lands in different ports). Métier is defined as a combination of gear and target species or fisheries that are distinctly defined. For our case study we included 12 ports and five metiers.</p>
+<p>The variables included in this dataset are detailed below:</p>
+<ul>
+<li><p><code>VesselId</code>: This variable corresponds to the vessel ID. It may be represented with a VMS ID, IMO number, or any other identifier used to distinguish individual vessels or groups of vessels. In DISPLACE, vessel IDs follow a specific nomenclature consisting of the country code followed by a numeric code (e.g., <code>USA0001</code>, <code>USA0002</code>, etc.), which allows disaggregating DISPLACE outputs from the GUI by country fleet.</p></li>
+<li><p><code>nb_vessels</code>: This is the number of vessels represented by a unique ID. If we have information on all vessels available, this will have a value of 1. If we have limited information at an individual vessel level or want to simplify the analysis, we can group several vessels under the same ID and characteristics and specify here the number of vessels in each group.</p></li>
+<li><p><code>Port</code>: This is the port from where the vessels operate. If a vessel operates in more than one port, we should create two distinct observations for that vessel, distinguishing between one harbor and another.</p></li>
+<li><p><code>dcf_gear</code> and <code>Gear</code>: Both variables contain the same métier names. This redundancy comes from legacy versions of the R routines. The métier names included here will be consistent across all analyses and inputs, and they condition other inputs such as decision trees or the disaggregation of outputs. As with <code>harbour</code>, the dataset should contain different rows for the same vessel when it operates under different métiers.</p></li>
+<li><p><code>RelativeEffort</code>: Defines the share of fishing effort exerted by a vessel or group of vessels for a given métier and/or port grouping. When a vessel appears in multiple rows of the dataset (e.g., across different métiers or ports), its effort is distributed across those rows, and the values must sum to <code>1</code>. The proportional contribution for each row is calculated as the ratio of time at sea for that métier and/or port to the vessel’s total time at sea.</p></li>
+<li><p><code>name_gis_file_for_fishing_effort_per_polygon</code>: This variable specifies the name of the <code>.shp</code> file from which the fishing effort distribution information is read.</p></li>
+<li><p><code>name_gis_layer_field</code>: parameter defining the variable in <code>.shp</code> expressing fishing effort, in our case <code>fe</code>. The units are not important since it can be interpreted in relative terms depending on what we specify in variable <code>is_gis_layer_field_relative_numbers</code>.</p></li>
+<li><p><code>is_gis_layer_field_relative_numbers</code>: Indicates whether the effort variable represents relative values. The default is <code>FALSE</code>. If relative values are available, you can still use the R routines designed for absolute values by adjusting the GIS layer to reflect relative importance on a linear scale. For example, if some areas are 100 times more likely to be visited than others, assign a value of <code>1</code> to the less frequented polygon and <code>100</code> to the more frequented one.</p></li>
+<li><p><code>xfold_gis_layer_field</code>: Default value <code>1</code>.</p></li>
+<li><p><code>{population code}_kg_h</code>: Defines the catching capacity per fishing hour of a vessel or group of vessels for each population included in the analysis. Each population has its own variable. For example, our analysis includes <code>SAB_kg_h</code>, <code>SJU_kg_h</code>, <code>SJZ_kg_h</code>, <code>MIP_kg_h</code>, <code>EOJ_kg_h</code>, <code>SGO_kg_h</code>, and <code>OTH_kg_h</code>.</p>
+<p>This variable is used in the simulation to define the fishing rate and to determine how much time is required to fill each vessel’s storage capacity. For explicitly defined species, these rates adapt to the simulated abundances provided by the population model. Since implicit stocks are not dynamically modeled, their catch is only represented using fixed catch rates derived from historical data.</p></li>
+<li><p><code>VE_LEN</code> and <code>Tonnage</code>: These parameters correspond to vessel length (m) and vessel tonnage (any unit).Tonnage values are not used as DISPLACE inputs, but included as a references. However, as for our case study we use tonnage values to extrapolate other parameters such as engine power or fuel tank capacity. Neither the VMS nor fish ticket data contain much information on vessel characteristics. To obtain such information, in our study we have web scraped information from the <a href="https://cgmix.uscg.mil/psix/psixsearch.aspx">USCG Port State Information Exchange website</a> and the <a href="https://www.webapps.nwfsc.noaa.gov/apex/ifq/f?p=112:23">NOAA limited entry dataset</a>.</p></li>
+<li><p><code>mean_kW</code>: Mean engine power of the vessel. This variable influences the fuel consumption of simulated trips. In our case study, engine power values were only available for a few vessels. To estimate engine power for the rest, we used registry data from 2,043 vessels and predicted engine power from tonnage and length using a model we developed.</p></li>
+<li><p><code>kW</code>: Represents the same information as <code>mean_kW</code>. If we lack engine power data and we recorded as <code>0</code> or <code>NA</code>, the script <code>06_GenerateVesselsConfigFiles.r</code> will assign a value based on the model <code>DanishkWvsLOAModel.Rdata</code> instead, used in other DISPLACE applications by Bastardie et al.</p></li>
+<li><p><code>fishing.speed.knots</code> and <code>cruise.speed.knots</code>: Average speed when the vessel is fishing and average speed when the vessel is steaming. We got these values from the VMS data by discriminating fishing pings from the rest. This values were adjusted for calibrating the model as discussed in the calibration section.</p></li>
+<li><p><code>fuel.tank.liter</code>: Fuel tank capacity of the vessel. This parameter is important because it influences trip duration. A half-empty fuel tank will trigger the vessel to return to port. Other reasons for returning to port include a full fish hold or reaching the end of the day if the vessel is set to perform daily trips (i.e., when trip duration is set to &lt;30h).</p>
+<p>In our case study, vessel-specific fuel tank capacities were not available for our vessels of interest. Instead, we built a model from a limited dataset to infer tank capacity based on vessel length. Alternatively, the case example in this repository provides a model to calculate tank capacity as a function of length using the nonlinear regression model <code>DanishFuelTankCapModel.Rdata</code>, which has been applied in other DISPLACE applications by Bastardie et al, and it is already integrated within <code>06_GenerateVesselsConfigFiles.r</code>.</p></li>
+<li><p><code>fuel.cons.h</code>: Fuel consumption per hour. Like <code>fuel.tank.liter</code>, this parameter is critical because it determines trip duration, fuel availability, and the variable costs of a trip.</p>
+<p>For this parameter, we use the consumption expression from <span class="citation" data-cites="bastardie2013integrating">@bastardie2013integrating</span>. It is already implemented within <code>06_GenerateVesselsConfigFiles.r</code>, where a linear model is built using data from <code>IBM_datainput_engine_consumption.txt</code>. This expression defines fuel consumption per hour based on engine power (kW). Consumption is adjusted within the simulation using multipliers for different operational phases.</p></li>
+<li><p><code>Operational phase multipliers</code>: Multipliers applied to fuel consumption per hour depending on the phase of a trip, since fuel use varies across different activities.</p>
+<ul>
+<li><code>multip.fuel.steaming</code>: Adjusts fuel consumption when the vessel is steaming, i.e., traveling to or from fishing grounds.<br>
+</li>
+<li><code>multip.fuel.fishing</code>: Adjusts fuel consumption when the vessel is actively fishing. Consumption can vary depending on gear type and fishing method.<br>
+</li>
+<li><code>multip.fuel.ret.port.fish</code>: Adjusts fuel consumption when the vessel is returning to port with its catch. Extra weight from the catch can slightly increase fuel use.<br>
+</li>
+<li><code>multip.fuel.inactive</code>: Adjusts fuel consumption when the vessel is inactive (e.g., docked at port, anchored, or for gillnetters setting nets at very low speeds).</li>
+</ul>
+<p>In the absence of specific information, all multipliers can be set to <code>1</code>. For our case study, we use the values from <span class="citation" data-cites="bastardie2013integrating">@bastardie2013integrating</span>: Fishing: <code>1</code>; Steaming: <code>0.8</code>; Inactive: <code>0.1</code>. For returning to port with catch, we use <code>1.1</code>, as applied in other DISPLACE analyses from the Bastardie repository, to reflect slightly higher consumption when carrying landed fish.</p></li>
+<li><p><code>ave.storage.fish.kg</code>: Fish storage capacity of the vessel. This defines another trigger for when a vessel must return to port, once no more fish can be stored the trip ends.</p>
+<p>Storage capacity can be defined as the highest observed historical catch for a given vessel, creating an artificial ceiling for total potential catches. However, actual storage capacity in weight may vary across trips depending on catch volume and other conditions. For this reason, using the maximum observed value across all trips in the time series may not always be ideal. Due this, the storage capacity variable was also adjusted during the calibration process, as described later.</p></li>
+<li><p><code>nb_pings_per_trip</code>: Defines the frequency of changing fishing grounds within a trip. This value can be <code>1</code> or higher. If greater than <code>1</code>, the vessel may shift between several fishing grounds instead of remaining in a single node. This behavior also depends on the use of a Change Fishing Ground Decision Tree, which sets the probabilities for moving to other grounds. If the value is <code>1</code>, the vessel will fish only in a single node and will not switch grounds, reducing navigation time and concentrating all fishing pressure for that particular simulated trip within that node. In our case study, we use a value of <code>1</code>. However, an example decision tree file is provided in the repository: <code>dtrees/ChangeGround_VME.dt.csv</code>.</p></li>
+<li><p><code>trip.duration.h</code>: Average trip duration per métier. This parameter affects the time at sea in the simulation. While maximum trip duration could be used instead to test effects or for calibration purposes, this was not applied in our study. When calculating, we group only by <code>vesselid</code> (not by <code>port</code> or <code>gear</code>), assuming that trip duration reflects the vessel’s overall capacity regardless of the type of fishing activity.</p></li>
+<li><p><code>Gamma_shape</code> and <code>Gamma_scale</code>: Parameters used to draw the resting time in port between consecutive trips. In our DISPLACE application, these parameters are not used directly because a <em>GoFishing</em> decision tree defines this behavior. Nevertheless, we must still populate them, so we include the default values from other DISPLACE applications (Bastardie et al.): <code>0.4485</code> and <code>336.7618</code>, respectively. These values are ignored if the <em>GoFishing</em> decision tree is active.</p></li>
+<li><p><code>weekEndStartDay</code>, <code>weekEndEndDay</code>, <code>WorkHoursStart</code>, <code>WorkHoursEnd</code>: Variables that can be used along the <code>stopFishing</code> decision tree if such a tree is provided in the <code>dtree</code> folder and activated in the <code>processed_inputs/simusspe</code> scenario <code>.dat</code> file.</p>
+<p>If no decision tree is used, return-to-port events are instead triggered by conditions such as a half-empty fuel tank, full fish storage, or the end of a daily trip. In this case, trip duration can be flexible, potentially lasting more than a week and not following a regular weekly pattern. If applied, weekdays are represented by numbers <code>1</code> to <code>7</code>, and hours by numbers <code>1</code> to <code>24</code>.</p></li>
+<li><p><code>vessel_range_km</code>: Vessel range in kilometers, defining how far a vessel can travel. In the R routines, this parameter determines which nodes are accessible to a vessel from a given port; nodes outside that range cannot be visited.</p>
+<p>We calculate this by taking the maximum distance traveled across all trips and dividing it by 2 to account for the round-trip distance. Alternatively, it could be estimated as the straight-line distance from the farthest point on a trip to the port, or as the mean distance traveled per trip. Due to dependencies in the R routines, any value above 4,500 km will yield an error.</p></li>
+</ul>
+</section>
+<section id="economic-data" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="economic-data"><span class="header-section-number">3.3</span> Economic data</h2>
+<p>DISPLACE includes a wide range of economic parameters that can be used to more accurately estimate the profitability, and cost efficiency of each vessel. Besides stock prices already described in the population section, DISPLACE requires to inform vessel-specific economic parameters and fuel prices.</p>
+<section id="fuel-prices" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="fuel-prices"><span class="header-section-number">3.3.1</span> Fuel prices</h3>
+<p>Fuel price values in currency unit per liter, need to be hardcoded in the <code>06_GenerateVesselsConfigFiles.r</code> and <code>12_GenerateHarboursFiles.r</code> routines and must be updated for each analysis if different estimates are used. These values remain fixed across the simulated time series. They can be defined by vessel size (if different fuel types apply to different vessel classes) or assigned differently by port, in which case the R routines would need to be modified accordingly.</p>
+<p><strong>For our case study</strong>, fuel prices were obtained from the Fisheries Economics Data Program (PSMFC 2025). Since fuel price values and trends are consistent across ports, we applied a uniform price across all primary ports included in our study based on the data for the primary ports available in the fuel dataset. For our analysis, we assigned the same average fuel price across all ports and vessels from 2010 to 2023, converted from dollars per gallon to dollars per liter. These prices reflect the values at the time they were collected, so we adjusted them for inflation to 2023 using the <code>priceR</code> package. The inflation-adjusted average price was $4.47 per gallon, or $1.18 per liter. These prices are reported before tax. The same dataset references a 8.5% fuel tax applied in Eureka in 2011. We use this value as our reference, since other tax information refers to periods prior to 2010. Applying this tax results in a final fuel cost of $1.28 per liter, which we use to represent the fuel-related cost in the model.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-fuel-prices" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fuel-prices-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../docs/figures/fuel_price_series.png" class="img-fluid figure-img" width="503">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fuel-prices-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.2: Fuel prices time series of ports of interest for which there is information (USD/gallon).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="vessel-specific-economic-variables" class="level3" data-number="3.3.2">
+<h3 data-number="3.3.2" class="anchored" data-anchor-id="vessel-specific-economic-variables"><span class="header-section-number">3.3.2</span> Vessel-specific economic variables</h3>
+<p>DISPLACE requires specific vessel-level economic variables to individually characterize the economic features that define each vessel’s fishing operations. This information must be provided in two files: <code>fisheries_economics_variables.csv</code> and <code>STECF/Economics_fs.csv</code>. The contents of both files are identical. This redundancy exists due to legacy versions of the routines. Both files must be present for the routines to generate the proper DISPLACE inputs.</p>
+<p><strong>For our case study</strong>, most economic values are derived from Steiner et al.&nbsp;(2021) and accessed through the Fisheries Economics Explorer (FISHEyE), part of NOAA’s Economic Data Collection (EDC). Revenue and cost data are inflation-adjusted to 2023 (Steiner et al., 2021). The EDC dataset is aggregated at a relatively coarse level, limiting the ability to get individual vessel characteristics or detailed group-level information. Nonetheless, it provides average estimates by broader categories. For our study, we use the following available aggregation categories: economic metrics by available ports of interest (i.e., Crescent City, Eureka, Fort Bragg, San Francisco, and Morro Bay/Monterey), vessel size categories (i.e., less than 60 ft, between 60 and 80 ft, and greater than 80 ft), and fishery type (i.e., groundfish using trawl gear, and groundfish fixed gear vessels with a trawl endorsement). We then match these economic metrics to individual vessels in our dataset according to their operating ports, metier, and vessel size categories. When vessel specifications can’t be matched to any category, we use average values.</p>
+<p>The variables required in <code>fisheries_economics_variables.csv</code> and <code>STECF/Economics_fs.csv</code> are:</p>
+<ul>
+<li><p><code>Nb_crew</code>: This variable correspoind to the number of crew working in the vessel, it has implications for the selection of other variables, such as labor or crew payments (e.g., variable crewshare_and_unpaid_labour_costs_percent).</p></li>
+<li><p><code>Annual_other_income</code>: This represents any income not related to fishing, in cases where fishing is a part-time activity, or when selling fishing rights (e.g., Individual Transferable Quotas). In our case, we will set this value to 0, assuming that all vessels generate revenue solely from fishing. This value must be indicated on any give currency for the entire vessel not by crew member.</p></li>
+<li><p><code>Landing_costs_percent</code>: Percentage of landing costs associated with taxes, if any, on income from landings, which may be collected by the port or the state. In California, landing fees are paid by buyers or intermediaries rather than by fishers (CDFW 2025). Therefore, for this analysis the value is set to <code>0</code>.</p></li>
+<li><p><code>Crewshare_and_unpaid_labour_costs_percent</code>: This represents the percentage share of landing income that goes to the crew. In Vastenhoud et al.&nbsp;(2023), this corresponds to the sum of personnel costs and the value of unpaid labor.</p>
+<p>This variable represents labor costs as a share of GVA, and it is used to define there economic parameters in DISPLACE within <code>Vessel.cpp</code>:</p></li>
+</ul>
+<p>For gross profit we’re subtracting all labor compensation, whether paid or unpaid, from GVA to get the owner’s profit. So we need to include both actual payments and the imputed labor value.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>GrossProfit <span class="op">=</span> <span class="op">(</span>GVA<span class="op">*(</span><span class="fl">100.0</span><span class="op">-</span>crewshare_and_unpaid_labour_costs_percent<span class="op">)/</span><span class="fl">100.0</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>For labour surplus we are trying to isolate the value assigned to labor, so again we need the total labor cost, not just what’s paid to the crew.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>LabourSurplus <span class="op">=</span> <span class="op">(</span>GVA <span class="op">*</span> crewshare_and_unpaid_labour_costs_percent<span class="op">/</span><span class="fl">100.0</span><span class="op">)</span> <span class="op">-</span> <span class="op">((</span>annual_insurance_costs_per_crew <span class="op">*</span> <span class="op">(</span><span class="dt">double</span><span class="op">)</span>tstep <span class="op">/</span> <span class="dv">8761</span><span class="op">)</span> <span class="op">*</span> this_vessel_nb_crew<span class="op">)</span> <span class="op">-</span> LabourOpportunityCosts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Break-Even Revenue needs complete labor costs to properly assess what portion of revenue is needed to cover all expenses.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>BER <span class="op">=</span> <span class="op">((</span>other_annual_fixed_costs <span class="op">*</span> <span class="op">(</span><span class="dt">double</span><span class="op">)</span>tstep <span class="op">/</span> <span class="dv">8761</span><span class="op">)</span> <span class="op">+</span> CapitalOpportunityCosts <span class="op">+</span> <span class="op">(</span>vessel_value <span class="op">*</span> <span class="op">((</span><span class="fl">100.0</span> <span class="op">-</span> annual_depreciation_rate<span class="op">)</span> <span class="op">/</span> <span class="fl">100.0</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="dt">double</span><span class="op">)</span>tstep <span class="op">/</span> <span class="dv">8761</span><span class="op">))</span> <span class="op">/</span> <span class="op">(</span><span class="dv">1</span> <span class="op">-</span> <span class="op">(((</span>GVA <span class="op">*</span> crewshare_and_unpaid_labour_costs_percent <span class="op">/</span> <span class="fl">100.0</span><span class="op">)</span> <span class="op">+</span> TotFuelCosts <span class="op">+</span> TotVarCosts<span class="op">)</span> <span class="op">/</span> TotLandingIncome<span class="op">));</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>For our case study</strong>, we use the variable <code>labor</code> from FISHEyE which captures the total cost of labor. This includes both paid crew wages and the imputed value of labor provided by owner-operators, thus representing the full economic cost of labor, regardless of whether it is paid out or retained by the vessel owner acting as crew.</p>
+<pre><code>With this we define:  </code></pre>
+<p><span class="math display">\[
+Crewshare\_and\_unpaid\_labour\_costs\_percent = \dfrac{labor}{GVA} \times 100
+\]</span></p>
+<ul>
+<li><code>Other_variable_costs_per_unit_effort</code>: This variable represents other variable costs beyond fuel and labor. It should be expressed per unit of effort. In Vastenhoud et al.&nbsp;(2023), this is calculated as (Other variable costs + Repair &amp; maintenance costs) / (Days at sea × 24 hours). In <code>Vessel.cpp</code>, this defines <code>TotVarCosts</code>, which is used to calculate both BER (as detailed above) and GVA:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>GVA <span class="op">=</span> <span class="op">(</span>TotLandingIncome<span class="op">+(</span>annual_other_income<span class="op">*</span> <span class="op">(</span><span class="dt">double</span><span class="op">)</span>tstep<span class="op">/</span><span class="dv">8761</span><span class="op">))</span> <span class="op">-</span> TotFuelCosts <span class="op">-</span> TotVarCosts <span class="op">-</span> <span class="op">(</span>other_annual_fixed_costs<span class="op">*</span> <span class="op">(</span><span class="dt">double</span><span class="op">)</span>tstep<span class="op">/</span><span class="dv">8761</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>For our case study</strong> we use:</p>
+<p><span class="math display">\[
+Other\_variable\_costs\_per\_unit\_effort =
+(all\_variable\_costs - fuel - labor) / avg\_yearly\_hours\_at\_sea
+\]</span></p>
+<ul>
+<li><p><code>Annual_insurance_costs_per_crew</code>: Despite the name, which could be misleading refering exclusively to insurance cost per crew member (excluding vessel insurance), this variable also encompasses other mandatory labor-related expenses that employers must pay regardless of profitability. These may include employer-paid payroll taxes, unemployment insurance, and similar costs. It is used solely to compute labor surplus.</p>
+<p><strong>For our case study</strong>, this value is set to <code>0</code>, as these additional labor-related costs are incorporated into other fixed cost categories, based on the equivalent FISHEYE variable.</p></li>
+<li><p><code>Other_annual_fixed_costs</code>: consistent with how it is used in <code>Vessel.cpp</code> (i.e.&nbsp;to calculate GVA and BER) this variable corresponds to all fixed costs.</p></li>
+<li><p><code>Vessel_value</code>: This variable represents the vessel’s initial value. In FISHEyE, we have both the vessel market value and the vessel replacement value. Since the DISPLACE variable is intended to capture the vessel’s starting asset value, we will use the replacement value, as it excludes depreciation and more accurately reflects the original investment cost.</p>
+<p>This is supported by its use in calculating the Capital Opportunity Costs, as implemented in <code>Vessel.cpp</code>, where we want to reflect the full capital invested before depreciation.</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>CapitalOpportunityCosts <span class="op">=</span> <span class="op">(</span>vessel_value <span class="op">*</span> opportunity_interest_rate<span class="op">/</span><span class="fl">100.0</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="dt">double</span><span class="op">)</span>tstep<span class="op">/</span><span class="dv">8761</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><code>Standard_labour_hour_opportunity_costs</code>: A labour hour’s opportunity cost is what a worker or an economy gives up to use that hour in a specific way. Vastenhoud et al.&nbsp;(2023) uses hourly labour costs for Denmark. For our case study, the hourly opportunity costs are based on estimates from the Employer Costs for Employee Compensation reported by the Bureau of Labor Statistics (BLS, 2024). According to the latest report, the average employer cost for private industry workers on the West Coast is $52.84 per hour. This value is entered per crew member, not aggregated or adjusted to the entire crew. This is used to define the labour oportunity costs in <code>Vessel.cpp</code>:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>LabourOpportunityCosts <span class="op">=</span> standard_labour_hour_opportunity_costs <span class="op">*</span> this_vessel_nb_crew <span class="op">*</span> TotHoursAtSea</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><p><code>standard_annual_full_time_employement_hours</code>: We define standard annual full-time employment as a maximum of 40 hours per week, totaling 2,080 hours per year (i.e., 52 weeks × 40 hours). This value is also entered per crew member, not aggregated or adjusted to the entire crew.</p></li>
+<li><p><code>Annual_depreciation_rate</code>: This represents the annual depreciation rate of the vessel’s initial value, and does not apply to other equipment, as implemented in <code>Vessel.cpp</code>:</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>NetProfit <span class="op">=</span> GrossProfit <span class="op">-</span> CapitalOpportunityCosts <span class="op">-</span> <span class="op">(</span>vessel_value <span class="op">*</span> <span class="op">(</span><span class="dv">1</span><span class="op">-((</span><span class="fl">100.0</span><span class="op">-</span>annual_depreciation_rate<span class="op">)/</span><span class="fl">100.0</span><span class="op">))</span> <span class="op">*</span> <span class="op">(</span><span class="dt">double</span><span class="op">)</span>tstep<span class="op">/</span><span class="dv">8761</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>RoFTA <span class="op">=</span> <span class="op">(</span>NetProfit <span class="op">+</span> CapitalOpportunityCosts<span class="op">)</span> <span class="op">/</span> <span class="op">(</span>vessel_value<span class="op">*</span> <span class="op">((</span><span class="fl">100.0</span><span class="op">-</span>annual_depreciation_rate<span class="op">)/</span><span class="fl">100.0</span><span class="op">)*((</span><span class="dt">double</span><span class="op">)</span>tstep<span class="op">/</span><span class="dv">8761</span><span class="op">))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>For the vessel’s annual depreciation rate, we follow Kitts et al.&nbsp;(2022), which applies a depreciation rate of 4% for vessels less than 25 years old. This value is also adopted in the NOAA Fisheries Best Practices for Measuring the Economic Performance of Fishing Businesses report (Kitts et al., 2022), and also used in a different fishery context by Vastenhoud et al.&nbsp;(2023).</p>
+<ul>
+<li><p><code>Opportunity_interest_rate</code>: This variable is used to calculate the Capital Opportunity Costs. We define the opportunity interest rate using Moody’s BAA corporate bond rate as a reference (Lian, 2012; Kitts et al., 2022). BAA-rated corporate bond yields have fluctuated over the past decades and are currently above 6%. However, we adopt a 5% rate to maintain consistency with prior fisheries economic assessments.</p></li>
+<li><p><code>Annual_discount_rate</code>: In 2023 the U.S. Office of Management and Budget (OMB) recommended a 3% rate for evaluating public investments or projects with intergenerational impacts. Horsch et al.&nbsp;(2023) discuss a broader range of discount rates and note that NOAA and other trustees have commonly used a 3% rate in similar contexts. Feist et al.&nbsp;(2025), however, applied a 5.2% discount rate when evaluating fisheries economic activity from 2011 to 2020. This same 5.2% rate is also used to discount future economic activity from fisheries when calculating the present value of total economic output. For consistency with Feist et al.&nbsp;(2025), we adopt a 5.2% discount rate in this analysis.</p></li>
+</ul>
+</section>
+<section id="selectivity" class="level3" data-number="3.3.3">
+<h3 data-number="3.3.3" class="anchored" data-anchor-id="selectivity"><span class="header-section-number">3.3.3</span> Selectivity</h3>
+<p>DISPLACE requires selectivity data, provided in the file <code>fishing_gear_selectivity_ogives_per_stock.csv</code>. This file contains the selectivity of each gear for each species by size bin, extracted from the respective stock assessments.</p>
+<p>For our case study, we extracted fishing selectivity at length, defined as selectivity multiplied by retention, from the stock assessment model outputs (<a href="#tbl-selectivity" class="quarto-xref">Table&nbsp;<span>3.1</span></a>; <a href="#fig-selectivity" class="quarto-xref">Figure&nbsp;<span>3.3</span></a>). We used the selectivity estimated for the most recent time block and adjusted the corresponding lengths to match the DISPLACE size bins.</p>
+<div class="cell">
+<div id="tbl-selectivity" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-selectivity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3.1: Fleet selectivity used for each DTS métier.
+</figcaption>
+<div aria-describedby="tbl-selectivity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 26%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Species</th>
+<th style="text-align: left;">Trawl</th>
+<th style="text-align: left;">Longline</th>
+<th style="text-align: left;">Trap</th>
+<th style="text-align: left;">Other</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Dover sole</td>
+<td style="text-align: left;">CA fisheries</td>
+<td style="text-align: left;">CA fisheries</td>
+<td style="text-align: left;">(no retention allowed)</td>
+<td style="text-align: left;">CA fisheries</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Longspine thornyhead</td>
+<td style="text-align: left;">All fisheries</td>
+<td style="text-align: left;">All fisheries</td>
+<td style="text-align: left;">(no retention allowed)</td>
+<td style="text-align: left;">All fisheries</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sablefish</td>
+<td style="text-align: left;">Trawl</td>
+<td style="text-align: left;">Fixed gear</td>
+<td style="text-align: left;">Fixed gear</td>
+<td style="text-align: left;">Fixed gear</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Shortspine thornyhead</td>
+<td style="text-align: left;">CA trawl</td>
+<td style="text-align: left;">CA trawl</td>
+<td style="text-align: left;">(no retention allowed)</td>
+<td style="text-align: left;">CA trawl</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-selectivity" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-selectivity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../docs/figures/dts_fleet_selectivity.png" class="img-fluid figure-img" width="1950">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-selectivity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.3: Selectivity in the most recent time block by species, fleet, and sex. Selectivity is defined here as selectivity times retention.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./populations.html" class="pagination-link" aria-label="Populations data">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Populations data</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./routines.html" class="pagination-link" aria-label="R routines">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">R routines</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

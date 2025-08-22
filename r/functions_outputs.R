@@ -1,3 +1,6 @@
+source("r/config.R")
+
+# Define files and inputs ----
 displace_outputs_main_path <- here("outputs")
 displace_inputs_main_path <- "/Users/Shared/Dropbox/mpa-outcomes/data/confidential/displace/displace_inputs"
 
@@ -40,6 +43,9 @@ pop_names <- here::here(
 displace_baseline_outputs_path <- here(displace_outputs_main_path, "baseline")
 
 
+# Read files ----
+
+## Read in output fe files ----
 generate_fe_dis_baseline_output <- function(
   displace_outputs_path
 ) {
@@ -103,13 +109,12 @@ generate_fe_dis_baseline_output <- function(
   ))
 }
 
-
 fe_dis_baseline_output_sf <- generate_fe_dis_baseline_output(
   displace_baseline_outputs_path
 )
 
 
-# Read and process loglike outputs ----
+## Read and process loglike outputs ----
 generate_loglike_dis_baseline_output <- function(
   displace_baseline_outputs_path,
   pop_names,
@@ -201,7 +206,7 @@ loglike_dis_baseline_output <- generate_loglike_dis_baseline_output(
 )
 
 
-# Read and process population statistics outputs ----
+## Read and process population statistics outputs ----
 generate_popstats_dis_baseline_output <- function(
   displace_baseline_outputs_path,
   pop_names
@@ -285,8 +290,10 @@ agg_pop_stats_year_sim <- generate_popstats_dis_baseline_output(
   pop_names
 )
 
-# Simulated fishing effort map ----
 
+# Generate fishing effort maps ----
+
+## Generate input fishign effort maps ----
 generate_notebook_fe_maps <- function(fe_distribution) {
   # ---- Static pieces used for all plots ----
   custom_palette <- c(
@@ -401,6 +408,7 @@ generate_notebook_fe_maps <- function(fe_distribution) {
   return(plots) # named list of ggplot objects
 }
 
+## Generate simulated fishing effort map ----
 generate_fe_displace_map_report_figures <- function(
   fe_dis_baseline_output_sf,
   blocks_shore_eez_file,
@@ -549,7 +557,7 @@ displace_fe_map <- generate_fe_displace_map_report_figures(
 )
 
 
-# Outputs summary ----
+# Outputs summary data----
 generate_metrics_summary <- function(
   loglike_dis_baseline_output,
   filtered_vmstix_data,
@@ -656,209 +664,3 @@ metrics_summary <- generate_metrics_summary(
   filtered_vmstix_data,
   vessels_id_mapping
 )
-
-generate_ssb_fit_plot <- function(
-  stock_assessment_data_folder,
-  agg_pop_stats_year_sim
-) {
-  # Read data
-  shortspine_ssb_timeseries_in_mt <- readRDS(glue::glue(
-    stock_assessment_data_folder,
-    "shortspine_ssb_timeseries_in_mt.Rds"
-  )) |>
-    mutate(species = "Shortspine thornyhead", era = "Historical") |>
-    dplyr::select(species, era, year, ssb_mt)
-
-  DTS_spawning_stock_biomass <- readRDS(glue::glue(
-    stock_assessment_data_folder,
-    "DTS_spawning_stock_biomass.Rds"
-  ))
-
-  # Prepare for plotting
-  agg_pop_stats_year_obs <- DTS_spawning_stock_biomass |>
-    filter(!species %in% c("Shortspine thornyhead", "Petrale sole")) |>
-    dplyr::select(species, era, year, ssb_mt) |>
-    rbind(shortspine_ssb_timeseries_in_mt) |>
-    # filter(era == "Historical") |>
-    rename(SSB = ssb_mt, spp = species) |>
-    mutate(
-      spp_code = recode(
-        spp,
-        "Sablefish" = "SAB",
-        "Shortspine thornyhead" = "SJU",
-        "Longspine thornyhead" = "SJZ",
-        "Dover sole" = "MIP"
-      )
-    ) |>
-    dplyr::select(-era)
-
-  combined_pop_stats <- agg_pop_stats_year_sim |>
-    rename(spp_code = spp) |>
-    left_join(
-      agg_pop_stats_year_obs,
-      by = c("year", "spp_code"),
-      suffix = c("_sim", "_obs")
-    ) |>
-    arrange(spp, year)
-
-  # Calculate R^2
-  lm_model <- lm(SSB_sim ~ SSB_obs, data = combined_pop_stats)
-  r_squared <- summary(lm_model)$r.squared
-
-  # Determine axis limits (minimum and maximum values for both variables)
-  axis_limits <- range(
-    combined_pop_stats$SSB_obs,
-    combined_pop_stats$SSB_sim,
-    na.rm = TRUE
-  )
-  axis_limits[1] <- max(axis_limits[1], 0.01) # Ensure minimum is positive
-  log_breaks <- get_log_breaks(axis_limits)
-
-  ssb_exploration_plot <- ggplot(
-    combined_pop_stats,
-    aes(x = SSB_obs / 1000, y = SSB_sim / 1000, color = year)
-  ) +
-    geom_point(size = 3, alpha = 0.6) +
-    geom_text_repel(
-      aes(label = year),
-      size = 2.5,
-      max.overlaps = 20,
-      min.segment.length = 0
-    ) +
-    geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "grey") +
-    facet_wrap(~spp, ncol = 2, scales = "free") + # Allow individual scales per facet
-    labs(x = "Observed SSB (1000s mt)", y = "Simulated SSB (1000s mt)") +
-    theme_minimal(base_size = 12) +
-    theme(
-      panel.grid.major = element_blank(),
-      panel.grid.minor = element_blank(),
-      axis.line = element_line(color = "black"),
-      axis.ticks = element_line(color = "black"),
-      axis.ticks.length = unit(0.25, "cm"),
-      axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1, size = 7),
-      aspect.ratio = 1,
-      legend.position = "none" # Remove legend
-    )
-
-  ssb_fit_plot <- ggplot(
-    combined_pop_stats,
-    aes(x = SSB_obs, y = SSB_sim, color = spp)
-  ) +
-    geom_point(size = 3, alpha = 0.6, stroke = 0) +
-    geom_smooth(
-      method = "lm",
-      linewidth = 0.5,
-      color = "black",
-      linetype = "solid",
-      se = FALSE
-    ) + # Trend line
-    geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "grey") + # Diagonal line
-    scale_x_log10(
-      limits = axis_limits,
-      breaks = log_breaks,
-      labels = log_breaks
-    ) + # Log scale for x-axis with custom breaks
-    scale_y_log10(
-      limits = axis_limits,
-      breaks = log_breaks,
-      labels = log_breaks
-    ) + # Log scale for y-axis with custom breaks
-    scale_color_discrete(name = "") +
-    coord_fixed(ratio = 1, clip = "on") + # Ensure 1:1 ratio (perfect square)
-    labs(
-      x = "Observed SSB (mt)",
-      y = "Simulated SSB (mt)"
-    ) +
-    annotate(
-      "text",
-      x = axis_limits[2], # Position annotation horizontally
-      y = axis_limits[1], # Position annotation vertically
-      label = paste0("R² = ", round(r_squared, 3)), # Display rounded R² value
-      hjust = 1,
-      size = 4
-    ) +
-    theme_minimal() +
-    theme(
-      panel.grid.major = element_blank(), # Remove major grid lines
-      panel.grid.minor = element_blank(), # Remove minor grid lines
-      axis.line = element_line(color = "black"), # Add contour (axis lines)
-      axis.ticks = element_line(color = "black"), # Add axis ticks
-      axis.ticks.length = unit(0.25, "cm"), # Adjust tick length
-      legend.position = "right",
-      axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1, size = 7), # Rotate x-axis tick labels
-      aspect.ratio = 1 # Enforce square aspect in layout regardless of device
-    )
-
-  # Initial SSB
-
-  initial_combined_pop_stats <- combined_pop_stats |>
-    filter(year == min(year))
-
-  # Calculate R^2
-  lm_model <- lm(SSB_sim ~ SSB_obs, data = initial_combined_pop_stats)
-  r_squared <- summary(lm_model)$r.squared
-
-  # Determine axis limits (minimum and maximum values for both variables)
-  axis_limits <- range(
-    initial_combined_pop_stats$SSB_obs,
-    initial_combined_pop_stats$SSB_sim,
-    na.rm = TRUE
-  )
-  axis_limits[1] <- max(axis_limits[1], 0.01) # Ensure minimum is positive
-  log_breaks <- get_log_breaks(axis_limits)
-
-  initial_ssb_fit_plot <- ggplot(
-    initial_combined_pop_stats,
-    aes(x = SSB_obs, y = SSB_sim, color = spp)
-  ) +
-    geom_point(size = 3, alpha = 0.6, stroke = 0) +
-    geom_smooth(
-      method = "lm",
-      linewidth = 0.5,
-      color = "black",
-      linetype = "solid",
-      se = FALSE
-    ) + # Trend line
-    geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "grey") + # Diagonal line
-    scale_x_log10(
-      limits = axis_limits,
-      breaks = log_breaks,
-      labels = log_breaks
-    ) + # Log scale for x-axis with custom breaks
-    scale_y_log10(
-      limits = axis_limits,
-      breaks = log_breaks,
-      labels = log_breaks
-    ) + # Log scale for y-axis with custom breaks
-    scale_color_discrete(name = "") +
-    coord_fixed(ratio = 1, clip = "on") + # Ensure 1:1 ratio (perfect square)
-    labs(
-      x = "Observed SSB (mt)",
-      y = "Simulated SSB (mt)"
-    ) +
-    annotate(
-      "text",
-      x = axis_limits[2], # Position annotation horizontally
-      y = axis_limits[1], # Position annotation vertically
-      label = paste0("R² = ", round(r_squared, 3)), # Display rounded R² value
-      hjust = 1,
-      size = 4
-    ) +
-    theme_minimal() +
-    theme(
-      panel.grid.major = element_blank(), # Remove major grid lines
-      panel.grid.minor = element_blank(), # Remove minor grid lines
-      axis.line = element_line(color = "black"), # Add contour (axis lines)
-      axis.ticks = element_line(color = "black"), # Add axis ticks
-      axis.ticks.length = unit(0.25, "cm"), # Adjust tick length
-      legend.position = "right",
-      axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1, size = 7), # Rotate x-axis tick labels
-      aspect.ratio = 1 # Enforce square aspect in layout regardless of device
-    )
-
-  return(list(
-    ssb_fit_plot = ssb_fit_plot,
-    ssb_exploration_plot = ssb_exploration_plot,
-    initial_ssb_fit_plot = initial_ssb_fit_plot
-  ))
-}

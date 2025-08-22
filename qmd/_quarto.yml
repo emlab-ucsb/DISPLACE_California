@@ -1,9 +1,6 @@
 project:
   type: book
-  # Use docs if published to github pages
-  # Otherwise, publish to emLab's nextcloud directory
   output-dir: ../docs
-  # output-dir: /Users/Shared/nextcloud/emLab/projects/current-projects/ocean-ghg/project-materials/quarto-book
 
 book:
   title: "DISPLACE California documentation"
@@ -16,7 +13,7 @@ book:
     - populations.qmd
     - fisheries.qmd
     - routines.qmd
-    # - results.qmd
+    - results.qmd
     # - references.qmd
 
 # bibliography: references.bib

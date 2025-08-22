@@ -16,7 +16,6 @@ library(gridExtra)
 source(here::here("r/config.R"))
 ```
 
-
 This section describes the raw input datasets and parameters used to run the R routines related to fleet characteristics. These include information on individual fishing vessels, gears, métiers, vessel economics, and related aspects. The files should be stored and loaded from `raw_inputs/FISHERIES`. Most of the information can be derived from available VMS, landing receipts, vessel registry data, and stock assessments. 
 
 >**Note:** The data included in this repository and presented here is example data only. It is derived from the actual case study but does not represent real data.
@@ -33,10 +32,127 @@ For our case study, we used vessel-specific fishing effort distributions by mét
 
 The figure below shows the overall input fishing distribution for our fleet, along with examples of individual inputs used in this analysis.
 
+```{r}
+
+## Generate input fishign effort maps ----
+generate_notebook_fe_maps <- function(fe_distribution) {
+  # ---- Static pieces used for all plots ----
+  custom_palette <- c(
+    "#d9d9d9",
+    "#b2e2e2",
+    "#66c2a4",
+    "#fecc5c",
+    "#fd8d3c",
+    "#f03b20",
+    "#bd0026"
+  )
+
+  # State boundaries (California)
+  states_df <- ggplot2::map_data("state", region = c("california"))
+  xlim <- range(states_df$long, na.rm = TRUE)
+  ylim <- range(states_df$lat, na.rm = TRUE)
+
+  # ---- Helper to build one plot ----
+  build_one_plot <- function(displace_fe_sf, plot_title) {
+    if (!inherits(displace_fe_sf, "sf")) {
+      stop("All selected items must be 'sf' objects.")
+    }
+
+    if (!("fe_cumT" %in% names(displace_fe_sf))) {
+      stop("Each 'sf' object must contain a 'fe_cumT' column.")
+    }
+
+    # Natural breaks for fe_cumT
+    brks_obj <- classIntervals(
+      displace_fe_sf$fe_cumT,
+      n = length(custom_palette) - 1,
+      style = "quantile"
+    )
+    breaks <- brks_obj$brks
+
+    # Round breaks; increase precision if duplicates appear
+    decimal_places <- 0
+    rounded_breaks <- round(breaks, decimal_places)
+    guard <- 0
+    while (length(unique(rounded_breaks)) < length(breaks) && guard < 10) {
+      decimal_places <- decimal_places + 1
+      rounded_breaks <- round(breaks, decimal_places)
+      guard <- guard + 1
+    }
+
+    # Labels like "low-high"
+    labels <- paste(
+      head(rounded_breaks, -1),
+      tail(rounded_breaks, -1),
+      sep = "-"
+    )
+
+    # Categorize
+    displace_fe_sf$fe_cat <- cut(
+      displace_fe_sf$fe_cumT,
+      breaks = breaks,
+      include.lowest = TRUE,
+      labels = labels
+    )
+
+    # Map
+    ggplot(displace_fe_sf) +
+      geom_polygon(
+        data = states_df,
+        aes(x = long, y = lat, group = group),
+        fill = NA,
+        color = "black",
+        linewidth = 0.1
+      ) +
+      geom_sf(aes(fill = fe_cat), color = NA) +
+      scale_fill_manual(
+        values = custom_palette,
+        name = "",
+        na.translate = FALSE
+      ) +
+      coord_sf(
+        xlim = c(xlim[1] - 1, xlim[2] - 3),
+        ylim = c(ylim[1] - 0.1, ylim[2])
+      ) +
+      scale_x_continuous(breaks = c(-120, -123)) +
+      labs(title = plot_title) +
+      theme_minimal() +
+      theme(
+        axis.title = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        plot.title = element_text(size = 11),
+        strip.text = element_text(hjust = 0, vjust = 3),
+        panel.spacing = unit(-3, "lines"),
+        legend.title = element_text(size = 9),
+        legend.text = element_text(size = 8),
+        legend.key.size = unit(0.5, "cm"),
+        legend.spacing.y = unit(0.1, "cm"),
+        legend.position = "top",
+        legend.background = element_rect(
+          fill = alpha('white', 0.6),
+          color = NA
+        ),
+        legend.box = "horizontal",
+        plot.caption.position = "panel"
+      )
+  }
+
+  # ---- Build plots for every element in fe_distribution ----
+  plots <- mapply(
+    build_one_plot,
+    displace_fe_sf = fe_distribution,
+    plot_title = names(fe_distribution),
+    SIMPLIFY = FALSE
+  )
+
+  return(plots) # named list of ggplot objects
+}
+```
 
 ```{r}
 #| label: fig-fe-distribution
-#| fig-cap: Fishing effort distribution input examples. The left panel shows overall fishing effort, expressed as total hours summed across the entire fleet (all vessels considered in this study). The center and right panels illustrate fishing effort for vessel USA0028 and its associated métiers. Input data are provided on a continuous scale in DISPLACE but have been discretized here for visualization purposes.
+#| fig-cap: "Fishing effort distribution input examples. The left panel shows overall fishing effort, expressed as total hours summed across the entire fleet (all vessels considered in this study). The center and right panels illustrate fishing effort for vessel USA0028 and its associated métiers. Input data are provided on a continuous scale in DISPLACE but have been discretized here for visualization purposes."
 
 shp_path <- here::here("raw_inputs/FISHERIES/SpatialLayers")
 shp_files <- list.files(shp_path, pattern = "\\.shp$", full.names = TRUE)
@@ -48,7 +164,6 @@ fe_distribution <- shp_list[c("fe_code_all", "fe_code_USA0028_dts_trawl", "fe_co
 
 names(fe_distribution) <-c("Overall Fishing Effort (h)", "USA0028 DTS Trawl", "USA0028 Non-DTS Trawl")
 
-source(here::here("r/functions_outputs.R"))
 plots <- generate_notebook_fe_maps(fe_distribution)
 
 grid.arrange(grobs = plots, ncol = 3, nrow = 1)

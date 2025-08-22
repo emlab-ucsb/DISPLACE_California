@@ -4,9 +4,264 @@ editor_options:
   chunk_output_type: console
 ---
 
-# R routines {#sec-routines}
+# Results {#sec-outputs}
 
 ```{r, echo = FALSE, results = FALSE, message = FALSE, warning = FALSE, cache = FALSE}
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE, cache = FALSE)
-source(here::here("r/config.R"))
+
+
+library(tidyverse)
+library(knitr)
+library(gridExtra)
 ```
+
+This section presents the preliminary outputs of our case study using actual data (not available in this repository), rather than those generated from the example dataset. The example data cannot be used for testing and discussing validation and optimization since it does not reflect real conditions, consists of mock data, and does not include replicates. However, we provide the code required to generate such outputs, which can be adapted by users to their own VMS and landing receipt data.  
+
+Here, we present results for model validation as well as results from our case study exploring the impact of offshore wind development lease areas.
+
+## Read output files
+
+The following functions in `r/functions_validations.R` read and preprocess DISPLACE output files, whether or not the analysis includes replicates:
+
+- Process `loglike` files (logbook-like) that emulate landing receipt data:
+
+```{r, echo = TRUE, eval = FALSE}
+loglike_dis_baseline_output <- generate_loglike_dis_baseline_output(
+      displace_outputs_path, # Path where outputs are stored
+      table_spp, # Table of species incldued in the analysis available in raw_inputs/POPULATIONS
+      implicit_ssp = c("EOJ", "SGO", "OTH") # Implicit species code
+    )
+```
+
+- Process spatial fishing effort output files:
+
+```{r, echo = TRUE, eval = FALSE}
+fe_dis_baseline_output_sf <- generate_fe_dis_baseline_output(displace_outputs_path) # Path where outputs are stored
+```
+
+- Process population model output files:
+
+```{r, echo = TRUE, eval = FALSE}
+popstats_dis_baseline_output <- generate_popstats_dis_baseline_output(
+      displace_outputs_path, # Path where outputs are stored
+      pop_names # pop_names.txt content from raw_inputs/POPULATIONS
+    )
+```
+
+## Model validation
+
+We conducted a hindcasting exercise by running 30 replicates of the DISPLACE model over a 14-year historical period, using inputs representative of that timespan. Using the outputs of these simulations, we assessed model performance by comparing simulated outputs with observed metrics derived from the merged dataset.
+
+### Fleet model validation
+
+We assess model performance in predicting aggregate fishing effort (hours), catch, and number of trips across the full analysis period.
+
+As shown in @tbl-validation-table, for our case study, fishing time is slightly underpredicted (−5.9%), while total catch and number of trips closely match observations (+1.0% and 0.2%, respectively). In contrast, the model overestimates time at sea (+21%) and total distance traveled (+61%).
+
+To reproduce this table, adapt the `summary_report_table` function in `r/functions_validations.R` to your data.
+
+```{r, echo = TRUE, eval = FALSE}
+generate_summary_report_table(
+        loglike_dis_baseline_output, # Processed loglike outputs
+        filtered_vmstix_data # Merged VMS and landing receipt data
+        )
+```
+
+```{r}
+#| label: tbl-validation-table
+#| tbl-cap: Comparison of simulated and observed metrics with 95% confidence intervals (30 replicates). Values indicate the total over the 14-year hindcasting period.
+
+df <- data.frame(
+  Metric = c("Fishing time (h)",
+             "Total catch (mt)",
+             "Number of trips",
+             "Time at sea (h)",
+             "Distance traveled (km)"),
+  Observed = c("593,050",
+               "84,466",
+               "39,115",
+               "826,557",
+               "5,016,851"),
+  Simulated = c("557,916 ± 3,728",
+                "85,296 ± 348",
+                "39,195 ± 62",
+                "1,001,390 ± 4,179",
+                "8,079,615 ± 16,945"),
+  `Difference (%)` = c("-5.9 ± 0.6",
+                       "1.0 ± 0.4",
+                       "0.2 ± 0.2",
+                       "21.2 ± 0.5",
+                       "61.0 ± 0.3"),
+  stringsAsFactors = FALSE
+)
+
+df |> kable()
+
+```
+
+We can also visually inspect differences between simulated and observed spatial distributions. To do so, adapt the `fe_displace_maps_rule3_report_figures` function to your data.
+
+```{r, echo = TRUE, eval = FALSE}
+generate_fe_displace_map_report_figures(
+  fe_dis_baseline_output_sf, # Processed spatial fishing effort output file
+  vms_cumtime_leaseblock_vessel, # Observed spatial fishing effort input data
+  blocks_shore_eez_file, # Grid file to which you want to clip the data (raw_data/GRAHP/shp/spatial_grid)
+  rule_3 = TRUE, # Activate to hide cells with less than 3 vessels
+  mask_3rule, # Layer to clip out  rule3 cells 
+  closure_areas_file, # Closure area file path
+  filtered_matched_vmstix # VMS resulting from merging the VMS and landing receipt data
+)
+```
+
+Using our case study data, the simulation reproduces the main patterns of fishing activity along the California coast, with high-effort areas in Northern and Central California aligning well with observed VMS data. Some discrepancies remain, particularly offshore and along parts of the central and northern coast, where effort is underpredicted.  
+
+Over the 14-year validation period, the model captures the broad spatial structure of accumulated fishing effort, supporting its use for scenario analysis (@fig-fe-distribution-validation). However, it underpredicts effort within the OSW lease areas—by 70% in Humboldt and 47% in Morro Bay (@tbl-validation-fe-within-leases, @fig-fe-distribution-validation-h, @fig-fe-distribution-validation-m). While absolute magnitudes may be off, projections remain informative for comparing relative trends across scenarios, the goal of our analysis.
+
+```{r}
+#| label: fig-fe-distribution-validation
+#| fig-cap: "Comparison of the observed and simulated cumulative DTS fleet fishing effort for fourteen years representing the historical period 2010-2023, averaging each cell across replicates. The left and middle panels display spatially explicit observed and simulated fishing effort (hours). The right panel shows the difference between scenarios, where the scale limits are set to the Q1 and Q99 percentiles (−944 h and 394 h, respectively) to exclude outliers. The full distribution of differences is shown alongside the map. OSW development areas are outlined in blue. Information is rule of three compliant: at least three vessels operated in each cell displayed." 
+
+knitr::include_graphics(here::here("docs/figures/validation_fe_distribution.jpg"))
+```
+
+```{r}
+#| label: tbl-validation-fe-within-leases
+#| tbl-cap: Comparison of observed and simulated fishing effort within the OSW development areas (30 replicates). Percent of total effort occurring within each lease area is shown in parentheses.
+
+df <- data.frame(
+  `Lease area` = c("Humboldt", "Morro Bay"),
+  `Observed fishing time (h)` = c("9,726 (1.64%)",
+                                  "1,432 (0.24%)"),
+  `Simulated fishing time (h)` = c("2,944 ± 74 (0.69 ± 0.02%)",
+                                   "760 ± 61 (0.18 ± 0.01%)"),
+  `Difference (%)` = c("-69.7 ± 0.8%", 
+                       "-46.9 ± 4.3%"),
+  stringsAsFactors = FALSE
+)
+
+kable(df)
+```
+
+```{r}
+#| label: fig-fe-distribution-validation-h
+#| fig-cap: "Comparison of the observed and simulated cumulative DTS fleet fishing effort for fourteen years representing the historical period 2010-2023, averaging across replicates, for the Humboldt region. The left and middle panels display spatially explicit observed and simulated fishing effort (hours). The right panel shows the difference between scenarios, where the scale limits are set to the Q1 and Q99 percentiles (−944 h and 394 h, respectively) to exclude outliers. OSW development areas are outlined in blue. Information is rule of three compliant: at least three vessels operated in each cell displayed."
+ 
+knitr::include_graphics(here::here("docs/figures/validation_fe_distribution_humboldt.jpg"))
+```
+
+```{r}
+#| label: fig-fe-distribution-validation-m
+#| fig-cap: "Comparison of the observed and simulated cumulative DTS fleet fishing effort for fourteen years representing the historical period 2010-2023, averaging across replicates, for the Morro Bay region. The left and middle panels display spatially explicit observed and simulated fishing effort (hours). The right panel shows the difference between scenarios, where the scale limits are set to the Q1 and Q99 percentiles (−944 h and 394 h, respectively) to exclude outliers. OSW development areas are outlined in blue. Information is rule of three compliant: at least three vessels operated in each cell displayed."
+ 
+knitr::include_graphics(here::here("docs/figures/validation_fe_distribution_morrobay.jpg"))
+```
+
+We can evaluate the model performance by comparing simulated total fishing effort (hours) and landings (metric tonnes) with observed values for each single vessel using `generate_vessels_level_fit_plots_report_figures` function.
+
+```{r, echo = TRUE, eval = FALSE}
+generate_vessels_level_fit_plots_report_figures(
+  loglike_dis_baseline_output, # Processed loglike outputs
+  filtered_matched_vmstix, # VMS resulting from merging the VMS and landing receipt data
+  filtered_tix_data_from_merge, # Landing receipt data resulting from merging the VMS and landing receipt data
+  vessels_id_mapping # Mapping dataframe original vessel ids with those from DISPLACE
+)
+```
+
+Results show reasonable alignment in fishing effort across the fleet (@fig-vessel-fit, a), with most points near the 1:1 line (R² = 0.63). The model tends to underestimate effort for the highest-effort vessels and slightly overestimate at the low end. Simulated landings match observed landings closely (@fig-vessel-fit, b), with strong performance (R² = 0.90). Most points fall near the 1:1 line, indicating the model effectively captures the magnitude and distribution of landings across vessels.
+
+```{r}
+#| label: fig-vessel-fit
+#| fig-cap: "Comparison of observed and simulated cumulative effort at sea (a) and landings (b) for the 14-year validation period representing 2010-2023, averaged across replicates. Both axes are plotted on a log scale. The solid line is a linear regression (a: R2 = 0.63 for effort; R2 = 0.901 for landings). The dashed line represents the 1:1 line. Blue shading indicates point density. Information is rule of three compliant: each cell displayed contains at least three vessels."
+ 
+knitr::include_graphics(here::here("docs/figures/validation_vessel_fit.jpg"))
+```
+
+We can also assess the fit of aggregated landings by target species by comparing simulated and observed values using the `generate_overall_landings_fit_plot_report_figures` function.
+
+```{r, echo = TRUE, eval = FALSE}
+generate_overall_landings_fit_plot_report_figures(
+  loglike_dis_baseline_output, # Processed loglike outputs
+  filtered_tix_data_from_merge, # Landing receipt data resulting from merging the VMS and landing receipt data
+  explicit_sp = c('sablefish', 'dover', 'thornyhead')
+) 
+```
+
+Disaggregating by species shows good overall agreement between simulated and observed total landings (@fig-sp-landings-fit, R² = 0.78). However, the model tends to overestimate implicitly defined groups (chilipepper rockfish, petrale sole, “other”) and underestimate explicitly defined DTS species, reflecting differences in population parameterization and pointing to areas for future refinement.
+
+```{r}
+#| label: fig-sp-landings-fit
+#| fig-cap: "Comparison of simulated and observed cumulative landings for the seven stocks for the 14-year validation period representing 2010-2023 (median across replicates). Each point represents a stock (with 5%-95% percentile lines), where circles represent explicitly modeled stocks and triangles represent implicitly modeled stocks. The dashed line represents the 1:1 line. The solid line is a trend line (R2 is 0.777). Both axes are plotted on a log scale."
+ 
+knitr::include_graphics(here::here("docs/figures/validation_sp_landings.jpg"))
+```
+
+
+### Population model validation
+
+To assess the biological model’s performance, compare simulated SSB outputs to those from the stock assessments. Adapt the `generate_ssb_fit_plot` function to check this.
+
+```{r, echo = TRUE, eval = FALSE}
+generate_ssb_fit_plot(
+      stock_assessment_data_folder, # Folder where SSB stock assessment data is located
+      popstats_dis_baseline_output$agg_pop_stats_year_sim # Processed popstats outputs
+    )
+```
+
+Here we compared estimates of spawning stock biomass (SSB) from 2010-2023 from the stock assessments with the SSB time series generated through the 14 year DISPLACE simulation (@fig-validation-ssb). We found that the initial SSBs in DISPLACE closely mirrored those of the assessment. Small differences arise due to the large differences in the length bins implemented in DISPLACE compared to those assumed in the stock assessments. DISPLACE uses 13 evenly sized length bins that are identical across all four species despite their differences in size. On the other hand, the stock assessments assume much more resolved length bins (1 to 2 cm) with maximum lengths tailored for each species. This leads to differences in the resolution of the numbers at length, the weight at length, and the maturity at length, leading to differences in the calculation of SSB. 
+
+Although these initial differences are small, they amplify as the population grows through the coarse DISPLACE length bins. As a result, we judged this comparison to not be useful validation of the biological model. The fact that the DISPLACE simulations generate the right amount of catches from the right amount of effort is a better validation of the performance of the biological model.
+
+```{r}
+#| label: fig-validation-ssb
+#| fig-cap: The spawning stock biomass estimates reported in the stock assessments from 2010-2020 compared to the spawning biomass estimates generated through the validation simulation. Both axes are plotted on a log scale.
+ 
+knitr::include_graphics(here::here("docs/figures/validation_ssb.jpg"))
+```
+
+<!-- 
+
+## REsults
+
+
+
+vmslike_scenarios_outputs,
+    generate_vmslike_scenarios_outputs(
+      displace_outputs_paths
+    )
+
+
+loglike_scenarios_outputs,
+    generate_loglike_scenarios_outputs(
+      displace_outputs_paths,
+      updated_implicit_sp_inputs,
+      implicit_ssp = c("EOJ", "SGO", "OTH")
+    )
+
+    loglike_by_metier_scenarios_outputs,
+        generate_metier_disagregated_loglike_scenarios_outputs(
+        loglike_scenarios_outputs,
+        metiers_names,
+        names_harbours_file,
+        vessels_fishing_in_closures
+        )
+
+        
+        leaseblock_vmslike_fe_by_metier_baseline,
+            calculate_leaseblock_vmslike_fe_by_grouping(
+            vmslike_scenarios_outputs,
+            loglike_by_metier_scenarios_outputs,
+            blocks_shore_eez_file,
+            scenario = "baseline",
+            grouping_by = "metier" # Options: metier, harbour, lease_vessel
+            )
+
+            fe_metier_comparison_report_maps,
+                generate_fe_comparison_report_maps(
+                leaseblock_vmslike_fe_by_metier_closure,
+                leaseblock_vmslike_fe_by_metier_baseline,
+                closure_areas_file,
+                mask_3rule,
+                rule_3 = TRUE,
+                break_type = "quantile",
+                grouping_by = "metier"
+                ) -->

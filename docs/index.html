@@ -244,7 +244,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="working-environment" class="level2">
 <h2 class="anchored" data-anchor-id="working-environment">Working environment</h2>
 <p>The current project uses DISPLACE version 1.3.5 on Windows 11. You can download the installer <a href="https://displace-project.org/blog/download/">here</a>. The R routines run on R version 4.5.0 (on any platform or operating system). All required R packages are detailed in <code>r/config.R</code>.</p>
-<p>The repository contains all the scripts required to prepare input data in the DISPLACE format, along with scripts for basic processing of outputs in the <code>r</code> and <code>routines</code> folders. It also includes example data in the <code>raw_inputs</code> folder, which serve as reference for data contents and structure when building a DISPLACE application.</p>
+<p>The <a href="https://github.com/emlab-ucsb/DISPLACE_California">repository</a> contains all the scripts required to prepare input data in the DISPLACE format, along with scripts for basic processing of outputs in the <code>r</code> and <code>routines</code> folders. It also includes example data in the <code>raw_inputs</code> folder, which serve as reference for data contents and structure when building a DISPLACE application.</p>
 <p>The <code>processed_inputs</code> folder is initially empty and is automatically populated when running the routines with <code>r/functions_routines.R</code>. To explore DISPLACE results, you will need to manually move the model output files into the <code>outputs</code> folder so they can be read by <code>r/functions_outputs.R</code>.</p>
 <pre><code>DISPLACE_California
   |__ docs

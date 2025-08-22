@@ -33,12 +33,12 @@ DISPLACE_California
 
 ## Quick Setup & Run
 
-1. **Edit the installer directory** in the `directory` parameter of the `generate_dis_run_files` function within `functions_routines.R`.
-2. To test a basic model run:
+1. Adjust the installer directory in the `directory` parameter of the `generate_dis_run_files` function within `functions_routines.R`.
+2. For a quick execution and model run to test whether it can run on your machine, execute:
     ```r
     source(here::here("r/functions_routines.R"))
     ```
-3. Review the notebook to understand the full workflow and input requirements.
+3. We recommend reviewing the entire repository to understand the inputs and processes in more detail before executing.
 
 ---
 

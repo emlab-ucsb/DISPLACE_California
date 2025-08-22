@@ -47,4 +47,4 @@ DISPLACE_California
 If you use this repository or any reference from the notebook in your work, please cite this repository:  
 
 **Citation**  
-Cabral, R., Carbo-Mestre, P., Free, C., Gaines, S., Mangin, T., & Willis-Norton, E. (2025). *Projected impacts of offshore energy development on California's DTS fishery* [Web notebook & repository]. DISPLACE California Case Study Example. [https://github.com/pcarbomestre/DISPLACE_California](https://github.com/pcarbomestre/DISPLACE_California)
+Carbó-Mestre, P., Free & Mangin, T. (2025). *DISPLACE California Case Study Example* [Documentation & repository]. DISPLACE . [https://github.com/pcarbomestre/DISPLACE_California](https://github.com/pcarbomestre/DISPLACE_California)

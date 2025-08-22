@@ -55,3 +55,6 @@ raw_inputs/POPULATIONS/pops_config_files
 
 outputs/*
 processed_inputs/*
+
+!outputs/readme.txt
+!processed_inputs/readme.txt

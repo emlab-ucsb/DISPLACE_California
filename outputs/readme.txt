@@ -1,0 +1,1 @@
+To explore DISPLACE results, you will need to manually move the model output files into the `outputs` folder so they can be read by `r/functions_outputs.R`.

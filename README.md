@@ -2,7 +2,7 @@
 
 [DISPLACE](https://displace-project.org) is an open-source, agent-based, spatially explicit bioeconomic modeling framework designed to simulate the behavior of individual fishing vessels, developed by François et al. (2014).  
 
-Here we present an specific DISPLACE application used to evaluate the potential impacts of California’s offshore wind energy development lease areas on the DTS fisheries operating off the coast of California.  
+Here we present an specific DISPLACE application used to evaluate the potential impacts of California’s offshore wind energy development lease areas on the DTS fisheries operating off the coast of California. You can access the repository notebook [here](https://emlab-ucsb.github.io/DISPLACE_California/).
 
 > **Note:** The data in this repository are entirely example-based and do **not** represent real fisheries information. They are provided solely to demonstrate methods and workflows that can be adapted for real-world applications.
 

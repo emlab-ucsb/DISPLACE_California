@@ -2,13 +2,17 @@ displace_outputs_main_path <- here("outputs")
 displace_inputs_main_path <- "/Users/Shared/Dropbox/mpa-outcomes/data/confidential/displace/displace_inputs"
 
 closure_areas_file <- here(
-  "data",
+  "raw_inputs",
+  "GRAPH",
+  "shp",
   "ca_lease_areas_2024",
   "ca_lease_areas_2024.shp"
 )
 
 blocks_shore_eez_file <- here(
-  "data",
+  "raw_inputs",
+  "GRAPH",
+  "shp",
   "spatial_grid",
   "Blocks_Shore_EEZ.shp"
 )

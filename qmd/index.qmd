@@ -1,118 +1,38 @@
 # Introduction {.unnumbered}
 
-This notebook summarizes the progress related to running the DISPLACE modeling framework and the associated R routines, as well as the discussion of the data used and its sources.
+DISPLACE is an agent-based, spatially explicit bioeconomic modeling framework that represents individual fishing vessels as agents whose behavior is influenced by historical fishing behavior and spatial resource availability. The model captures how vessels adjust their fishing activity (i.e., when, where, what, and how to fish) in response to spatial, temporal, management, and economic constraints. The spatial domain of the model is represented by a network of nodes, where the extent is based on historical fishing locations. The model integrates three main modules (i.e., biological, fleet, and economic), which can be customized based on data availability. DISPLACE relies on fisheries-dependent data such as Vessel Monitoring Systems (VMS) and landing receipts to guide spatial fishing patterns, catch, and effort, resulting in realistic simulations of fishing behavior. The biological module includes species-specific life history traits and population dynamics, while the fleet and economic modules include vessel-specific characteristics (e.g., size, gear, fuel capacity) and economic parameters (e.g., fuel prices, ex-vessel values, labor costs). DISPLACE has the ability to model the redistribution of fishing effort at various disaggregated levels—from individual vessels to individual ports or individual gears— allowing for the assessment of distributional impacts of OSW development (Bastardie et al 2014). 
+
+We used DISPLACE to evaluate the potential impacts of California’s Offshore Wind energy development lease areas on the DTS fisheries operating off the coast of California. This notebook summarizes the requirements, inputs, outputs, and processes for running DISPLACE and the associated R routines. Separate documentation about DISPLACE can be found on the [project website](https://displace-project.org/blog/).
+
+This repository includes an application example based on our study. It does not use actual vessel or fisheries data, but rather example data that do not reflect any confidential fishing information. This allows for a complete test run of the parametrization and model, and provides an opportunity to become familiar with the processes and different model components.
 
 ## Working environment
 
-The current project uses DISPLACE version 1.2.3 on Windows 11. The R routines run on R version 4.3.2 and Rtools 35, using specific package versions installed as specified in` r/dependencies.R`. To manage package dependencies, we use the `renv`. When you first clone this repo onto your machine, run `renv::restore()` to ensure you have all correct package versions installed in the project.
+The current project uses DISPLACE version 1.3.5 on Windows 11. You can download the installer [here](https://displace-project.org/blog/download/). The R routines run on R version 4.5.0 (on any platform or operating system).  
 
-Regarding the repository and data structure, this project's datasets and scripts are hosted in mixed sources. The private GitHub repository ([DISPLACE WestCoast BOEM](https://github.com/pcarbomestre/DISPLACE_WestCoast_BOEM)) contains only the associated scripts and the DISPLACE R routines, but no input or results data. Most input data is stored in the emLab NextCloud storage under the projects folder. Data under sharing agreements is only available locally, and its preprocessing is conducted on an offline machine.
+The repository contains all the scripts required to prepare input data in the DISPLACE format, along with scripts for basic processing of outputs in the `r` and `routines` folders. It also includes example data in the `raw_inputs` folder, which serve as reference for data contents and structure when building a DISPLACE application.  
 
-- GitHub basic structure:  
+The `processed_inputs` folder is initially empty and is automatically populated when running the routines with `r/functions_routines.R`. To explore DISPLACE results, you will need to manually move the model output files into the `outputs` folder so they can be read by `r/functions_outputs.R`.
+
 ```
-DISPLACE_WestCoast_BOEM
+DISPLACE_California
   |__ docs
   |__ qmd
-  |__ data
+  |__ raw_inputs
+  |__ processed_inputs
+  |__ outputs
+  |__ routines
   |__ r
-  |__ sql
-  |__ python
-  |__ renv
-  |__ DISPLACE
-    |__ DISPLACE_R_inputs
-    
 ```
 
-- EmLab NextCloud storage space uses the following basic structure:  
-```
-data/DISPLACE
-  |__ raw
-  |__ DISPLACE_WestCoast_BOEM_data
-    |__ _targets
-    |__ DISPLACE_raw_inputs
-      |__ {application name}
-    |__ DISPLACE_outputs
-      |__ {application name}
-    |__ DISPLACE_input_{application name}
+## Quick Setup & Run 
+
+For a quick execution and model run to test whether it can run on your machine, execute:  
+
+```{r, echo = TRUE, eval = FALSE}
+source(here::here("r/functions_routines.R"))
 ```
 
-## DISPLACE R routines
+Before executing, make sure to update the installer directory in the `directory` parameter of the `generate_dis_run_files` function in `functions_routines.R`. Running this script will populate the `processed_inputs` folder, whose contents then need to be moved to the machine where DISPLACE is run. This must be a Windows machine, and the inputs must be located in `C:/`. You should also create a folder named `DISPLACE_outputs` in `C:/`, where the outputs will be stored.  
 
-The R routines used for this project are:
-```
-- GeneratePopulationsFeatures.R
-- GeneratePopulationsConfigFiles.R
-- RunPopulationsConfigFiles.R
-- GeneratePopulationsPreferencesPerSpeciesMatrix_simplified.R
-- GeneratePopulationsVariousFiles.R
-- GenerateVesselsConfigFiles.R
-- RunVesselsConfigFiles.R
-- GenerateVesselsEconomicsFile.R
-- GenerateOtherCatchesOnNodes.R
-- GenerateMetiersSelectivityPerStockFiles.R
-- GenerateMetiersVariousFiles.R
-- GenerateHarboursFiles.R
-- GenerateShippingFiles.R
-- GenerateFishfarmsFiles.R
-- GenerateWindmillsFiles.R
-- GenerateFirmsFiles.R
-- GenerateSimulationsConfigFiles.R
-- GenerateBenthosLandscapeOnNodes.R
-```
-
-Original routines used to prepare DISPLACE inputs were modified to run under the latest R versions. Among all the updates conducted, the most noticeable one is related to dataframe management and indexing of the base functions, preventing proper reading of the coord and graphs files.
-
-- Original script:
-```{r, eval = FALSE}
- # For older versions of R
-coord <- read.table(file=file.path(general$main_path_gis, "GRAPH", "shapefiles_and_graphs",
-                                   paste("coord", general$igraph, ".dat", sep=""))) # build from the c++ gui
-coord <- as.matrix(as.vector(coord))
-coord <- matrix(coord, ncol=3)
-coord <- cbind(coord, 1:nrow(coord))
-colnames(coord) <- c('x', 'y', 'harb', 'pt_graph')
-colnames(coord) <- c('x', 'y', 'harb', 'pt_graph')
-
-if(do_plot) plot(coord[,1], coord[,2])
-
-saved_coord <- coord
-  
-graph <- read.table(file=file.path(general$main_path_gis, "GRAPH", "shapefiles_and_graphs",
-                                   paste("graph", general$igraph, ".dat", sep=""))) # build from the c++ gui
-graph <- as.matrix(as.vector(graph))
-graph <- matrix(graph, ncol=3)
-if(do_plot) segments(coord[graph[,1]+1,1], coord[graph[,1]+1,2], coord[graph[,2]+1,1], coord[graph[,2]+1,2], col=4) # CAUTION: +1, because c++ to R
-```
-
-- Updated script: 
-```{r, eval = FALSE}
-# Updated from frabas to work on newest R versions
-coord <- read.table(file=file.path(general$main.path.param.gis, "GRAPH", "shapefiles_and_graphs",
-                                   paste("coord", general$igraph, ".dat", sep=""))) # build from the c++ gui
-coord <- unlist(coord)
-part_length <- length(coord) %/% 3
-x <- as.numeric(coord[1:part_length])
-y <- as.numeric(coord[(part_length + 1):(2 * part_length)])
-harb <- as.numeric(coord[(2 * part_length + 1):(3 * part_length)])
-coord <- cbind(x,y , harb, pt_graph= 1:length(x))
-
-if(do_plot) plot(coord[,1], coord[,2])
-
-saved_coord <- coord
-
-graph <- read.table(file=file.path(general$main.path.param.gis , "GRAPH", "shapefiles_and_graphs",
-                                   paste("graph", general$igraph, ".dat", sep=""))) # build from the c++ gui
-graph <- unlist(graph)
-part_length <- length(graph) %/% 3
-x <- as.numeric(graph[1:part_length])
-y <- as.numeric(graph[(part_length + 1):(2 * part_length)])
-harb <- as.numeric(graph[(2 * part_length + 1):(3 * part_length)])
-graph <- cbind(x,y , harb)
-
-if(do_plot) segments(coord[graph[,1]+1,1], coord[graph[,1]+1,2], coord[graph[,2]+1,1], coord[graph[,2]+1,2], col=4) # CAUTION: +1, because c++ to R
-```
-
-Additional updates were made in other routines, such as in `GenerateFishfarmsFiles.R`, which was not generating the `size_per_farm.dat` file.
-
-Routines associated with fishfarms, shipping, forms, offshore wind, and benthos were set to default 0 values, as they are not relevant for our analysis.
-
+We recommend reviewing the entire repository to understand the inputs and processes in more detail before executing.

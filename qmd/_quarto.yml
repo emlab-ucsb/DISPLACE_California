@@ -6,7 +6,7 @@ project:
   # output-dir: /Users/Shared/nextcloud/emLab/projects/current-projects/ocean-ghg/project-materials/quarto-book
 
 book:
-  title: "DISPLACE West Coast documentation"
+  title: "DISPLACE California documentation"
   author: emLab, UCSB
   date: last-modified
   date-format: "[Last Updated on] MMMM DD, YYYY"

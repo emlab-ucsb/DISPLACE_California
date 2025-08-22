@@ -121,7 +121,8 @@ Over the 14-year validation period, the model captures the broad spatial structu
 #| label: fig-fe-distribution-validation
 #| fig-cap: "Comparison of the observed and simulated cumulative DTS fleet fishing effort for fourteen years representing the historical period 2010-2023, averaging each cell across replicates. The left and middle panels display spatially explicit observed and simulated fishing effort (hours). The right panel shows the difference between scenarios, where the scale limits are set to the Q1 and Q99 percentiles (−944 h and 394 h, respectively) to exclude outliers. The full distribution of differences is shown alongside the map. OSW development areas are outlined in blue. Information is rule of three compliant: at least three vessels operated in each cell displayed." 
 
-knitr::include_graphics(here::here("docs/figures/validation_fe_distribution.jpg"))
+
+knitr::include_graphics("figures/validation_fe_distribution.jpg")
 ```
 
 ```{r}
@@ -146,14 +147,14 @@ kable(df)
 #| label: fig-fe-distribution-validation-h
 #| fig-cap: "Comparison of the observed and simulated cumulative DTS fleet fishing effort for fourteen years representing the historical period 2010-2023, averaging across replicates, for the Humboldt region. The left and middle panels display spatially explicit observed and simulated fishing effort (hours). The right panel shows the difference between scenarios, where the scale limits are set to the Q1 and Q99 percentiles (−944 h and 394 h, respectively) to exclude outliers. OSW development areas are outlined in blue. Information is rule of three compliant: at least three vessels operated in each cell displayed."
  
-knitr::include_graphics(here::here("docs/figures/validation_fe_distribution_humboldt.jpg"))
+knitr::include_graphics("figures/validation_fe_distribution_humboldt.jpg")
 ```
 
 ```{r}
 #| label: fig-fe-distribution-validation-m
 #| fig-cap: "Comparison of the observed and simulated cumulative DTS fleet fishing effort for fourteen years representing the historical period 2010-2023, averaging across replicates, for the Morro Bay region. The left and middle panels display spatially explicit observed and simulated fishing effort (hours). The right panel shows the difference between scenarios, where the scale limits are set to the Q1 and Q99 percentiles (−944 h and 394 h, respectively) to exclude outliers. OSW development areas are outlined in blue. Information is rule of three compliant: at least three vessels operated in each cell displayed."
  
-knitr::include_graphics(here::here("docs/figures/validation_fe_distribution_morrobay.jpg"))
+knitr::include_graphics("figures/validation_fe_distribution_morrobay.jpg")
 ```
 
 We can evaluate the model performance by comparing simulated total fishing effort (hours) and landings (metric tonnes) with observed values for each single vessel using `generate_vessels_level_fit_plots_report_figures` function.
@@ -173,7 +174,7 @@ Results show reasonable alignment in fishing effort across the fleet (@fig-vesse
 #| label: fig-vessel-fit
 #| fig-cap: "Comparison of observed and simulated cumulative effort at sea (a) and landings (b) for the 14-year validation period representing 2010-2023, averaged across replicates. Both axes are plotted on a log scale. The solid line is a linear regression (a: R2 = 0.63 for effort; R2 = 0.901 for landings). The dashed line represents the 1:1 line. Blue shading indicates point density. Information is rule of three compliant: each cell displayed contains at least three vessels."
  
-knitr::include_graphics(here::here("docs/figures/validation_vessel_fit.jpg"))
+knitr::include_graphics("figures/validation_vessel_fit.jpg")
 ```
 
 We can also assess the fit of aggregated landings by target species by comparing simulated and observed values using the `generate_overall_landings_fit_plot_report_figures` function.
@@ -192,7 +193,7 @@ Disaggregating by species shows good overall agreement between simulated and obs
 #| label: fig-sp-landings-fit
 #| fig-cap: "Comparison of simulated and observed cumulative landings for the seven stocks for the 14-year validation period representing 2010-2023 (median across replicates). Each point represents a stock (with 5%-95% percentile lines), where circles represent explicitly modeled stocks and triangles represent implicitly modeled stocks. The dashed line represents the 1:1 line. The solid line is a trend line (R2 is 0.777). Both axes are plotted on a log scale."
  
-knitr::include_graphics(here::here("docs/figures/validation_sp_landings.jpg"))
+knitr::include_graphics("figures/validation_sp_landings.jpg")
 ```
 
 
@@ -215,7 +216,7 @@ Although these initial differences are small, they amplify as the population gro
 #| label: fig-validation-ssb
 #| fig-cap: The spawning stock biomass estimates reported in the stock assessments from 2010-2020 compared to the spawning biomass estimates generated through the validation simulation. Both axes are plotted on a log scale.
  
-knitr::include_graphics(here::here("docs/figures/validation_ssb.jpg"))
+knitr::include_graphics("figures/validation_ssb.jpg")
 ```
 
 <!-- 

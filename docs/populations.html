@@ -238,7 +238,7 @@ window.Quarto = {
 <div id="fig-species-ilustration" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-species-ilustration-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../docs/figures/dts_species_ilustration.png" class="img-fluid figure-img" width="1196">
+<img src="figures/dts_species_ilustration.png" class="img-fluid figure-img" width="1196">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-species-ilustration-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2.1: Explicit species included in this analysis.
@@ -261,13 +261,13 @@ Figure&nbsp;2.1: Explicit species included in this analysis.
 <p>DISPLACE requires abundances (in thousands of individuals) within 14 size bins. These 14 bins are evenly spaced in length and are identical for all explicit species, despite their differences in body size. Abundances by size are provided in <code>Stock_abundances_at_szgroup.csv</code>. Alternatively, abundances can be specified in 13 age bins using <code>Stock_abundances_at_age.csv</code>. Both files must exist in the input directory. However, only one needs to contain actual data.</p>
 <p>The size bins also define three broader size categories (<code>small</code>, <code>medium</code>, and <code>large</code>) which are relevant when specifying other input files such as spatial distribution and stock process files. In our case study, we grouped bins <code>0:5</code> as <code>small</code>, <code>6:9</code> as <code>medium</code>, and <code>10:13</code> as <code>large</code>.</p>
 <p><strong>For our case study</strong>, we define abundances by size group and therefore populate <code>Stock_abundances_at_szgroup.csv</code>. The age-based file, <code>Stock_abundances_at_age.csv</code>, is included but filled with zeros. Implicit species must be listed in both files, although can be filled with dummy data. In our example, we populate the implicit species’ abundance rows by repeating the values from the first explicit specie. This is required for the R routines to run. However, these repeated inputs are not used by the model and do not affect the results.</p>
-<p>The number of fish at length defines the initial populations in the simulation. We obtained these values from the stock assessment estimates of number-at-length in the “natlen” table of the SS3 model output (<a href="#fig-abundances" class="quarto-xref">Figure&nbsp;<span class="quarto-unresolved-ref">fig-abundances</span></a>), and then adjusted them to fit the 14 size bins required by DISPLACE.</p>
+<p>The number of fish at length defines the initial populations in the simulation. We obtained these values from the stock assessment estimates of number-at-length in the “natlen” table of the SS3 model output (<a href="#fig-abundances" class="quarto-xref">Figure&nbsp;<span>2.2</span></a>), and then adjusted them to fit the 14 size bins required by DISPLACE.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-abundances" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-abundances-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../docs/figures/dts_number_at_length.png" class="img-fluid figure-img" width="1950">
+<img src="figures/dts_number_at_length.png" class="img-fluid figure-img" width="1950">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-abundances-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2.2: The number of fish at length in 2010 by species.
@@ -276,13 +276,13 @@ Figure&nbsp;2.2: The number of fish at length in 2010 by species.
 </div>
 </div>
 </div>
-<p>Because the stock assessments represent populations across the entire U.S. West Coast, we scale the abundances to represent the proportion of the stock falling within waters off the coast of California. We determined the average percent of the population falling within California waters using the proportions in the bottom trawl survey data (Keller et al.&nbsp;2017). The annual percent of biomass observed in the survey is shown in <a href="#fig-prop-in-ca" class="quarto-xref">Figure&nbsp;<span class="quarto-unresolved-ref">fig-prop-in-ca</span></a> below with the average from 2010-2018 highlighted. The values are as follows: Dover sole (52.3%), longspine thornyhead (72.5%), sablefish (53.7%), shortspine thornyhead (48.1%).</p>
+<p>Because the stock assessments represent populations across the entire U.S. West Coast, we scale the abundances to represent the proportion of the stock falling within waters off the coast of California. We determined the average percent of the population falling within California waters using the proportions in the bottom trawl survey data (Keller et al.&nbsp;2017). The annual percent of biomass observed in the survey is shown in <a href="#fig-prop-in-ca" class="quarto-xref">Figure&nbsp;<span>2.3</span></a> below with the average from 2010-2018 highlighted. The values are as follows: Dover sole (52.3%), longspine thornyhead (72.5%), sablefish (53.7%), shortspine thornyhead (48.1%).</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-prop-in-ca" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-prop-in-ca-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../docs/figures/dts_prop_in_ca.png" class="img-fluid figure-img" width="1201">
+<img src="figures/dts_prop_in_ca.png" class="img-fluid figure-img" width="1201">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-prop-in-ca-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2.3: The percent of each DTS species falling within California waters based on analysis of the West Coast Groundfish Bottom Trawl Survey with the average from 2010-2018 marked.
@@ -323,7 +323,7 @@ t_0 = A_1 + \frac{1}{K}\,
 \log\!\left(\frac{L_2 - L_1}{L_2 - L_1\, e^{-K\,(A_2 - A_1)}}\right)
 \]</span></p>
 <p>DISPLACE also requires the CV of <span class="math inline">\(L_\infty\)</span>. Because growth is specified via the Schnute form in the assessments, this CV is not reported directly. Stock assessments typically record (1) the CV of length-at-age for old fish and (2) the maximum CV of length-at-age (which usually occurs among older ages). We use the CV of length-at-age for old fish as a proxy for <span class="math inline">\(CV(L_\infty)\)</span> when it is valid (non-negative). In the few cases where that value was negative (e.g., longspine thornyhead; Dover sole—males), we substitute the maximum CV of length-at-age.</p>
-<p>We provide both sets of parameters in <a href="#tbl-growth-params" class="quarto-xref">Table&nbsp;<span class="quarto-unresolved-ref">tbl-growth-params</span></a> below.</p>
+<p>We provide both sets of parameters in <a href="#tbl-growth-params" class="quarto-xref">Table&nbsp;<span>2.1</span></a> below.</p>
 <div class="cell">
 <div id="tbl-growth-params" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -511,13 +511,13 @@ Table&nbsp;2.1: Growth parameters for the study species
 </figure>
 </div>
 </div>
-<p>The growth relationships are visualized in <a href="#fig-growth-relationship" class="quarto-xref">Figure&nbsp;<span class="quarto-unresolved-ref">fig-growth-relationship</span></a> below.</p>
+<p>The growth relationships are visualized in <a href="#fig-growth-relationship" class="quarto-xref">Figure&nbsp;<span>2.4</span></a> below.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-growth-relationship" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-growth-relationship-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../docs/figures/dts_growth_relationship.png" class="img-fluid figure-img" width="1950">
+<img src="figures/dts_growth_relationship.png" class="img-fluid figure-img" width="1950">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-growth-relationship-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2.4: The von Bertalanffy growth relationship for each species.
@@ -538,7 +538,7 @@ Figure&nbsp;2.4: The von Bertalanffy growth relationship for each species.
 <p><span class="math display">\[
 W = a L^b
 \]</span></p>
-<p>where <span class="math inline">\(W\)</span> is weight at length <span class="math inline">\(L\)</span>, and <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are the parameters of the exponential relationship. The parameters are listed in <a href="#tbl-l-w-params" class="quarto-xref">Table&nbsp;<span class="quarto-unresolved-ref">tbl-l-w-params</span></a>. These values convert length (cm) to weight (kg). Length–weight parameters are input in cm–g, and within the R routines they are transformed to cm–kg. To convert length in centimeters to weight in grams, as required in DISPLACE, the parameter <span class="math inline">\(a\)</span> is multiplied by 1000.</p>
+<p>where <span class="math inline">\(W\)</span> is weight at length <span class="math inline">\(L\)</span>, and <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are the parameters of the exponential relationship. The parameters are listed in <a href="#tbl-l-w-params" class="quarto-xref">Table&nbsp;<span>2.2</span></a>. These values convert length (cm) to weight (kg). Length–weight parameters are input in cm–g, and within the R routines they are transformed to cm–kg. To convert length in centimeters to weight in grams, as required in DISPLACE, the parameter <span class="math inline">\(a\)</span> is multiplied by 1000.</p>
 <div class="cell">
 <div id="tbl-l-w-params" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -636,13 +636,13 @@ Table&nbsp;2.2: Length-weight parameters for each species.
 </figure>
 </div>
 </div>
-<p>The length-weight relationships are visualized in <a href="#fig-l-w-relationship" class="quarto-xref">Figure&nbsp;<span class="quarto-unresolved-ref">fig-l-w-relationship</span></a> below.</p>
+<p>The length-weight relationships are visualized in <a href="#fig-l-w-relationship" class="quarto-xref">Figure&nbsp;<span>2.5</span></a> below.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-l-w-relationship" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-l-w-relationship-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../docs/figures/dts_length_weight_relationship.png" class="img-fluid figure-img" width="1950">
+<img src="figures/dts_length_weight_relationship.png" class="img-fluid figure-img" width="1950">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-l-w-relationship-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2.5: The von Bertalanffy growth relationship for each species.
@@ -665,7 +665,7 @@ Figure&nbsp;2.5: The von Bertalanffy growth relationship for each species.
 P_{mat} = \frac{1}{1 + e^{-B\,(L - L_{50})}}
 \]</span></p>
 <p>where <span class="math inline">\(P_{mat}\)</span> is the proportion of individuals that are mature at length <span class="math inline">\(L\)</span>, <span class="math inline">\(L_{50}\)</span> is the length at which 50% of individuals are mature, and <span class="math inline">\(B\)</span> is the slope of the maturity ogive.</p>
-<p>We extracted both parameters directly from the stock assessment output files. The values are reported in <a href="#tbl-mat-params" class="quarto-xref">Table&nbsp;<span class="quarto-unresolved-ref">tbl-mat-params</span></a>.</p>
+<p>We extracted both parameters directly from the stock assessment output files. The values are reported in <a href="#tbl-mat-params" class="quarto-xref">Table&nbsp;<span>2.3</span></a>.</p>
 <div class="cell">
 <div id="tbl-mat-params" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -710,13 +710,13 @@ Table&nbsp;2.3: Parameters for the maturity ogive for each species.
 </figure>
 </div>
 </div>
-<p>The maturity ogives are visualized in <a href="#fig-mat-ogives" class="quarto-xref">Figure&nbsp;<span class="quarto-unresolved-ref">fig-mat-ogives</span></a> below.</p>
+<p>The maturity ogives are visualized in <a href="#fig-mat-ogives" class="quarto-xref">Figure&nbsp;<span>2.6</span></a> below.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-mat-ogives" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-mat-ogives-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../docs/figures/dts_maturity_ogive.png" class="img-fluid figure-img" width="1950">
+<img src="figures/dts_maturity_ogive.png" class="img-fluid figure-img" width="1950">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-mat-ogives-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2.6: The maturity ogive for each species. The vertical dotted line indicates the length at which 50% of individuals are mature (L50).
@@ -764,7 +764,7 @@ b = \frac{5h - 1}{SSB_0 (1 - h)}
 <p><span class="math display">\[
 CV = \sqrt{e^{\sigma^2} - 1}
 \]</span></p>
-<p>The parameters for both stock–recruitment parameterizations are reported in <a href="#tbl-recruit-params" class="quarto-xref">Table&nbsp;<span class="quarto-unresolved-ref">tbl-recruit-params</span></a>.</p>
+<p>The parameters for both stock–recruitment parameterizations are reported in <a href="#tbl-recruit-params" class="quarto-xref">Table&nbsp;<span>2.4</span></a>.</p>
 <div class="cell">
 <div id="tbl-recruit-params" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -844,13 +844,13 @@ Table&nbsp;2.4: Stock recruitment parameters for each species. Age = age at recr
 </figure>
 </div>
 </div>
-<p>The stock recruitment relationships are visualized in <a href="#fig-recruit-params" class="quarto-xref">Figure&nbsp;<span class="quarto-unresolved-ref">fig-recruit-params</span></a> below.</p>
+<p>The stock recruitment relationships are visualized in <a href="#fig-recruit-params" class="quarto-xref">Figure&nbsp;<span>2.7</span></a> below.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-recruit-params" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-recruit-params-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../docs/figures/dts_stock_recruit_relationship.png" class="img-fluid figure-img" width="1950">
+<img src="figures/dts_stock_recruit_relationship.png" class="img-fluid figure-img" width="1950">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-recruit-params-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2.7: The stock-recruit relationship for each species. Note that the parameters in Table S8 and used in the analysis are for 1000s of recruits and metric tons of biomass; axes are scaled to millions of recruits and 1000s of metric tons of spawners for visual ease.
@@ -862,7 +862,7 @@ Figure&nbsp;2.7: The stock-recruit relationship for each species. Note that the 
 </section>
 <section id="natural-mortality" class="level3" data-number="2.2.5">
 <h3 data-number="2.2.5" class="anchored" data-anchor-id="natural-mortality"><span class="header-section-number">2.2.5</span> Natural mortality</h3>
-<p>The natural mortality rates, defined as <code>nat_M</code> in <code>Stock_biological_traits.csv</code>, are extracted from each assessment and provided in <a href="#tbl-mort-params" class="quarto-xref">Table&nbsp;<span class="quarto-unresolved-ref">tbl-mort-params</span></a> below.</p>
+<p>The natural mortality rates, defined as <code>nat_M</code> in <code>Stock_biological_traits.csv</code>, are extracted from each assessment and provided in <a href="#tbl-mort-params" class="quarto-xref">Table&nbsp;<span>2.5</span></a> below.</p>
 <div class="cell">
 <div id="tbl-mort-params" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -992,8 +992,8 @@ Table&nbsp;2.5: Natural mortality rate of each species.
 </section>
 <section id="species-distribution" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="species-distribution"><span class="header-section-number">2.3</span> Species distribution</h2>
-<p>Population distribution inputs need to be located in <code>POPULATIONS/SpatialLayers</code> to run DISPLACE. The R routines can interpret biomass density on any unit and at a continuous scale. For our case study we use species distribution data from <span class="citation" data-cites="liu2023species">@liu2023species</span> (<a href="#fig-sp-distribution" class="quarto-xref">Figure&nbsp;<span class="quarto-unresolved-ref">fig-sp-distribution</span></a>).</p>
-<p>These inputs need to be provided in <code>.shp</code> format. For our case study, we clipped the spatial density of the species to a grid of interest and exported it as a shapefile. In addition to the geometry information of each polygon (i.e., the square cells in our grid), the abundance or biomass density must be specified in a variable named <code>GRIDCODE</code>, which is then read by the routines as shown in <a href="#tbl-sp-dis-file" class="quarto-xref">Table&nbsp;<span class="quarto-unresolved-ref">tbl-sp-dis-file</span></a>.</p>
+<p>Population distribution inputs need to be located in <code>POPULATIONS/SpatialLayers</code> to run DISPLACE. The R routines can interpret biomass density on any unit and at a continuous scale. For our case study we use species distribution data from <span class="citation" data-cites="liu2023species">@liu2023species</span> (<a href="#fig-sp-distribution" class="quarto-xref">Figure&nbsp;<span>2.8</span></a>).</p>
+<p>These inputs need to be provided in <code>.shp</code> format. For our case study, we clipped the spatial density of the species to a grid of interest and exported it as a shapefile. In addition to the geometry information of each polygon (i.e., the square cells in our grid), the abundance or biomass density must be specified in a variable named <code>GRIDCODE</code>, which is then read by the routines as shown in <a href="#tbl-sp-dis-file" class="quarto-xref">Table&nbsp;<span>2.6</span></a>.</p>
 <div class="cell">
 <div id="tbl-sp-dis-file" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -1052,7 +1052,7 @@ Figure&nbsp;2.8: Population distribution of our four species of interest along t
 <section id="stock-prices-data" class="level2" data-number="2.4">
 <h2 data-number="2.4" class="anchored" data-anchor-id="stock-prices-data"><span class="header-section-number">2.4</span> Stock prices data</h2>
 <p>The file <code>Stock_prices_data.csv</code> contains prices per kilogram for three length categories,<code>small</code>, <code>medium</code>, and <code>large</code>, in any currency unit (USD in our case study).</p>
-<p><strong>For our case study</strong>, we do not have price information by length, so we apply the same price across all length categories for each species. To calculate stock prices, we determine the average price per kilogram for each species based on the landing receipts over the entire time series (<a href="#tbl-stock-prices-data" class="quarto-xref">Table&nbsp;<span class="quarto-unresolved-ref">tbl-stock-prices-data</span></a>).</p>
+<p><strong>For our case study</strong>, we do not have price information by length, so we apply the same price across all length categories for each species. To calculate stock prices, we determine the average price per kilogram for each species based on the landing receipts over the entire time series (<a href="#tbl-stock-prices-data" class="quarto-xref">Table&nbsp;<span>2.7</span></a>).</p>
 <div class="cell">
 <div id="tbl-stock-prices-data" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">

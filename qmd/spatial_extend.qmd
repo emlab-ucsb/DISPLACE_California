@@ -25,7 +25,7 @@ To do so, at least two `.shp` files are required: one defining the area extent f
 #| label: fig-spatial-domain
 #| fig-cap: DISPLACE study area. The spatial extent for this study is determined by the spatial distribution of DTS vessel fishing effort, informed by the merged VMS-fish ticket dataset. This results in a latitudinal extent of 32.0° to 42.6°, and longitudinal extent of -125.1° to -117.3°. Nodes are 4 km apart, and the twelve ports depicted are those included in the simulations. OSW areas are shaded in grey.
 
-knitr::include_graphics(here::here("docs/figures/spatial_domain.jpg"))
+knitr::include_graphics("figures/spatial_domain.jpg")
 ```
 
 
@@ -46,9 +46,6 @@ harbours |> kable()
 ```
 
 The final updated graph, with nodes connected to the ports of interest, has already been generated and is available at `GRAPH/graph1.dat` along with its associated files. This is the graph that will be used to run DISPLACE. Additionally, `GRAPH/graph2.dat` contains the updated graph that defines the lease areas closure scenario.
-
-
-
 
 
 

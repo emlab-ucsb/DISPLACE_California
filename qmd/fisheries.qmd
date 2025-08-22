@@ -261,7 +261,7 @@ Fuel price values in currency unit per liter, need to be hardcoded in the `06_Ge
 #| label: fig-fuel-prices
 #| fig-cap: Fuel prices time series of ports of interest for which there is information (USD/gallon).
 
-knitr::include_graphics(here::here("docs/figures/fuel_price_series.png"))
+knitr::include_graphics("figures/fuel_price_series.png")
 ```
 
 ### Vessel-specific economic variables
@@ -301,7 +301,7 @@ LabourSurplus = (GVA * crewshare_and_unpaid_labour_costs_percent/100.0) - ((annu
 Break-Even Revenue needs complete labor costs to properly assess what portion of revenue is needed to cover all expenses.
 
 ```{cpp,  echo = TRUE}
-BER = ((other_annual_fixed_costs * (double)tstep / 8761) + CapitalOpportunityCosts + (vessel_value * ((100.0 - annual_depreciation_rate) / 100.0) * (double)tstep / 8761)) / (1 - (((GVA * crewshare_and_unpaid_labour_costs_percent / 100.0) + TotFuelCosts + TotVarCosts) / TotLandingIncome));
+BER = ((other_annual_fixed_costs * (double)tstep / 8761) + CapitalOpportunityCosts + (vessel_value * ((100.0 - annual_depreciation_rate) / 100.0) * (double)tstep / 8761) / (1 - (((GVA * crewshare_and_unpaid_labour_costs_percent / 100.0) + TotFuelCosts + TotVarCosts) / TotLandingIncome);
 ```
 
 **For our case study**, we use the variable `labor` from FISHEyE which captures the total cost of labor. This includes both paid crew wages and the imputed value of labor provided by owner-operators, thus representing the full economic cost of labor, regardless of whether it is paid out or retained by the vessel owner acting as crew.
@@ -315,7 +315,7 @@ $$
 - `Other_variable_costs_per_unit_effort`: This variable represents other variable costs beyond fuel and labor. It should be expressed per unit of effort. In Vastenhoud et al. (2023), this is calculated as (Other variable costs + Repair & maintenance costs) / (Days at sea × 24 hours). In `Vessel.cpp`, this defines `TotVarCosts`, which is used to calculate both BER (as detailed above) and GVA:
 
 ```{cpp,  echo = TRUE}
-GVA = (TotLandingIncome+(annual_other_income* (double)tstep/8761)) - TotFuelCosts - TotVarCosts - (other_annual_fixed_costs* (double)tstep/8761)
+GVA = (TotLandingIncome+(annual_other_income* (double)tstep/8761) - TotFuelCosts - TotVarCosts - (other_annual_fixed_costs* (double)tstep/8761)
 ```
   
 **For our case study** we use:
@@ -353,11 +353,11 @@ LabourOpportunityCosts = standard_labour_hour_opportunity_costs * this_vessel_nb
 - `Annual_depreciation_rate`: This represents the annual depreciation rate of the vessel’s initial value, and does not apply to other equipment, as implemented in `Vessel.cpp`:
 
 ```{cpp,  echo = TRUE}
-NetProfit = GrossProfit - CapitalOpportunityCosts - (vessel_value * (1-((100.0-annual_depreciation_rate)/100.0)) * (double)tstep/8761)
+NetProfit = GrossProfit - CapitalOpportunityCosts - (vessel_value * (1-((100.0-annual_depreciation_rate)/100.0) * (double)tstep/8761)
 ```   
 
 ```{cpp,  echo = TRUE}
-RoFTA = (NetProfit + CapitalOpportunityCosts) / (vessel_value* ((100.0-annual_depreciation_rate)/100.0)*((double)tstep/8761))
+RoFTA = (NetProfit + CapitalOpportunityCosts) / (vessel_value* ((100.0-annual_depreciation_rate)/100.0)*((double)tstep/8761)
 ```
 
 For the vessel's annual depreciation rate, we follow Kitts et al. (2022), which applies a depreciation rate of 4% for vessels less than 25 years old. This value is also adopted in the NOAA Fisheries Best Practices for Measuring the Economic Performance of Fishing Businesses report (Kitts et al., 2022), and also used in a different fishery context by Vastenhoud et al. (2023).
@@ -394,7 +394,7 @@ df |> kable()
 #| label: fig-selectivity
 #| fig-cap: Selectivity in the most recent time block by species, fleet, and sex. Selectivity is defined here as selectivity times retention.
 
-knitr::include_graphics(here::here("docs/figures/dts_fleet_selectivity.png"))
+knitr::include_graphics("figures/dts_fleet_selectivity.png")
 ```
 
 

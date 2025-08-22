@@ -185,13 +185,13 @@ ul.task-list li input[type="checkbox"] {
 <h2 data-number="1.1" class="anchored" data-anchor-id="graph-of-nodes"><span class="header-section-number">1.1</span> Graph of nodes</h2>
 <p>The <a href="https://displace-project.org/blog/tutorials/">DISPLACE project</a> provides tutorials on using DISPLACE. Among them is a guide to <a href="https://displace-project.org/blog/wp-content/uploads/2014/11/DISPLACE-step-by-step-guideline-Set-up-a-new-graph-of-node1.pdf">setting up a new graph of nodes</a> that explains step by step how to use the DISPLACE GUI to create the node graph, an input required by the R routines and the model.</p>
 <p>To do so, at least two <code>.shp</code> files are required: one defining the area extent for simulating vessel behavior, and an inverted shape to prevent the generation of nodes outside the area of interest. Example files are provided in this repository under <code>raw_inputs/GRAPH/shp</code> as <code>graph_area.shp</code> and <code>exclusion_area.shp</code>. Using these, you can generate the graph of nodes, which is already available for this example application in <code>raw_inputs/GRAPH</code> as <code>graph0.dat</code> and its associated files.</p>
-<p><strong>For this study</strong>, we focus on the waters off the coast of California using a spatial domain that spans latitudinally from roughly the US/Mexico EEZ border to Cape Blanco (32.0° to 42.6°) and longitudinally from -125.1° to -117.3°. Nodes are 4 km apart (<a href="#fig-spatial-domain" class="quarto-xref">Figure&nbsp;<span class="quarto-unresolved-ref">fig-spatial-domain</span></a>).</p>
+<p><strong>For this study</strong>, we focus on the waters off the coast of California using a spatial domain that spans latitudinally from roughly the US/Mexico EEZ border to Cape Blanco (32.0° to 42.6°) and longitudinally from -125.1° to -117.3°. Nodes are 4 km apart (<a href="#fig-spatial-domain" class="quarto-xref">Figure&nbsp;<span>1.1</span></a>).</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-spatial-domain" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-spatial-domain-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../docs/figures/spatial_domain.jpg" class="img-fluid figure-img" width="1160">
+<img src="figures/spatial_domain.jpg" class="img-fluid figure-img" width="1160">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-spatial-domain-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1.1: DISPLACE study area. The spatial extent for this study is determined by the spatial distribution of DTS vessel fishing effort, informed by the merged VMS-fish ticket dataset. This results in a latitudinal extent of 32.0° to 42.6°, and longitudinal extent of -125.1° to -117.3°. Nodes are 4 km apart, and the twelve ports depicted are those included in the simulations. OSW areas are shaded in grey.
@@ -203,7 +203,7 @@ Figure&nbsp;1.1: DISPLACE study area. The spatial extent for this study is deter
 </section>
 <section id="harbors" class="level2" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="harbors"><span class="header-section-number">1.2</span> Harbors</h2>
-<p>As detailed in the <a href="https://displace-project.org/blog/wp-content/uploads/2014/11/DISPLACE-step-by-step-guideline-Set-up-a-new-graph-of-node1.pdf">graph of nodes tutorial</a> the generated nodes of the stidy area (graph0.dat) need to be associated to the harbors from where the vessels operate in the simulation. Such, vessels need to be specified in the file <code>GRAPH/harbours.dat</code>, with the port name with no blank spaces, a port id and the latitude and lon coordinates as shown in <a href="#tbl-harbours" class="quarto-xref">Table&nbsp;<span class="quarto-unresolved-ref">tbl-harbours</span></a>.</p>
+<p>As detailed in the <a href="https://displace-project.org/blog/wp-content/uploads/2014/11/DISPLACE-step-by-step-guideline-Set-up-a-new-graph-of-node1.pdf">graph of nodes tutorial</a> the generated nodes of the stidy area (graph0.dat) need to be associated to the harbors from where the vessels operate in the simulation. Such, vessels need to be specified in the file <code>GRAPH/harbours.dat</code>, with the port name with no blank spaces, a port id and the latitude and lon coordinates as shown in <a href="#tbl-harbours" class="quarto-xref">Table&nbsp;<span>1.1</span></a>.</p>
 <div class="cell">
 <div id="tbl-harbours" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">

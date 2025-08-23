@@ -56,7 +56,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -238,7 +258,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="introduction" class="level1 unnumbered">
 <h1 class="unnumbered">Introduction</h1>
-<p>DISPLACE is an agent-based, spatially explicit bioeconomic modeling framework that represents individual fishing vessels as agents whose behavior is influenced by historical fishing behavior and spatial resource availability. The model captures how vessels adjust their fishing activity (i.e., when, where, what, and how to fish) in response to spatial, temporal, management, and economic constraints. The spatial domain of the model is represented by a network of nodes, where the extent is based on historical fishing locations. The model integrates three main modules (i.e., biological, fleet, and economic), which can be customized based on data availability. DISPLACE relies on fisheries-dependent data such as Vessel Monitoring Systems (VMS) and landing receipts to guide spatial fishing patterns, catch, and effort, resulting in realistic simulations of fishing behavior. The biological module includes species-specific life history traits and population dynamics, while the fleet and economic modules include vessel-specific characteristics (e.g., size, gear, fuel capacity) and economic parameters (e.g., fuel prices, ex-vessel values, labor costs). DISPLACE has the ability to model the redistribution of fishing effort at various disaggregated levels—from individual vessels to individual ports or individual gears— allowing for the assessment of distributional impacts of OSW development (<span class="citation" data-cites="bastardie2014displace">@bastardie2014displace</span>).</p>
+<p>DISPLACE is an agent-based, spatially explicit bioeconomic modeling framework that represents individual fishing vessels as agents whose behavior is influenced by historical fishing behavior and spatial resource availability. The model captures how vessels adjust their fishing activity (i.e., when, where, what, and how to fish) in response to spatial, temporal, management, and economic constraints. The spatial domain of the model is represented by a network of nodes, where the extent is based on historical fishing locations. The model integrates three main modules (i.e., biological, fleet, and economic), which can be customized based on data availability. DISPLACE relies on fisheries-dependent data such as Vessel Monitoring Systems (VMS) and landing receipts to guide spatial fishing patterns, catch, and effort, resulting in realistic simulations of fishing behavior. The biological module includes species-specific life history traits and population dynamics, while the fleet and economic modules include vessel-specific characteristics (e.g., size, gear, fuel capacity) and economic parameters (e.g., fuel prices, ex-vessel values, labor costs). DISPLACE has the ability to model the redistribution of fishing effort at various disaggregated levels—from individual vessels to individual ports or individual gears— allowing for the assessment of distributional impacts of OSW development (<span class="citation" data-cites="bastardie2014displace">Bastardie, Nielsen, and Miethe (<a href="references.html#ref-bastardie2014displace" role="doc-biblioref">2014</a>)</span>).</p>
 <p>We used DISPLACE to evaluate the potential impacts of California’s Offshore Wind energy development lease areas on the DTS fisheries operating off the coast of California. This notebook summarizes the requirements, inputs, outputs, and processes for running DISPLACE and the associated R routines. Separate documentation about DISPLACE can be found on the <a href="https://displace-project.org/blog/">project website</a>.</p>
 <p>This repository includes an application example based on our study. It does not use actual vessel or fisheries data, but rather example data that do not reflect any confidential fishing information. This allows for a complete test run of the parametrization and model, and provides an opportunity to become familiar with the processes and different model components.</p>
 <section id="working-environment" class="level2">
@@ -265,6 +285,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We recommend reviewing the entire repository to understand the inputs and processes in more detail before executing.</p>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-bastardie2014displace" class="csl-entry" role="listitem">
+Bastardie, Francois, J Rasmus Nielsen, and Tanja Miethe. 2014. <span>“DISPLACE: A Dynamic, Individual-Based Model for Spatial Fishing Planning and Effort Displacement—Integrating Underlying Fish Population Models.”</span> <em>Canadian Journal of Fisheries and Aquatic Sciences</em> 71 (3): 366–86.
+</div>
+</div>
 </section>
 </section>
 

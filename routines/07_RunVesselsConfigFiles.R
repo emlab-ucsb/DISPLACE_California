@@ -1,37 +1,4 @@
-# some args for the bunch of vessels to be created....
-# Usage:
-# RunVesselsConfigFiles.R application gis_path input_application_path igraph
-
-# GENERAL SETTINGS
-
-#  args <- commandArgs(trailingOnly = TRUE)
-
-#  general <- list()
-
-#  if (length(args) < 2) {
-#    if(.Platform$OS.type == "windows") {
-#      general$application           <- "NorthSea"
-#      general$main_path_gis         <- file.path("C:", paste("DISPLACE_input_gis_", general$application, sep=""))
-#      general$main.path.ibm         <- file.path("C:", paste("DISPLACE_input_", general$application, sep=''))
-#      general$igraph                <- 3  # caution: should be consistent with existing objects already built upon a given graph
-#     do_plot                        <- TRUE
-
-#    } else{
-#    if(Sys.info()["sysname"] == "Darwin") {
-#      general$application           <- "VME"
-#      general$main_path_gis         <- file.path("usr","local","GitHub",paste("DISPLACE_input_gis_", general$application, sep=""))
-#      general$main.path.ibm         <- file.path("usr","local","Documents","GitHub", paste("DISPLACE_input_", general$application, sep=''))
-#      general$igraph                <- 12  # caution: should be consistent with existing objects already built upon a given graph
-#     do_plot                        <- TRUE
-
-#    } else {
-#      general$application           <- args[1]
-#      general$main_path_gis         <- args[2]
-#      general$main.path.ibm         <- args[3]
-#      general$igraph                <- args[4]  # caution: should be consistent with existing vessels already built upon a given graph
-#     do_plot                        <- FALSE
-# }}}
-# cat(paste("START \n"))
+cat(paste("START \n"))
 
 dir.create(file.path(
   general$main.path.ibm,
@@ -698,34 +665,6 @@ for (namefile in namefiles) {
         coord_in_metier_area_and_range[, a_var] <- co[, a_var] # assign back
       }
 
-      if (FALSE) {
-        #1. TODO: keep only the nodes for which we know this config vessel is having non-zero fixed CPUEs
-        a.semester <- "1"
-        list_nodes <- read.table(
-          file = file.path(
-            general$main.path.ibm,
-            paste("popsspe_", general$application, sep = ''),
-            "static_avai",
-            paste(
-              "lst_idx_nodes_per_pop_semester",
-              gsub("S", "", a.semester),
-              ".dat",
-              sep = ''
-            )
-          ),
-          header = TRUE
-        )
-        list_nodes$pt_graph <- list_nodes$pt_graph + 1 ##!!! CAUTION: BECAUSE WE REUSE A DISPLACE INPUT FILE IN R, GET BACK HERE THE OFFSET THAT WAS SET FOR C++ !!!##
-        popid_with_zero_cpue_here <- which(fixed_cpue_per_stock <= 0) - 1
-        nodes_for_species_targeted_by_this_config_vessel <- unique(list_nodes[
-          !list_nodes$popid %in% popid_with_zero_cpue_here,
-          "pt_graph"
-        ])
-        co <- co[
-          co$pt_graph %in% nodes_for_species_targeted_by_this_config_vessel,
-        ]
-      } #### EDIT PETER
-
       # 2. reduce spatial dimensionality further according to hotspot of effort
       idx <- 1:nrow(co)
       prop_to_keep <- 0.03
@@ -1101,8 +1040,7 @@ for (namefile in namefiles) {
       ))
 
       #-----------
-      # DNK00[xx]_possible_metiers_quarter2.dat
-      # DNK00[xx]_freq_possible_metiers_quarter[xx].dat
+
       x <- fgrounds_allvessels_allmet[
         fgrounds_allvessels_allmet$quarter == a.quarter,
       ]
@@ -1346,7 +1284,7 @@ for (namefile in namefiles) {
           "\n"
         ))
       }
-      # DNK000XXX_gscale_cpue_per_stk_on_nodes_quarter  # plan A
+      # {VesselId}_gscale_cpue_per_stk_on_nodes_quarter  # plan A
       #-----------
       x <- fgrounds_allvessels[fgrounds_allvessels$quarter == a.quarter, ]
       x$vids <- factor(x$vids)
@@ -1413,7 +1351,7 @@ for (namefile in namefiles) {
 
       #-----------
       #-----------
-      # DNK000XXX__cpue_per_stk_on_nodes_quarter        # plan B
+      # {VesselId}__cpue_per_stk_on_nodes_quarter        # plan B
       x <- fgrounds_allvessels[fgrounds_allvessels$quarter == a.quarter, ]
       x$vids <- factor(x$vids)
 

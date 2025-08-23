@@ -1,37 +1,4 @@
-# some args for the bunch of vessels to be created....
-# Usage:
-# GenerateVesselsConfigFiles.R application gis_path input_application_path igraph
-
-# GENERAL SETTINGS
-#
-#    args <- commandArgs(trailingOnly = TRUE)
-#
-#    general <- list()
-#
-#    if (length(args) < 2) {
-#      if(.Platform$OS.type == "windows") {
-#        general$application           <- "MEESO"
-#        general$main_path_gis         <- file.path("D:","FBA", paste("DISPLACE_input_gis_", general$application, sep=""))
-#        general$main.path.ibm         <- file.path("D:","FBA", paste("DISPLACE_input_", general$application, sep=''))
-#        general$igraph                <- 206 # 110  # caution: should be consistent with existing objects already built upon a given graph
-#       do_plot                        <- TRUE
-#
-#      } else{
-#      if(Sys.info()["sysname"] == "Darwin") {
-#        general$application           <- "MEESO"
-#        general$main_path_gis         <- file.path("usr","local","GitHub",paste("DISPLACE_input_gis_", general$application, sep=""))
-#        general$main.path.ibm         <- file.path("usr","local","Documents","GitHub", paste("DISPLACE_input_", general$application, sep=''))
-#        general$igraph                <- 1  # caution: should be consistent with existing objects already built upon a given graph
-#       do_plot                        <- TRUE
-#
-#      } else {
-#        general$application           <- args[1]
-#        general$main_path_gis         <- args[2]
-#        general$main.path.ibm         <- args[3]
-#        general$igraph                <- args[4]  # caution: should be consistent with existing vessels already built upon a given graph
-#       do_plot                        <- FALSE
-#   }}}
-#   cat(paste("START \n"))
+cat(paste("START \n"))
 
 dir.create(
   path = file.path(general$main_path_gis, "FISHERIES", "vessels_config_files")
@@ -215,42 +182,6 @@ vessel_specifications[
   "multip.fuel.fishing"
 ] <- 0.0 # passive geAR
 
-# downscale a bit the conso per h to avoid assuming engine at full speed all the time
-towed_gears <- c(
-  "OTB",
-  "TBB",
-  "SSC",
-  "SDN_DEM",
-  "OT_MIX_NEP",
-  "OT_DMF_PEL",
-  "OT_DMF",
-  "OT_DEM_PEL",
-  "OT_SPF",
-  "DRB_MOL",
-  "OT_CRU",
-  "TBB_CRU",
-  "SSC_DEM",
-  "TBB_DMF",
-  "DRB",
-  "OTM",
-  "PTM",
-  "SDN",
-  "PS",
-  "DRH",
-  "OTT"
-)
-vessel_specifications[
-  vessel_specifications$Gear %in% towed_gears,
-  "multip.fuel.fishing"
-] <- 0.7
-vessel_specifications[
-  vessel_specifications$Gear %in% towed_gears,
-  "multip.fuel.steaming"
-] <- 0.8
-vessel_specifications[
-  vessel_specifications$Gear %in% towed_gears,
-  "multip.fuel.ret.port.fish"
-] <- 0.9
 
 vessel_specifications <- vessel_specifications[
   !is.na(vessel_specifications$gear_effort),

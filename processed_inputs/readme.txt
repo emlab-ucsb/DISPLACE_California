@@ -1,1 +1,0 @@
-The `processed_inputs` folder is initially empty and is automatically populated when running the routines with `r/functions_routines.R`. 

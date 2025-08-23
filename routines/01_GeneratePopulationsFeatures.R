@@ -1,33 +1,3 @@
-#
-#  args <- commandArgs(trailingOnly = TRUE)
-#
-#  general <- list()
-#
-#  if (length(args) < 2) {
-#    if(.Platform$OS.type == "windows") {
-#      general$application           <- "MEESO"
-#      general$main_path_gis         <- file.path("D:","FBA", paste("DISPLACE_input_gis_", general$application, sep=""))
-#      general$main.path.ibm         <- file.path("D:","FBA", paste("DISPLACE_input_", general$application, sep=''))
-#      general$igraph                <- 206 # older working one is 110  # caution: should be consistent with existing objects already built upon a given graph
-#     do_plot                        <- TRUE
-#
-#    } else{
-#    if(Sys.info()["sysname"] == "Darwin") {
-#      general$application           <- "MEESO"
-#      general$main_path_gis         <- file.path("usr","local","GitHub",paste("DISPLACE_input_gis_", general$application, sep=""))
-#      general$main.path.ibm         <- file.path("usr","local","Documents","GitHub", paste("DISPLACE_input_", general$application, sep=''))
-#      general$igraph                <- 1  # caution: should be consistent with existing objects already built upon a given graph
-#     do_plot                        <- TRUE
-#
-#    } else {
-#      general$application           <- args[1]
-#      general$main_path_gis         <- args[2]
-#      general$main.path.ibm         <- args[3]
-#      general$igraph                <- args[4]  # caution: should be consistent with existing vessels already built upon a given graph
-#     do_plot                        <- FALSE
-# }}}
-# cat(paste("START \n"))
-
 dir.create(file.path(general$main.path.ibm))
 dir.create(file.path(
   general$main.path.ibm,
@@ -187,132 +157,6 @@ pa$index_pops <- 0:(length(spp) - 1)
 implicit_stocks_idx <- pa[implicit_stocks, "index_pops"]
 implicit_stocks_idx
 
-
-if (FALSE) {
-  ## by the way, look at the nice way of getting the pop params to populate the input pa table:
-  ## the brand new icesSAG R package:
-  library("icesSAG")
-  dd <- getListStocks(2016)
-  dd$StockKeyLabel
-  assessmentKey <- findAssessmentKey("cod-2224", year = 2016)
-  refpts <- getFishStockReferencePoints(assessmentKey)
-  refpts
-  sumtab <- getSummaryTable(assessmentKey)
-  sumtab[[1]][sumtab[[1]]$Year == 2015, c("F", "SSB")] # retrieve assessed F and SSB
-
-  library("icesSAG")
-  dd <- getListStocks(2016)
-  dd$StockKeyLabel
-  assessmentKey <- findAssessmentKey("cod-2224", year = 2016)
-  refpts <- getFishStockReferencePoints(assessmentKey)
-  refpts
-  sumtab <- getSummaryTable(assessmentKey)
-  sumtab[[1]][sumtab[[1]]$Year == 2015, c("F", "SSB", "landings")] # retrieve assessed F and SSB
-
-  # e.g.
-  #stock_to_screen <-  c("arg-oth", "boc-nea", "cod-7e-k", "dab-nsea", "gur-comb", "had-7b-k", "her-irls", "hke-nrtn", "mgw-78", "mon-7-8", "msf-celt", "nep-16",
-  #"nep-17", "nep-19", "nep-2021", "nep-22", "nop-34-oct", "ple-celt", "pod-celt", "pok-celt", "pol-27-67", "rjn-678abd",
-  #"syc-celt", "sol-celt", "whb-comb", "whg-7e-k", "ags-celt", "cly-celt")
-  stock_to_screen <- c(
-    NA,
-    "boc-nea",
-    "cod-7e-k",
-    NA,
-    NA,
-    "had-7b-k",
-    "her-irls",
-    "hke-nrtn",
-    "mgw-78",
-    NA,
-    NA,
-    "nep-16",
-    "nep-17",
-    "nep-19",
-    "nep-2021",
-    "nep-22",
-    "nop-34-oct",
-    "ple-celt",
-    NA,
-    NA,
-    "pol.27.67",
-    "rjn-678abd",
-    "syc-celt",
-    "sol-celt",
-    "whb-comb",
-    "whg-7e-k",
-    NA,
-    NA
-  )
-
-  res <- data.frame(
-    stock = stock_to_screen,
-    TAC = NA,
-    F_MSY = NA,
-    B_trigger = NA,
-    fbar_assessment = NA,
-    ssb_assessment = NA,
-    recruits = NA,
-    Fage = NA,
-    recruitment_a = NA
-  )
-  for (st in stock_to_screen) {
-    cat(paste("----------------------------------------------------------\n"))
-    if (!is.na(st)) {
-      assessmentKey <- findAssessmentKey(st, year = 2016)
-      er <- try(
-        {
-          refpts <- getFishStockReferencePoints(assessmentKey)
-          print(refpts)
-          res$F_MSY[res$stock == st] <- refpts[[1]]["FMSY"]
-          res$B_trigger[res$stock == st] <- refpts[[1]]["MSYBtrigger"]
-
-          sumtab <- getSummaryTable(assessmentKey)
-          print(sumtab[[1]][sumtab[[1]]$Year == 2015, c("F", "SSB")]) # retrieve assessed F and SSB i.e. at y-1
-
-          res$fbar_assessment[res$stock == st] <- sumtab[[1]][
-            sumtab[[1]]$Year == 2015,
-            c("F")
-          ]
-          res$ssb_assessment[res$stock == st] <- sumtab[[1]][
-            sumtab[[1]]$Year == 2015,
-            c("SSB")
-          ]
-          res$TAC[res$stock == st] <- sumtab[[1]][
-            sumtab[[1]]$Year == 2015,
-            c("landings")
-          ]
-          res$recruits[res$stock == st] <- sumtab[[1]][
-            sumtab[[1]]$Year == 2015,
-            c("recruitment_age")
-          ]
-          res$Fage[res$stock == st] <- sumtab[[1]][
-            sumtab[[1]]$Year == 2015,
-            c("Fage")
-          ]
-          res$recruitment_a[res$stock == st] <- sumtab[[1]][
-            sumtab[[1]]$Year == 2015,
-            c("recruitment")
-          ]
-
-          # just of a check
-          landings_plots <- getLandingsGraph(assessmentKey)
-          plot(landings_plots)
-          F_plot <- getFishingMortalityGraph(assessmentKey)
-          plot(F_plot)
-          #  browser()
-        },
-        silent = TRUE
-      )
-    } else {
-      cat(paste("this stock ", st, "is not an assessed stock\n"))
-    }
-  }
-  if (class(er) == "try-error") {
-    cat(paste("fail to retreive for this stock ", st, "\n"))
-  }
-} # end FALSE
-
-
 ##### DEFINE THE BIOLOGICAL SCENARIOS #################################
 ##### (RELATED TO STOCK CONDITIONING AND POTENTIAL MIXING #############
 
@@ -341,240 +185,79 @@ ssbr <- function(alpha, beta, ssb) {
 #points( assess$TOTSPBIO*1e6, assess$RECRUITS*1e6, pch="+", cex=2)
 
 # build a matrix of (biological) scenarios
-if (general$application == "testexample") {
-  multiplier_for_biolsce_all_pops <- expand.grid(
-    biolsce_maturity = 1,
-    biolsce_M = c(1),
-    biolsce_weight = c(1),
-    biolsce_init_pops = 1,
-    biolsce_init_pops = 1,
-    biolsce_fecundity = 1,
-    biolsce_Linfs = c(1, 0.9),
-    biolsce_Ks = c(1),
-    biolsce_recru = c(1),
-    biolsce_mig = c(0),
-    pop = c('COD.2532')
-  ) # see SS3 model settings in ICES WKBALTCOD 2015
 
-  multiplier_for_biolsce_all_pops <- cbind(
-    sce = 1:(nrow(multiplier_for_biolsce_all_pops) /
-      length(unique(multiplier_for_biolsce_all_pops$pop))),
-    multiplier_for_biolsce_all_pops
-  )
+the_base <- expand.grid(
+  sce = 1,
+  biolsce_maturity = 1,
+  biolsce_M = 1,
+  biolsce_weight = 1,
+  biolsce_init_pops = 1,
+  biolsce_init_pops = 1,
+  biolsce_fecundity = 1,
+  biolsce_Linfs = 1,
+  biolsce_CVLinfs = c(1),
+  biolsce_Ks = 1,
+  biolsce_recru_rickeralpha = c(1),
+  biolsce_recru_rickerbeta = c(1),
+  biolsce_CVrecru = c(1),
+  biolsce_mig = 0,
+  spatial_shift = 0,
+  with_shoke = 0,
+  FMSYmulti = 1,
+  pop = c("SAB", "MIP", "SJZ", "SJU", "EOJ", "SGO", "OTH")
+)
 
-  write.table(
-    multiplier_for_biolsce_all_pops,
-    quote = FALSE,
-    file = file.path(
-      general$main.path.ibm,
-      paste("multiplier_for_biolsce", general$application, ".dat", sep = '')
-    ),
-    append = FALSE,
-    row.names = FALSE,
-    col.names = TRUE
-  )
-} else {
-  the_base <- expand.grid(
-    sce = 1,
-    biolsce_maturity = 1,
-    biolsce_M = 1,
-    biolsce_weight = 1,
-    biolsce_init_pops = 1,
-    biolsce_init_pops = 1,
-    biolsce_fecundity = 1,
-    biolsce_Linfs = 1,
-    biolsce_CVLinfs = c(1),
-    biolsce_Ks = 1,
-    biolsce_recru_rickeralpha = c(1),
-    biolsce_recru_rickerbeta = c(1),
-    biolsce_CVrecru = c(1),
-    biolsce_mig = 0,
-    spatial_shift = 0,
-    with_shoke = 0,
-    FMSYmulti = 1,
-    pop = c("SAB", "MIP", "SJZ", "SJU", "EOJ", "SGO", "OTH")
-  )
+the_sce_on_changing_productivity_severe_and_choke <- the_base
+the_sce_on_changing_productivity_severe_and_choke$sce <- 2
+the_sce_on_changing_productivity_severe_and_choke$biolsce_Linfs <- 0.8
+the_sce_on_changing_productivity_severe_and_choke$biolsce_Ks <- 1.5
+the_sce_on_changing_productivity_severe_and_choke$biolsce_recru_rickeralpha <- 0.9 # decrease max recru peak e.g. changed carrying cap?
+the_sce_on_changing_productivity_severe_and_choke$biolsce_recru_rickerbeta <- 1.5 # increase density-dependent effects e.g. from resource scarcity?
+the_sce_on_changing_productivity_severe_and_choke$with_shoke <- 1
+#the_sce_on_changing_productivity_severe_and_choke[the_sce_on_changing_productivity_severe_and_choke$pop=="SPR.nsea", "biolsce_recru_rickeralpha"] <- 1.1  # bc positive effect of warmer water column temperature on sprat
+#the_sce_on_changing_productivity_severe_and_choke[the_sce_on_changing_productivity_severe_and_choke$pop=="SPR.nsea", "biolsce_recru_rickerbeta"] <- 1.0   # bc positive effect of warmer water column temperature on sprat
 
-  the_sce_on_changing_productivity_severe_and_choke <- the_base
-  the_sce_on_changing_productivity_severe_and_choke$sce <- 2
-  the_sce_on_changing_productivity_severe_and_choke$biolsce_Linfs <- 0.8
-  the_sce_on_changing_productivity_severe_and_choke$biolsce_Ks <- 1.5
-  the_sce_on_changing_productivity_severe_and_choke$biolsce_recru_rickeralpha <- 0.9 # decrease max recru peak e.g. changed carrying cap?
-  the_sce_on_changing_productivity_severe_and_choke$biolsce_recru_rickerbeta <- 1.5 # increase density-dependent effects e.g. from resource scarcity?
-  the_sce_on_changing_productivity_severe_and_choke$with_shoke <- 1
-  #the_sce_on_changing_productivity_severe_and_choke[the_sce_on_changing_productivity_severe_and_choke$pop=="SPR.nsea", "biolsce_recru_rickeralpha"] <- 1.1  # bc positive effect of warmer water column temperature on sprat
-  #the_sce_on_changing_productivity_severe_and_choke[the_sce_on_changing_productivity_severe_and_choke$pop=="SPR.nsea", "biolsce_recru_rickerbeta"] <- 1.0   # bc positive effect of warmer water column temperature on sprat
+# stack scenarios
+multiplier_for_biolsce_all_pops <- rbind.data.frame(
+  the_base,
+  the_sce_on_changing_productivity_severe_and_choke
+)
 
-  # stack scenarios
-  multiplier_for_biolsce_all_pops <- rbind.data.frame(
-    the_base,
-    the_sce_on_changing_productivity_severe_and_choke
-  )
-
-  # then duplicate scenarios but changing the FMSY only
-  multiplier_for_biolsce_all_pops_FMSYlower <- multiplier_for_biolsce_all_pops[
-    multiplier_for_biolsce_all_pops$pop %in%
-      c("SAB", "MIP", "SJZ", "SJU", "EOJ", "SGO", "OTH"),
-  ]
-  #pa[c("HER.nsea", "SPR.nsea"), "FMSYlower"] <- pa[c("HER.nsea", "SPR.nsea"), "FMSY"]*0.9   # an assumption in absence of defined FMSYlow
-  multiplier_for_biolsce_all_pops_FMSYlower$FMSYmulti <- pa[
+# then duplicate scenarios but changing the FMSY only
+multiplier_for_biolsce_all_pops_FMSYlower <- multiplier_for_biolsce_all_pops[
+  multiplier_for_biolsce_all_pops$pop %in%
     c("SAB", "MIP", "SJZ", "SJU", "EOJ", "SGO", "OTH"),
-    "FMSYlower"
-  ] /
-    pa[c("SAB", "MIP", "SJZ", "SJU", "EOJ", "SGO", "OTH"), "FMSY"]
-  multiplier_for_biolsce_all_pops_FMSYlower$sce <- multiplier_for_biolsce_all_pops_FMSYlower$sce +
-    2
+]
+#pa[c("HER.nsea", "SPR.nsea"), "FMSYlower"] <- pa[c("HER.nsea", "SPR.nsea"), "FMSY"]*0.9   # an assumption in absence of defined FMSYlow
+multiplier_for_biolsce_all_pops_FMSYlower$FMSYmulti <- pa[
+  c("SAB", "MIP", "SJZ", "SJU", "EOJ", "SGO", "OTH"),
+  "FMSYlower"
+] /
+  pa[c("SAB", "MIP", "SJZ", "SJU", "EOJ", "SGO", "OTH"), "FMSY"]
+multiplier_for_biolsce_all_pops_FMSYlower$sce <- multiplier_for_biolsce_all_pops_FMSYlower$sce +
+  2
 
-  # fix NAs if any
-  multiplier_for_biolsce_all_pops_FMSYlower[is.na(
-    multiplier_for_biolsce_all_pops_FMSYlower
-  )] <- 1
+# fix NAs if any
+multiplier_for_biolsce_all_pops_FMSYlower[is.na(
+  multiplier_for_biolsce_all_pops_FMSYlower
+)] <- 1
 
-  multiplier_for_biolsce_all_pops <- rbind.data.frame(
-    multiplier_for_biolsce_all_pops,
-    multiplier_for_biolsce_all_pops_FMSYlower
-  )
+multiplier_for_biolsce_all_pops <- rbind.data.frame(
+  multiplier_for_biolsce_all_pops,
+  multiplier_for_biolsce_all_pops_FMSYlower
+)
 
-  write.table(
-    multiplier_for_biolsce_all_pops,
-    quote = FALSE,
-    file = file.path(
-      general$main.path.ibm,
-      paste("multiplier_for_biolsce", general$application, ".dat", sep = '')
-    ),
-    append = FALSE,
-    row.names = FALSE,
-    col.names = TRUE
-  )
-}
-
-
-# some checks...
-if (FALSE) {
-  #MA1.nor
-  ssb <- seq(0, 100000, by = 1e3) #SSB tons, Recruits in thousands of individuals
-  plot(
-    ssb,
-    ssbr(
-      alpha = pa["MA1.nor", 'alpha'],
-      beta = pa["MA1.nor", 'beta'],
-      ssb = ssb
-    ),
-    type = "l"
-  )
-  lines(
-    ssb,
-    ssbr(pa["MA1.nor", 'alpha'] * 0.5, pa["MA1.nor", 'beta'] * 0.5, ssb),
-    type = "l",
-    col = 2
-  ) # no densitydepednece effect: bad shape
-  lines(
-    ssb,
-    ssbr(pa["MA1.nor", 'alpha'] * 1.2, pa["MA1.nor", 'beta'] * 1.2, ssb),
-    type = "l",
-    col = 3
-  ) # moving for an earlier peak: bad shape
-  lines(
-    ssb,
-    ssbr(pa["MA1.nor", 'alpha'] * 0.8, pa["MA1.nor", 'beta'] * 1, ssb),
-    type = "l",
-    col = 4
-  ) # decrease the max of the curve
-  lines(
-    ssb,
-    ssbr(pa["MA1.nor", 'alpha'] * 1, pa["MA1.nor", 'beta'] * 1.5, ssb),
-    type = "l",
-    col = 5
-  ) # increase the effect of density-dependence
-  lines(
-    ssb,
-    ssbr(pa["MA1.nor", 'alpha'] * 0.7, pa["MA1.nor", 'beta'] * 1.5, ssb),
-    type = "l",
-    col = 6
-  ) # large decrease the productivity + increase the effect of density-dependence
-
-  # sces  COD.nsea
-  ssb <- seq(0, 100000, by = 1e3) #SSB tons, Recruits in thousands of individuals
-  tiff(
-    file = file.path(
-      general$main_path_gis,
-      "DISPLACE_R_inputs_NorthSea",
-      paste("SSB-R_scenarios_COD.nsea", ".tiff", sep = "")
-    ),
-    width = 2500,
-    height = 2500,
-    compression = "lzw",
-    res = 600
-  )
-  plot(
-    ssb,
-    ssbr(
-      alpha = pa["COD.nsea", 'alpha'],
-      beta = pa["COD.nsea", 'beta'],
-      ssb = ssb
-    ),
-    type = "l",
-    lwd = 2,
-    xlab = "SSB (tons)",
-    ylab = "Recruits (thousands)"
-  ) # baseline
-  lines(
-    ssb,
-    ssbr(pa["COD.nsea", 'alpha'] * 0.9, pa["COD.nsea", 'beta'] * 1.5, ssb),
-    type = "l",
-    col = 2,
-    lwd = 2
-  ) #   severe
-  legend(
-    "bottomright",
-    col = c(1, 6, 2),
-    lty = 1,
-    lwd = 2,
-    legend = c("Baseline", "Climate Change"),
-    bty = "n"
-  )
-  title("COD.nsea")
-  dev.off()
-
-  tiff(
-    file = file.path(
-      general$main_path_gis,
-      "DISPLACE_R_inputs_MEESO",
-      paste("VBFC_scenarios_MA1.nor", ".tiff", sep = "")
-    ),
-    width = 2500,
-    height = 2500,
-    compression = "lzw",
-    res = 600
-  )
-  plot(
-    1:21,
-    vbg(pa["MA1.nor", 'Linf'], pa["MA1.nor", 'K'], 0, 1:21),
-    type = "l",
-    lwd = 2,
-    xlab = "Semester",
-    ylab = "Length (mm)"
-  )
-  points(
-    1:21,
-    vbg(pa["MA1.nor", 'Linf'] * 0.8, pa["MA1.nor", 'K'] * 1.5, 0, 1:21),
-    type = "l",
-    lwd = 2,
-    col = 2,
-    xlab = "Semester",
-    ylab = "Length (mm)"
-  )
-  legend(
-    "bottomright",
-    col = c(1, 6, 2),
-    lty = 1,
-    lwd = 2,
-    legend = c("Baseline", "Climate Change"),
-    bty = "n"
-  )
-  title("MA1.nor")
-  dev.off()
-}
+write.table(
+  multiplier_for_biolsce_all_pops,
+  quote = FALSE,
+  file = file.path(
+    general$main.path.ibm,
+    paste("multiplier_for_biolsce", general$application, ".dat", sep = '')
+  ),
+  append = FALSE,
+  row.names = FALSE,
+  col.names = TRUE
+)
 
 
 hyperstability_param <- cbind(

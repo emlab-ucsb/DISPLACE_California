@@ -1,39 +1,3 @@
-##!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!##
-## GENERAL SETTINGS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!##
-##!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!##
-# args <- commandArgs(trailingOnly = TRUE)
-
-#  general <- list()
-
-#  if (length(args) < 2) {
-#    if(.Platform$OS.type == "windows") {
-#      general$application           <- "NorthSea"
-#      general$main_path_gis         <- file.path("C:", paste("DISPLACE_input_gis_", general$application, sep=""))
-#      general$main.path.ibm         <- file.path("C:", paste("DISPLACE_input_", general$application, sep=''))
-#      general$igraph                <- 3  # caution: should be consistent with existing objects already built upon a given graph
-#     do_plot                        <- TRUE
-
-#    } else{
-#    if(Sys.info()["sysname"] == "Darwin") {
-#      general$application           <- "VME"
-#      general$main_path_gis         <- file.path("usr","local","GitHub",paste("DISPLACE_input_gis_", general$application, sep=""))
-#      general$main.path.ibm         <- file.path("usr","local","Documents","GitHub", paste("DISPLACE_input_", general$application, sep=''))
-#      general$igraph                <- 12  # caution: should be consistent with existing objects already built upon a given graph
-#     do_plot                        <- TRUE
-
-#    } else {
-#      general$application           <- args[1]
-#      general$main_path_gis         <- args[2]
-#      general$main.path.ibm         <- args[3]
-#      general$igraph                <- args[4]  # caution: should be consistent with existing vessels already built upon a given graph
-#     do_plot                        <- FALSE
-# }}}
-# cat(paste("START \n"))
-
-##!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!##
-## THe ROUTINE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!##
-##!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!##
-
 cat(paste("START \n"))
 
 # (caution: give the order for naming stocks in integer from 0 to n-1)

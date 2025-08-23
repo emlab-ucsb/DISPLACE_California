@@ -1,45 +1,5 @@
-#  args <- commandArgs(trailingOnly = TRUE)
+cat(paste("START \n"))
 
-#  general <- list()
-
-#  if (length(args) < 2) {
-#    if(.Platform$OS.type == "windows") {
-#      general$application           <- "NorthSea"
-#      general$main_path_gis         <- file.path("C:", paste("DISPLACE_input_gis_", general$application, sep=""))
-#      general$main.path.ibm         <- file.path("C:", paste("DISPLACE_input_", general$application, sep=''))
-#      general$igraph                <- 3  # caution: should be consistent with existing objects already built upon a given graph
-#     do_plot                        <- TRUE
-
-#    } else{
-#    if(Sys.info()["sysname"] == "Darwin") {
-#      general$application           <- "VME"
-#      general$main_path_gis         <- file.path("usr","local","GitHub",paste("DISPLACE_input_gis_", general$application, sep=""))
-#      general$main.path.ibm         <- file.path("usr","local","Documents","GitHub", paste("DISPLACE_input_", general$application, sep=''))
-#      general$igraph                <- 12  # caution: should be consistent with existing objects already built upon a given graph
-#     do_plot                        <- TRUE
-
-#    } else {
-#      general$application           <- args[1]
-#      general$main_path_gis         <- args[2]
-#      general$main.path.ibm         <- args[3]
-#      general$igraph                <- args[4]  # caution: should be consistent with existing vessels already built upon a given graph
-#     do_plot                        <- FALSE
-# }}}
-# cat(paste("START \n"))
-
-############### EDIT PETER DEPENDING ON NAME LAYER on line 101
-
-# caution fleet sce
-# fleetsce <-  data.frame(sce=1, namesce=c('baseline'))
-
-# fleetsce <- read.table(
-#   file = file.path(
-#     general$main.path.ibm,
-#     paste("multiplier_for_fleetsce", general$application, ".dat", sep = '')
-#   ),
-#   header = TRUE,
-#   sep = " "
-# )
 
 fleetsce <- data.frame(sce = 1, namesce = c('baseline'))
 
@@ -49,54 +9,7 @@ fleetsce <- data.frame(sce = 1, namesce = c('baseline'))
 
 library("readxl")
 library("dplyr")
-# landings <- read_excel(
-#   file.path(
-#     general$main_path_gis,
-#     "OTHERS",
-#     "OfficialNominalCatches_2006-2022",
-#     "ICESCatchDataset2006-2022.xlsx"
-#   ),
-#   3
-# )
-# landings <- as.data.frame(landings) # in tons
 
-# # quick and dirty...TODO: obtain a key per stock.
-# # for now, done per species, which is different from stocks...
-# landings <- landings[landings$Area == "27", ] # this app
-
-# landings$species <- paste0(tolower(landings$Column1), ".", landings$Area)
-
-# spp_table <- read.table(
-#   file = file.path(
-#     general$main_path_gis,
-#     "POPULATIONS",
-#     paste0("pop_names_", general$application, ".txt")
-#   ),
-#   header = TRUE
-# )
-# spp_table$spp <- tolower(spp_table$spp)
-# land <- landings[
-#   landings$species %in% paste0(substr(spp_table$spp, 1, 3), ".27"),
-# ]
-# land_2022 <- land[, c("species", "Country", "2022")]
-
-# catches_in_tons <- data.frame(tapply(
-#   as.numeric(as.character(land_2022$'2022')),
-#   list(land_2022$species, land_2022$Country),
-#   sum,
-#   na.rm = TRUE
-# ))
-
-# catches_in_tons$species <- substr(rownames(catches_in_tons), 1, 3)
-# catches_in_tons <- data.frame(
-#   stock = spp_table$spp,
-#   species = substr(spp_table$spp, 1, 3)
-# ) %>%
-#   left_join(catches_in_tons, by = c("species" = "species"))
-
-# catches_in_tons[is.na(catches_in_tons)] <- 0
-
-# catches_in_tons <- as.data.frame(catches_in_tons)
 
 catches_in_tons <- read.table(
   file.path(general$main_path_gis, "OTHERS", "othercatchespercountry.csv"),
@@ -107,9 +20,6 @@ cat(paste("Read the specs othercatchespercountry.csv\n"))
 
 popnames <- as.character(catches_in_tons$POP)
 
-############## Perhaps keep a part of dutch fisheries unaccounted for in the simulation
-
-# catches_in_tons[, 'NL'] <- 0
 
 ############### see comment below, we need better data on depletion for different stocks
 
@@ -143,7 +53,7 @@ for (sce in fleetsce$sce) {
       file.path(general$main_path_gis, "POPULATIONS", "SpatialLayers", a_file),
       crs = "+proj=longlat +datum=WGS84"
     )
-    name_gis_layer_field <- "GRIDCODE" ############### EDIT PETER DEPENDING ON NAME LAYER
+    name_gis_layer_field <- "GRIDCODE" ############### EDIT DEPENDING ON NAME LAYER
     shp <- shp[, name_gis_layer_field]
     shp$pop <- popid
 

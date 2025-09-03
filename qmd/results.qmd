@@ -196,7 +196,7 @@ Disaggregating by species shows good overall agreement between simulated and obs
 knitr::include_graphics("figures/validation_sp_landings.jpg")
 ```
 
-
+<!-- 
 ### Population model validation
 
 To assess the biological model’s performance, compare simulated SSB outputs to those from the stock assessments. Adapt the `generate_ssb_fit_plot` function to check this.
@@ -217,7 +217,7 @@ Although these initial differences are small, they amplify as the population gro
 #| fig-cap: The spawning stock biomass estimates reported in the stock assessments from 2010-2020 compared to the spawning biomass estimates generated through the validation simulation. Both axes are plotted on a log scale.
  
 knitr::include_graphics("figures/validation_ssb.jpg")
-```
+``` -->
 
 <!-- 
 

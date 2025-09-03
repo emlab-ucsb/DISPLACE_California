@@ -51,7 +51,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./fisheries.html" rel="next">
-<link href="./spatial_extend.html" rel="prev">
+<link href="./spatial_extent.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -164,8 +164,8 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./spatial_extend.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Spatial extend</span></span></a>
+  <a href="./spatial_extent.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Spatial extent</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -1002,7 +1002,7 @@ Table&nbsp;2.5: Natural mortality rate of each species.
 </section>
 <section id="sizespectra-option-parameters" class="level3" data-number="2.2.7">
 <h3 data-number="2.2.7" class="anchored" data-anchor-id="sizespectra-option-parameters"><span class="header-section-number">2.2.7</span> SizeSpectra option parameters</h3>
-<p>The following parameters can be ignored by setting them to 0 if we are not considering trophic interactions (<span class="citation" data-cites="blanchard2017sizespectra">(<a href="references.html#ref-blanchard2017sizespectra" role="doc-biblioref"><strong>blanchard2017sizespectra?</strong></a>)</span>): <code>Winf</code>, <code>k</code>, <code>etha_m</code>, <code>kappa</code>, <code>q</code>, <code>n</code> and <code>fzeroest</code>. We can account for trophic interactions by enabling the <code>sizeSpectra</code> option.</p>
+<p>The following parameters can be ignored by setting them to 0 if we are not considering trophic interactions (<span class="citation" data-cites="blanchard2017sizespectra">Blanchard et al. (<a href="references.html#ref-blanchard2017sizespectra" role="doc-biblioref">2017</a>)</span>): <code>Winf</code>, <code>k</code>, <code>etha_m</code>, <code>kappa</code>, <code>q</code>, <code>n</code> and <code>fzeroest</code>. We can account for trophic interactions by enabling the <code>sizeSpectra</code> option.</p>
 </section>
 <section id="additional-variables" class="level3" data-number="2.2.8">
 <h3 data-number="2.2.8" class="anchored" data-anchor-id="additional-variables"><span class="header-section-number">2.2.8</span> Additional variables</h3>
@@ -1018,7 +1018,7 @@ Table&nbsp;2.5: Natural mortality rate of each species.
 </section>
 <section id="species-distribution" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="species-distribution"><span class="header-section-number">2.3</span> Species distribution</h2>
-<p>Population distribution inputs need to be located in <code>POPULATIONS/SpatialLayers</code> to run DISPLACE. The R routines can interpret biomass density on any unit and at a continuous scale. For our case study we use species distribution data from <span class="citation" data-cites="liu2023species">(<a href="references.html#ref-liu2023species" role="doc-biblioref"><strong>liu2023species?</strong></a>)</span> (<a href="#fig-sp-distribution" class="quarto-xref">Figure&nbsp;<span>2.8</span></a>).</p>
+<p>Population distribution inputs need to be located in <code>POPULATIONS/SpatialLayers</code> to run DISPLACE. The R routines can interpret biomass density on any unit and at a continuous scale. For our case study we use species distribution data from <span class="citation" data-cites="liu2023species">Liu et al. (<a href="references.html#ref-liu2023species" role="doc-biblioref">2023</a>)</span> (<a href="#fig-sp-distribution" class="quarto-xref">Figure&nbsp;<span>2.8</span></a>).</p>
 <p>These inputs need to be provided in <code>.shp</code> format. For our case study, we clipped the spatial density of the species to a grid of interest and exported it as a shapefile. In addition to the geometry information of each polygon (i.e., the square cells in our grid), the abundance or biomass density must be specified in a variable named <code>GRIDCODE</code>, which is then read by the routines as shown in <a href="#tbl-sp-dis-file" class="quarto-xref">Table&nbsp;<span>2.6</span></a>.</p>
 <div class="cell">
 <div id="tbl-sp-dis-file" class="cell quarto-float quarto-figure quarto-figure-center anchored">
@@ -1152,11 +1152,17 @@ Table&nbsp;2.7: Stock_prices_data.csv input file contects
 <div id="ref-adams2019catch" class="csl-entry" role="listitem">
 Adams, Grant D, Owen S Hamel, and Ian G Taylor. 2019. <span>“Catch Only Update: Stock Assessment and Status of Longspine Thornyhead (Sebastolobus Altivelis) Off California, Oregon and Washington in 2019.”</span>
 </div>
+<div id="ref-blanchard2017sizespectra" class="csl-entry" role="listitem">
+Blanchard, Julia L, Ryan F Heneghan, Jason D Everett, Rowan Trebilco, and Anthony J Richardson. 2017. <span>“From Bacteria to Whales: Using Functional Size Spectra to Model Marine Ecosystems.”</span> <em>Trends in Ecology &amp; Evolution</em> 32 (3): 174–86. <a href="https://doi.org/10.1016/j.tree.2016.12.003">https://doi.org/10.1016/j.tree.2016.12.003</a>.
+</div>
 <div id="ref-johnson2023status" class="csl-entry" role="listitem">
 Johnson, KF, CR Wetzel, and N Tolimieri. 2023. <span>“Status of Sablefish (Anoplopoma Fimbria) Along the US West Coast in 2023.”</span> <em>Pacific Fisheries Management Council, Portland, Oregon</em>.
 </div>
 <div id="ref-keller2017northwest" class="csl-entry" role="listitem">
 Keller, Aimee A, John Robert Wallace, and Richard Donald Methot. 2017. <span>“The Northwest Fisheries Science Center’s West Coast Groundfish Bottom Trawl Survey: History, Design, and Description.”</span>
+</div>
+<div id="ref-liu2023species" class="csl-entry" role="listitem">
+Liu, Owen R, Eric J Ward, Sean C Anderson, Kelly S Andrews, Lewis AK Barnett, Stephanie Brodie, Gemma Carroll, et al. 2023. <span>“Species Redistribution Creates Unequal Outcomes for Multispecies Fisheries Under Projected Climate Change.”</span> <em>Science Advances</em> 9 (33): eadg5468. <a href="https://www.science.org/doi/full/10.1126/sciadv.adg5468">https://www.science.org/doi/full/10.1126/sciadv.adg5468</a>.
 </div>
 <div id="ref-taylor2021beyond" class="csl-entry" role="listitem">
 Taylor, Ian G, Kathryn L Doering, Kelli F Johnson, Chantel R Wetzel, and Ian J Stewart. 2021. <span>“Beyond Visualizing Catch-at-Age Models: Lessons Learned from the R4ss Package about Software to Support Stock Assessments.”</span> <em>Fisheries Research</em> 239: 105924.
@@ -1572,8 +1578,8 @@ Zahner, JA, MA Heller-Shipley, HA Oleynik, SG Beyer, P-Y Hernvann, M Véron, AN 
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./spatial_extend.html" class="pagination-link" aria-label="Spatial extend">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Spatial extend</span></span>
+      <a href="./spatial_extent.html" class="pagination-link" aria-label="Spatial extent">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Spatial extent</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

@@ -3,7 +3,7 @@ output: html_document
 editor_options: 
   chunk_output_type: console
 ---
-# Spatial extend {#sec-fleet}
+# Spatial extent {#sec-fleet}
 
 ```{r, echo = FALSE, results = FALSE, message = FALSE, warning = FALSE, cache = FALSE}
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE, cache = FALSE)

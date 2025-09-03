@@ -18,7 +18,7 @@ source(here::here("r/config.R"))
 
 This section describes the raw input datasets and parameters used to run the R routines related to fleet characteristics. These include information on individual fishing vessels, gears, métiers, vessel economics, and related aspects. The files should be stored and loaded from `raw_inputs/FISHERIES`. Most of the information can be derived from available VMS, landing receipts, vessel registry data, and stock assessments. 
 
->**Note:** The data included in this repository and presented here is example data only. It is derived from the actual case study but does not represent real data.
+>**Note:** The data included in this repository and presented here are example data based on model output only. It is derived from the actual case study but does not represent real data, as the actual data inputs are confidential.
 
 
 ## Fishing effort distribution
@@ -30,7 +30,7 @@ These files must be available in `.shp` format within `FISHERIES/SpatialLayers`,
 
 For our case study, we used vessel-specific fishing effort distributions by métier. Thus, if a vessel operated with more than one gear, we provided a separate spatial file of associated fishing effort for each métier for that vessel.  
 
-The figure below shows the overall input fishing distribution for our fleet, along with examples of individual inputs used in this analysis.
+The figure below shows example input fishing distribution data for our fleet and for an individual example vessel, broken down by the two metiers involved. These visualizations are based on model output, as the actual data inputs are confidential.
 
 ```{r}
 
@@ -162,7 +162,7 @@ names(shp_list) <- tools::file_path_sans_ext(basename(shp_files))
 
 fe_distribution <- shp_list[c("fe_code_all", "fe_code_USA0028_dts_trawl", "fe_code_USA0028_non_dts_trawl")]
 
-names(fe_distribution) <-c("Overall Fishing Effort (h)", "USA0028 DTS Trawl", "USA0028 Non-DTS Trawl")
+names(fe_distribution) <-c("Total fleet FE (h)", "DTS Trawl vessel FE (h)", "Non-DTS Trawl vessel FE (h)")
 
 plots <- generate_notebook_fe_maps(fe_distribution)
 

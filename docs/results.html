@@ -150,8 +150,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./spatial_extend.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Spatial extend</span></span></a>
+  <a href="./spatial_extent.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Spatial extent</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -198,7 +198,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#model-validation" id="toc-model-validation" class="nav-link" data-scroll-target="#model-validation"><span class="header-section-number">5.2</span> Model validation</a>
   <ul class="collapse">
   <li><a href="#fleet-model-validation" id="toc-fleet-model-validation" class="nav-link" data-scroll-target="#fleet-model-validation"><span class="header-section-number">5.2.1</span> Fleet model validation</a></li>
-  <li><a href="#population-model-validation" id="toc-population-model-validation" class="nav-link" data-scroll-target="#population-model-validation"><span class="header-section-number">5.2.2</span> Population model validation</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -471,32 +470,32 @@ Figure&nbsp;5.5: Comparison of simulated and observed cumulative landings for th
 </div>
 </div>
 </div>
-</section>
-<section id="population-model-validation" class="level3" data-number="5.2.2">
-<h3 data-number="5.2.2" class="anchored" data-anchor-id="population-model-validation"><span class="header-section-number">5.2.2</span> Population model validation</h3>
-<p>To assess the biological model’s performance, compare simulated SSB outputs to those from the stock assessments. Adapt the <code>generate_ssb_fit_plot</code> function to check this.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">generate_ssb_fit_plot</span>(</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>      stock_assessment_data_folder, <span class="co"># Folder where SSB stock assessment data is located</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>      popstats_dis_baseline_output<span class="sc">$</span>agg_pop_stats_year_sim <span class="co"># Processed popstats outputs</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Here we compared estimates of spawning stock biomass (SSB) from 2010-2023 from the stock assessments with the SSB time series generated through the 14 year DISPLACE simulation (<a href="#fig-validation-ssb" class="quarto-xref">Figure&nbsp;<span>5.6</span></a>). We found that the initial SSBs in DISPLACE closely mirrored those of the assessment. Small differences arise due to the large differences in the length bins implemented in DISPLACE compared to those assumed in the stock assessments. DISPLACE uses 13 evenly sized length bins that are identical across all four species despite their differences in size. On the other hand, the stock assessments assume much more resolved length bins (1 to 2 cm) with maximum lengths tailored for each species. This leads to differences in the resolution of the numbers at length, the weight at length, and the maturity at length, leading to differences in the calculation of SSB.</p>
-<p>Although these initial differences are small, they amplify as the population grows through the coarse DISPLACE length bins. As a result, we judged this comparison to not be useful validation of the biological model. The fact that the DISPLACE simulations generate the right amount of catches from the right amount of effort is a better validation of the performance of the biological model.</p>
-<div class="cell">
-<div class="cell-output-display">
-<div id="fig-validation-ssb" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-validation-ssb-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="figures/validation_ssb.jpg" class="img-fluid figure-img" width="1200">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-validation-ssb-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5.6: The spawning stock biomass estimates reported in the stock assessments from 2010-2020 compared to the spawning biomass estimates generated through the validation simulation. Both axes are plotted on a log scale.
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
+<!-- 
+### Population model validation
+
+To assess the biological model’s performance, compare simulated SSB outputs to those from the stock assessments. Adapt the `generate_ssb_fit_plot` function to check this.
+
+
+::: {.cell}
+
+```{.r .cell-code}
+generate_ssb_fit_plot(
+      stock_assessment_data_folder, # Folder where SSB stock assessment data is located
+      popstats_dis_baseline_output$agg_pop_stats_year_sim # Processed popstats outputs
+    )
+```
+:::
+
+
+Here we compared estimates of spawning stock biomass (SSB) from 2010-2023 from the stock assessments with the SSB time series generated through the 14 year DISPLACE simulation (@fig-validation-ssb). We found that the initial SSBs in DISPLACE closely mirrored those of the assessment. Small differences arise due to the large differences in the length bins implemented in DISPLACE compared to those assumed in the stock assessments. DISPLACE uses 13 evenly sized length bins that are identical across all four species despite their differences in size. On the other hand, the stock assessments assume much more resolved length bins (1 to 2 cm) with maximum lengths tailored for each species. This leads to differences in the resolution of the numbers at length, the weight at length, and the maturity at length, leading to differences in the calculation of SSB. 
+
+Although these initial differences are small, they amplify as the population grows through the coarse DISPLACE length bins. As a result, we judged this comparison to not be useful validation of the biological model. The fact that the DISPLACE simulations generate the right amount of catches from the right amount of effort is a better validation of the performance of the biological model.
+
+#| label: fig-validation-ssb
+#| fig-cap: The spawning stock biomass estimates reported in the stock assessments from 2010-2020 compared to the spawning biomass estimates generated through the validation simulation. Both axes are plotted on a log scale.
+ 
+knitr::include_graphics("figures/validation_ssb.jpg")
+``` -->
 <!-- 
 
 ## REsults

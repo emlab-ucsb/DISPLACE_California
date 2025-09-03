@@ -9,7 +9,7 @@ book:
   date-format: "[Last Updated on] MMMM DD, YYYY"
   chapters:
     - index.qmd
-    - spatial_extend.qmd
+    - spatial_extent.qmd
     - populations.qmd
     - fisheries.qmd
     - routines.qmd

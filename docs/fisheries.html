@@ -199,8 +199,8 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./spatial_extend.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Spatial extend</span></span></a>
+  <a href="./spatial_extent.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Spatial extent</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -278,14 +278,14 @@ window.Quarto = {
 
 <p>This section describes the raw input datasets and parameters used to run the R routines related to fleet characteristics. These include information on individual fishing vessels, gears, métiers, vessel economics, and related aspects. The files should be stored and loaded from <code>raw_inputs/FISHERIES</code>. Most of the information can be derived from available VMS, landing receipts, vessel registry data, and stock assessments.</p>
 <blockquote class="blockquote">
-<p><strong>Note:</strong> The data included in this repository and presented here is example data only. It is derived from the actual case study but does not represent real data.</p>
+<p><strong>Note:</strong> The data included in this repository and presented here are example data based on model output only. It is derived from the actual case study but does not represent real data, as the actual data inputs are confidential.</p>
 </blockquote>
 <section id="fishing-effort-distribution" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="fishing-effort-distribution"><span class="header-section-number">3.1</span> Fishing effort distribution</h2>
 <p>DISPLACE requires spatial object inputs defining fishing effort distributions. These can be provided at different levels of aggregation, ranging from overall fleet-wide fishing effort to distributions by port of operation, by métier, or even by individual vessels. The more disaggregated the inputs, the more accurately DISPLACE can emulate the fleet and vessel behaviour.</p>
 <p>These files must be available in <code>.shp</code> format within <code>FISHERIES/SpatialLayers</code>, and their names must match those specified in the <code>name_gis_file_for_fishing_effort_per_polygon</code> variable from <code>vessels_specifications_per_harbour_metiers.csv</code>, as detailed in the following section. Fishing effort values can be defined either in absolute terms (using any unit) or as relative values. However, since DISPLACE outputs express effort as cumulative fishing time, we recommend transforming input effort values to that unit to enable direct comparison.</p>
 <p>For our case study, we used vessel-specific fishing effort distributions by métier. Thus, if a vessel operated with more than one gear, we provided a separate spatial file of associated fishing effort for each métier for that vessel.</p>
-<p>The figure below shows the overall input fishing distribution for our fleet, along with examples of individual inputs used in this analysis.</p>
+<p>The figure below shows example input fishing distribution data for our fleet and for an individual example vessel, broken down by the two metiers involved. These visualizations are based on model output, as the actual data inputs are confidential.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-fe-distribution" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -325,7 +325,7 @@ Figure&nbsp;3.1: Fishing effort distribution input examples. The left panel show
 <li><p><code>fuel.tank.liter</code>: Fuel tank capacity of the vessel. This parameter is important because it influences trip duration. A half-empty fuel tank will trigger the vessel to return to port. Other reasons for returning to port include a full fish hold or reaching the end of the day if the vessel is set to perform daily trips (i.e., when trip duration is set to &lt;30h).</p>
 <p>In our case study, vessel-specific fuel tank capacities were not available for our vessels of interest. Instead, we built a model from a limited dataset to infer tank capacity based on vessel length. Alternatively, the case example in this repository provides a model to calculate tank capacity as a function of length using the nonlinear regression model <code>DanishFuelTankCapModel.Rdata</code>, which has been applied in other DISPLACE applications by Bastardie et al, and it is already integrated within <code>06_GenerateVesselsConfigFiles.r</code>.</p></li>
 <li><p><code>fuel.cons.h</code>: Fuel consumption per hour. Like <code>fuel.tank.liter</code>, this parameter is critical because it determines trip duration, fuel availability, and the variable costs of a trip.</p>
-<p>For this parameter, we use the consumption expression from <span class="citation" data-cites="bastardie2013integrating">(<a href="references.html#ref-bastardie2013integrating" role="doc-biblioref"><strong>bastardie2013integrating?</strong></a>)</span>. It is already implemented within <code>06_GenerateVesselsConfigFiles.r</code>, where a linear model is built using data from <code>IBM_datainput_engine_consumption.txt</code>. This expression defines fuel consumption per hour based on engine power (kW). Consumption is adjusted within the simulation using multipliers for different operational phases.</p></li>
+<p>For this parameter, we use the consumption expression from <span class="citation" data-cites="bastardie2013integrating">Bastardie et al. (<a href="references.html#ref-bastardie2013integrating" role="doc-biblioref">2013</a>)</span>. It is already implemented within <code>06_GenerateVesselsConfigFiles.r</code>, where a linear model is built using data from <code>IBM_datainput_engine_consumption.txt</code>. This expression defines fuel consumption per hour based on engine power (kW). Consumption is adjusted within the simulation using multipliers for different operational phases.</p></li>
 <li><p><code>Operational phase multipliers</code>: Multipliers applied to fuel consumption per hour depending on the phase of a trip, since fuel use varies across different activities.</p>
 <ul>
 <li><code>multip.fuel.steaming</code>: Adjusts fuel consumption when the vessel is steaming, i.e., traveling to or from fishing grounds.<br>
@@ -336,7 +336,7 @@ Figure&nbsp;3.1: Fishing effort distribution input examples. The left panel show
 </li>
 <li><code>multip.fuel.inactive</code>: Adjusts fuel consumption when the vessel is inactive (e.g., docked at port, anchored, or for gillnetters setting nets at very low speeds).</li>
 </ul>
-<p>In the absence of specific information, all multipliers can be set to <code>1</code>. For our case study, we use the values from <span class="citation" data-cites="bastardie2013integrating">(<a href="references.html#ref-bastardie2013integrating" role="doc-biblioref"><strong>bastardie2013integrating?</strong></a>)</span>: Fishing: <code>1</code>; Steaming: <code>0.8</code>; Inactive: <code>0.1</code>. For returning to port with catch, we use <code>1.1</code>, as applied in other DISPLACE analyses from the Bastardie repository, to reflect slightly higher consumption when carrying landed fish.</p></li>
+<p>In the absence of specific information, all multipliers can be set to <code>1</code>. For our case study, we use the values from <span class="citation" data-cites="bastardie2013integrating">Bastardie et al. (<a href="references.html#ref-bastardie2013integrating" role="doc-biblioref">2013</a>)</span>: Fishing: <code>1</code>; Steaming: <code>0.8</code>; Inactive: <code>0.1</code>. For returning to port with catch, we use <code>1.1</code>, as applied in other DISPLACE analyses from the Bastardie repository, to reflect slightly higher consumption when carrying landed fish.</p></li>
 <li><p><code>ave.storage.fish.kg</code>: Fish storage capacity of the vessel. This defines another trigger for when a vessel must return to port, once no more fish can be stored the trip ends.</p>
 <p>Storage capacity can be defined as the highest observed historical catch for a given vessel, creating an artificial ceiling for total potential catches. However, actual storage capacity in weight may vary across trips depending on catch volume and other conditions. For this reason, using the maximum observed value across all trips in the time series may not always be ideal. Due this, the storage capacity variable was also adjusted during the calibration process, as described later.</p></li>
 <li><p><code>nb_pings_per_trip</code>: Defines the frequency of changing fishing grounds within a trip. This value can be <code>1</code> or higher. If greater than <code>1</code>, the vessel may shift between several fishing grounds instead of remaining in a single node. This behavior also depends on the use of a Change Fishing Ground Decision Tree, which sets the probabilities for moving to other grounds. If the value is <code>1</code>, the vessel will fish only in a single node and will not switch grounds, reducing navigation time and concentrating all fishing pressure for that particular simulated trip within that node. In our case study, we use a value of <code>1</code>. However, an example decision tree file is provided in the repository: <code>dtrees/ChangeGround_VME.dt.csv</code>.</p></li>
@@ -524,6 +524,9 @@ Figure&nbsp;3.3: Selectivity in the most recent time block by species, fleet, an
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-bastardie2013integrating" class="csl-entry" role="listitem">
+Bastardie, Francois, J Rasmus Nielsen, Bo Sølgaard Andersen, and Ole Ritzau Eigaard. 2013. <span>“Integrating Individual Trip Planning in Energy Efficiency–Building Decision Tree Models for Danish Fisheries.”</span> <em>Fisheries Research</em> 143: 119–30.
+</div>
 <div id="ref-feist2025mapping" class="csl-entry" role="listitem">
 Feist, Blake E, Robert Griffin, Jameal F Samhouri, Leena Riekkola, Andrew O Shelton, Y Allen Chen, Kayleigh Somers, Kelly Andrews, Owen R Liu, and Jennifer Ise. 2025. <span>“Mapping the Value of Commercial Fishing and Potential Costs of Offshore Wind Energy on the US: West Coast: Towards an Assessment of Resource Use Tradeoffs.”</span> <em>PloS One</em> 20 (3): e0315319.
 </div>

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>References – DISPLACE California documentation</title>
+<title>1&nbsp; Spatial extent – DISPLACE California documentation</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,26 +20,7 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -49,7 +30,8 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./results.html" rel="prev">
+<link href="./populations.html" rel="next">
+<link href="./index.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -100,7 +82,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./references.html">References</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./spatial_extent.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Spatial extent</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -133,7 +115,7 @@ div.csl-indent {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./spatial_extent.html" class="sidebar-item-text sidebar-link">
+  <a href="./spatial_extent.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Spatial extent</span></span></a>
   </div>
 </li>
@@ -163,7 +145,7 @@ div.csl-indent {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link active">
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">References</span></a>
   </div>
 </li>
@@ -172,15 +154,22 @@ div.csl-indent {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#graph-of-nodes" id="toc-graph-of-nodes" class="nav-link active" data-scroll-target="#graph-of-nodes"><span class="header-section-number">1.1</span> Graph of nodes</a></li>
+  <li><a href="#harbors" id="toc-harbors" class="nav-link" data-scroll-target="#harbors"><span class="header-section-number">1.2</span> Harbors</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">References</h1>
+<h1 class="title"><span id="sec-fleet" class="quarto-section-identifier"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Spatial extent</span></span></h1>
 </div>
 
 
@@ -197,110 +186,131 @@ div.csl-indent {
 </header>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
-<div id="ref-adams2019catch" class="csl-entry" role="listitem">
-Adams, Grant D, Owen S Hamel, and Ian G Taylor. 2019. <span>“Catch Only
-Update: Stock Assessment and Status of Longspine Thornyhead
-(Sebastolobus Altivelis) Off California, Oregon and Washington in
-2019.”</span>
+<p>The spatial domain of DISPLACE is represented by a network of nodes on which simulated vessels navigate and fish. The extent of this domain must be defined based on historical fishing effort and the harbors from which vessels operate. This section provides context on the inputs required to define the study’s spatial domain.</p>
+<section id="graph-of-nodes" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="graph-of-nodes"><span class="header-section-number">1.1</span> Graph of nodes</h2>
+<p>The <a href="https://displace-project.org/blog/tutorials/">DISPLACE project</a> provides tutorials on using DISPLACE. Among them is a guide to <a href="https://displace-project.org/blog/wp-content/uploads/2014/11/DISPLACE-step-by-step-guideline-Set-up-a-new-graph-of-node1.pdf">setting up a new graph of nodes</a> that explains step by step how to use the DISPLACE GUI to create the node graph, an input required by the R routines and the model.</p>
+<p>To do so, at least two <code>.shp</code> files are required: one defining the area extent for simulating vessel behavior, and an inverted shape to prevent the generation of nodes outside the area of interest. Example files are provided in this repository under <code>raw_inputs/GRAPH/shp</code> as <code>graph_area.shp</code> and <code>exclusion_area.shp</code>. Using these, you can generate the graph of nodes, which is already available for this example application in <code>raw_inputs/GRAPH</code> as <code>graph0.dat</code> and its associated files.</p>
+<p><strong>For this study</strong>, we focus on the waters off the coast of California using a spatial domain that spans latitudinally from roughly the US/Mexico EEZ border to Cape Blanco (32.0° to 42.6°) and longitudinally from -125.1° to -117.3°. Nodes are 4 km apart (<a href="#fig-spatial-domain" class="quarto-xref">Figure&nbsp;<span>1.1</span></a>).</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-spatial-domain" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-spatial-domain-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/spatial_domain.jpg" class="img-fluid figure-img" width="1160">
 </div>
-<div id="ref-bastardie2013integrating" class="csl-entry" role="listitem">
-Bastardie, Francois, J Rasmus Nielsen, Bo Sølgaard Andersen, and Ole
-Ritzau Eigaard. 2013. <span>“Integrating Individual Trip Planning in
-Energy Efficiency–Building Decision Tree Models for Danish
-Fisheries.”</span> <em>Fisheries Research</em> 143: 119–30.
-</div>
-<div id="ref-bastardie2014displace" class="csl-entry" role="listitem">
-Bastardie, Francois, J Rasmus Nielsen, and Tanja Miethe. 2014.
-<span>“DISPLACE: A Dynamic, Individual-Based Model for Spatial Fishing
-Planning and Effort Displacement—Integrating Underlying Fish Population
-Models.”</span> <em>Canadian Journal of Fisheries and Aquatic
-Sciences</em> 71 (3): 366–86.
-</div>
-<div id="ref-blanchard2017sizespectra" class="csl-entry" role="listitem">
-Blanchard, Julia L, Ryan F Heneghan, Jason D Everett, Rowan Trebilco,
-and Anthony J Richardson. 2017. <span>“From Bacteria to Whales: Using
-Functional Size Spectra to Model Marine Ecosystems.”</span> <em>Trends
-in Ecology &amp; Evolution</em> 32 (3): 174–86. <a href="https://doi.org/10.1016/j.tree.2016.12.003">https://doi.org/10.1016/j.tree.2016.12.003</a>.
-</div>
-<div id="ref-feist2025mapping" class="csl-entry" role="listitem">
-Feist, Blake E, Robert Griffin, Jameal F Samhouri, Leena Riekkola,
-Andrew O Shelton, Y Allen Chen, Kayleigh Somers, Kelly Andrews, Owen R
-Liu, and Jennifer Ise. 2025. <span>“Mapping the Value of Commercial
-Fishing and Potential Costs of Offshore Wind Energy on the US: West
-Coast: Towards an Assessment of Resource Use Tradeoffs.”</span> <em>PloS
-One</em> 20 (3): e0315319.
-</div>
-<div id="ref-horsch2023discounting" class="csl-entry" role="listitem">
-Horsch, Eric, Daniel Phaneuf, Chris Giguere, Jason Murray, Cameron Duff,
-and Cole Kroninger. 2023. <span>“Discounting in Natural Resource Damage
-Assessment.”</span> <em>Journal of Benefit-Cost Analysis</em> 14 (1):
-141–61.
-</div>
-<div id="ref-johnson2023status" class="csl-entry" role="listitem">
-Johnson, KF, CR Wetzel, and N Tolimieri. 2023. <span>“Status of
-Sablefish (Anoplopoma Fimbria) Along the US West Coast in 2023.”</span>
-<em>Pacific Fisheries Management Council, Portland, Oregon</em>.
-</div>
-<div id="ref-keller2017northwest" class="csl-entry" role="listitem">
-Keller, Aimee A, John Robert Wallace, and Richard Donald Methot. 2017.
-<span>“The Northwest Fisheries Science Center’s West Coast Groundfish
-Bottom Trawl Survey: History, Design, and Description.”</span>
-</div>
-<div id="ref-kitts2020techno" class="csl-entry" role="listitem">
-Kitts, Andrew, Raymon Van Anrooy, Sjef Van Eijs, J Pino Shibata, R
-Pallalever Pérez, Alex Augusto Gonçalves, Greg Ardini, Christopher
-Liese, Minling Pan, and Erin Steiner. 2020. <span>“Techno-Economic
-Performance Review of Selected Fishing Fleets in North and South
-America.”</span>
-</div>
-<div id="ref-kitts2022noaa" class="csl-entry" role="listitem">
-Kitts, Andrew, John Walden, Dale Squires, Mike Travis, Erin Steiner,
-Lisa Pfeiffer, Christopher Liese, and Minling Pan. 2022. <span>“NOAA
-Fisheries Best Practices for Measuring Returns to Fishing
-Businesses.”</span>
-</div>
-<div id="ref-lian2012west" class="csl-entry" role="listitem">
-Lian, Carl E. 2012. <span>“West Coast Limited Entry Groundfish Cost
-Earnings Survey: Protocol and Results for 2008.”</span>
-</div>
-<div id="ref-liu2023species" class="csl-entry" role="listitem">
-Liu, Owen R, Eric J Ward, Sean C Anderson, Kelly S Andrews, Lewis AK
-Barnett, Stephanie Brodie, Gemma Carroll, et al. 2023. <span>“Species
-Redistribution Creates Unequal Outcomes for Multispecies Fisheries Under
-Projected Climate Change.”</span> <em>Science Advances</em> 9 (33):
-eadg5468. <a href="https://www.science.org/doi/full/10.1126/sciadv.adg5468">https://www.science.org/doi/full/10.1126/sciadv.adg5468</a>.
-</div>
-<div id="ref-steiner2021evaluating" class="csl-entry" role="listitem">
-Steiner, Erin, Ashley Vizek, Marie Guldin, Melissa Krigbaum, and Lisa
-Pfeiffer. 2021. <span>“Evaluating the Economic Performance of the US
-West Coast Groundfish Trawl Catch Share Program.”</span>
-</div>
-<div id="ref-taylor2021beyond" class="csl-entry" role="listitem">
-Taylor, Ian G, Kathryn L Doering, Kelli F Johnson, Chantel R Wetzel, and
-Ian J Stewart. 2021. <span>“Beyond Visualizing Catch-at-Age Models:
-Lessons Learned from the R4ss Package about Software to Support Stock
-Assessments.”</span> <em>Fisheries Research</em> 239: 105924.
-</div>
-<div id="ref-vastenhoud2023economic" class="csl-entry" role="listitem">
-Vastenhoud, Berthe MJ, Francois Bastardie, Ken H Andersen, Douglas C
-Speirs, and J Rasmus Nielsen. 2023. <span>“Economic Viability of a Large
-Vessel Mesopelagic Fishery Under Ecological Uncertainty.”</span>
-<em>Frontiers in Marine Science</em> 10: 1285793.
-</div>
-<div id="ref-wetzel2021status" class="csl-entry" role="listitem">
-Wetzel, CR, and AM Berger. 2021. <span>“Status of Dover Sole
-(Microstomus Pacificus) Along the US West Coast in 2021.”</span>
-<em>Pacific Fishery Management Council, Portland, Oregon</em>.
-</div>
-<div id="ref-zahner2023status" class="csl-entry" role="listitem">
-Zahner, JA, MA Heller-Shipley, HA Oleynik, SG Beyer, P-Y Hernvann, M
-Véron, AN Odell, et al. 2023. <span>“Status of Shortspine Thornyhead
-(Sebastolobus Alascanus) Along the US West Coast in 2023,”</span> 135.
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-spatial-domain-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.1: DISPLACE study area. The spatial extent for this study is determined by the spatial distribution of DTS vessel fishing effort, informed by the merged VMS-fish ticket dataset. This results in a latitudinal extent of 32.0° to 42.6°, and longitudinal extent of -125.1° to -117.3°. Nodes are 4 km apart, and the twelve ports depicted are those included in the simulations. OSW areas are shaded in grey.
+</figcaption>
+</figure>
 </div>
 </div>
+</div>
+</section>
+<section id="harbors" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="harbors"><span class="header-section-number">1.2</span> Harbors</h2>
+<p>As detailed in the <a href="https://displace-project.org/blog/wp-content/uploads/2014/11/DISPLACE-step-by-step-guideline-Set-up-a-new-graph-of-node1.pdf">graph of nodes tutorial</a> the generated nodes of the stidy area (graph0.dat) need to be associated to the harbors from where the vessels operate in the simulation. Such, vessels need to be specified in the file <code>GRAPH/harbours.dat</code>, with the port name with no blank spaces, a port id and the latitude and lon coordinates as shown in <a href="#tbl-harbours" class="quarto-xref">Table&nbsp;<span>1.1</span></a>.</p>
+<div class="cell">
+<div id="tbl-harbours" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-harbours-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1.1: Details of the <code>harbour.dat</code> file contents for this case study.
+</figcaption>
+<div aria-describedby="tbl-harbours-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">port_name</th>
+<th style="text-align: right;">lon</th>
+<th style="text-align: right;">lat</th>
+<th style="text-align: right;">idx_port</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Crescent_City</td>
+<td style="text-align: right;">-124.2</td>
+<td style="text-align: right;">41.7</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Eureka</td>
+<td style="text-align: right;">-124.2</td>
+<td style="text-align: right;">40.8</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Fort_Bragg</td>
+<td style="text-align: right;">-123.8</td>
+<td style="text-align: right;">39.4</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bodega_Bay</td>
+<td style="text-align: right;">-123.1</td>
+<td style="text-align: right;">38.3</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">San_Francisco</td>
+<td style="text-align: right;">-122.4</td>
+<td style="text-align: right;">37.8</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Moss_Landing</td>
+<td style="text-align: right;">-121.8</td>
+<td style="text-align: right;">36.8</td>
+<td style="text-align: right;">7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Monterey</td>
+<td style="text-align: right;">-121.9</td>
+<td style="text-align: right;">36.6</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Morro_Bay</td>
+<td style="text-align: right;">-120.9</td>
+<td style="text-align: right;">35.4</td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Santa_Barbara</td>
+<td style="text-align: right;">-119.7</td>
+<td style="text-align: right;">34.4</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Oxnard</td>
+<td style="text-align: right;">-119.2</td>
+<td style="text-align: right;">34.2</td>
+<td style="text-align: right;">9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Newport_Beach</td>
+<td style="text-align: right;">-117.9</td>
+<td style="text-align: right;">33.6</td>
+<td style="text-align: right;">11</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Oceanside</td>
+<td style="text-align: right;">-117.4</td>
+<td style="text-align: right;">33.2</td>
+<td style="text-align: right;">12</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>The final updated graph, with nodes connected to the ports of interest, has already been generated and is available at <code>GRAPH/graph1.dat</code> along with its associated files. This is the graph that will be used to run DISPLACE. Additionally, <code>GRAPH/graph2.dat</code> contains the updated graph that defines the lease areas closure scenario.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -704,11 +714,14 @@ Véron, AN Odell, et al. 2023. <span>“Status of Shortspine Thornyhead
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./results.html" class="pagination-link" aria-label="Results">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Results</span></span>
+      <a href="./index.html" class="pagination-link" aria-label="Introduction">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Introduction</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="./populations.html" class="pagination-link" aria-label="Populations data">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Populations data</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->

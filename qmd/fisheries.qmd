@@ -18,8 +18,7 @@ source(here::here("r/config.R"))
 
 This section describes the raw input datasets and parameters used to run the R routines related to fleet characteristics. These include information on individual fishing vessels, gears, métiers, vessel economics, and related aspects. The files should be stored and loaded from `raw_inputs/FISHERIES`. Most of the information can be derived from available VMS, landing receipts, vessel registry data, and stock assessments. 
 
->**Note:** The data included in this repository and presented here are example data based on model output only. It is derived from the actual case study but does not represent real data, as the actual data inputs are confidential.
-
+>**Note:** The data included in this repository and presented here are example data based on model output only. It is derived from the actual case study but does not represent real data, as the actual data inputs are confidential. The original data for this study consist of raw VMS records from the National Oceanic and Atmospheric Administration (NOAA) and landing receipts from the California Department of Fish and Wildlife (CDFW), covering the period 2010–2023.
 
 ## Fishing effort distribution
 
@@ -205,7 +204,7 @@ The variables included in this dataset are detailed below:
 
 - `VE_LEN` and `Tonnage`: These parameters correspond to vessel length (m) and vessel tonnage (any unit).Tonnage values are not used as DISPLACE inputs, but included as a references. However, as for our case study we use tonnage values to extrapolate other parameters such as engine power or fuel tank capacity. Neither the VMS nor fish ticket data contain much information on vessel characteristics. To obtain such information, in our study we have web scraped information from the [USCG Port State Information Exchange website](https://cgmix.uscg.mil/psix/psixsearch.aspx) and the [NOAA limited entry dataset](https://www.webapps.nwfsc.noaa.gov/apex/ifq/f?p=112:23). 
 
--   `mean_kW`: Mean engine power of the vessel. This variable influences the fuel consumption of simulated trips. In our case study, engine power values were only available for a few vessels. To estimate engine power for the rest, we used registry data from 2,043 vessels and predicted engine power from tonnage and length using a model we developed.
+-   `mean_kW`: Mean engine power of the vessel. This variable influences the fuel consumption of simulated trips. In our case study, engine power values were only available for a few vessels. To estimate engine power for the rest, we used registry data from 2,043 vessels (@ODFW2024) and predicted engine power from tonnage and length using a model we developed.
 
 -   `kW`: Represents the same information as `mean_kW`. If we lack engine power data and we recorded as `0` or `NA`, the script `06_GenerateVesselsConfigFiles.r` will assign a value based on the model `DanishkWvsLOAModel.Rdata` instead, used in other DISPLACE applications by Bastardie et al.
 

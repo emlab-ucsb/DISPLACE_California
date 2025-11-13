@@ -418,14 +418,13 @@ cat(paste("init_prop_migrants_pops_per_szgroup_biolsce.dat\n", sep = ''))
 
 ##### FOR-LOOP OVER BIOLOGICAL SCENARIOS ############
 # ....because some parts of the parameterization are scenario specific!
-for (sce in unique(multiplier_for_biolsce_all_pops$sce)) {
-  #for (sce in c(3:4)){
-
-  cat(paste("sce ", sce, "\n"))
+# for (sce in unique(multiplier_for_biolsce_all_pops$sce)) {
+for (sce in 1) {
+  cat(paste("sce ", sce, "\n")) # UPDATED 2025-11-12 we are only considering 1 scenario
 
   #timesteps   <- 21       # time steps 10 years with 2 semesters each
   #NbPeriods   <- 2        # 2 semesters within the year
-  timesteps <- 41 # time steps 10 years with 4 quarters each
+  # timesteps <- 41 # time steps 10 years with 4 quarters each
   NbPeriods <- 4 # 4 quarter within the year
   pop <- 10000 # number of simulated individuals
 
@@ -503,6 +502,7 @@ for (sce in unique(multiplier_for_biolsce_all_pops$sce)) {
       stock <- rownames(pa)[x]
       aa <- pa$a[x] # e.g. aa*(length+2.5cm)^bb/1000
       bb <- pa$b[x]
+      max_age <- pa$fbar_age_max[x] # UPDATED 2025-10-17
       # Ricker stock-recruitment model fit: R=a*S*exp(-bS)
       # a is related to productivity (recruits per stock unit at small stock size) and b to density dependence. (a, b > 0).
       a_SSB <- pa$alpha[x] #Ricker param (unless the given value is >2000 then activating a shortcut to add a fixed nb of recruits in absolute value)
@@ -513,6 +513,10 @@ for (sce in unique(multiplier_for_biolsce_all_pops$sce)) {
       size_bin_cm <- pa$sz_bin_cm[x]
       unit_sizebin <- pa$unit_sizebin[x] # if 1 then cm, if 0.1 then mm etc.
       FMSY <- pa$FMSY[x]
+
+      # UPDATED 2025-10-17
+      # Update time steps to allow simulated growth across an entire lifespan
+      timesteps <- max_age * NbPeriods
 
       # get the sce matrix specific to this pop.
       multiplier_for_biolsce <- multiplier_for_biolsce_all_pops[
@@ -584,9 +588,13 @@ for (sce in unique(multiplier_for_biolsce_all_pops$sce)) {
       inc <- mat.or.vec(pop, timesteps) # increment
       varI <- mat.or.vec(pop, timesteps) # variance of increment
 
-      #assign initial size of recruits
+      # Assign initial size of recruits
       for (i in 1:pop) {
-        indlength[i, 1] <- abs(rnorm(1, 0.5, 0.5))
+        # indlength[i, 1] <- abs(rnorm(1, 0.5, 0.5))
+        # UPDATED the 2025-10-23
+        L0 <- Linf * (1 - exp(-K * (0 - t0 / NbPeriods)))
+        var_L0 <- L0 * CV_Linf
+        indlength[i, 1] <- abs(rnorm(1, L0, var_L0))
       }
 
       # create growth trajectories
@@ -595,14 +603,21 @@ for (sce in unique(multiplier_for_biolsce_all_pops$sce)) {
           for (jj in 2:timesteps) {
             varL <- CV_Linf * Linf
             Linfe <- rnorm(1, mean = Linf, sd = sqrt(varL)) #stochasticity in Linf
+            # UPDATED the 2025-10-17
+            # Linfe <- Linf # reconsider original form above
+            # Why does it apply stochasticity in Linf if this will generate static outputs?
             if (Linfe <= indlength[ii, (jj - 1)]) {
               inc[ii, jj] <- 0
             } else {
               varK <- 0.1 * K
               Kr <- abs(rnorm(1, mean = K, sd = sqrt(varK))) #stochasticity in K
 
+              # meanI[ii, jj] <- (Linfe - indlength[ii, (jj - 1)]) *
+              #   (1 - exp(-Kr * ((1 / NbPeriods) - (t0 / NbPeriods))))
+              # UPDATED the 2025-10-16
               meanI[ii, jj] <- (Linfe - indlength[ii, (jj - 1)]) *
-                (1 - exp(-Kr * ((1 / NbPeriods) - (t0 / NbPeriods))))
+                (1 - exp(-Kr * (1 / NbPeriods)))
+
               varI[ii, jj] <- 0.01 * meanI[ii, jj]
 
               inc[ii, jj] <- abs(rnorm(
@@ -633,14 +648,22 @@ for (sce in unique(multiplier_for_biolsce_all_pops$sce)) {
         ## ALK Age-Length Keys
         #1- build age distribution matrix A
         #2- build szgroup distribution matrix C
-        A <- matrix(0, length(l), 11) # 11 age classes
+        # A <- matrix(0, length(l), 11) # 11 age classes
+        # UPDATED 2025-10-17
+        A <- matrix(0, length(l), max_age) # max age to define age classes
         if (semester_growth) {
-          B <- matrix(0, length(l), 21)
+          # B <- matrix(0, length(l), 21)
+          # UPDATED the 2025-10-16
+          B <- matrix(0, length(l), timesteps)
         } # 21 tsteps
         if (quarter_growth) {
-          B <- matrix(0, length(l), 41)
+          # B <- matrix(0, length(l), 41)
+          # UPDATED the 2025-10-16
+          B <- matrix(0, length(l), timesteps)
         } # 41 tsteps
-        C <- matrix(0, length(l), 11) # 11 age classes
+        # C <- matrix(0, length(l), 11) # 11 age classes
+        # UPDATED the 2025-10-16
+        C <- matrix(0, length(l), max_age) # max age to define age classes
         for (sz in 1:length(l)) {
           B[sz, ] <- apply(
             S,
@@ -663,7 +686,9 @@ for (sce in unique(multiplier_for_biolsce_all_pops$sce)) {
 
         if (quarter_growth) {
           count <- 0
-          for (ij in c(1, 5, 9, 13, 17, 21, 25, 29, 33, 36)) {
+          # for (ij in c(1, 5, 9, 13, 17, 21, 25, 29, 33, 36)) {
+          # UPDATED 2023-10-16
+          for (ij in seq(1, timesteps - NbPeriods, NbPeriods)) {
             count <- count + 1
             C[, count] <- B[, ij] + B[, ij + 1] + B[, ij + 2] + B[, ij + 3] # add Q 1 and Q 2 and Q3 and Q4
           }
@@ -882,7 +907,9 @@ for (sce in unique(multiplier_for_biolsce_all_pops$sce)) {
       #build size transition matrix G
       incr <- inc[, -c(1)] # remove first column, growth from previous to present size
       increment <- c(incr) # vectorize
-      leng <- indlength[, -c(21)] # remove last column , to combine length with growth increment to next size group
+      # leng <- indlength[, -c(21)] # remove last column , to combine length with growth increment to next size group
+      # UPDATED 2025-10-16
+      leng <- indlength[, -c(timesteps)] # remove last column , to combine length with growth increment to next size group
       len <- c(leng) # vectorize
 
       values <- mat.or.vec(length(len), 4)
@@ -898,6 +925,30 @@ for (sce in unique(multiplier_for_biolsce_all_pops$sce)) {
       n <- length(l) - 1
       G <- matrix(0, (n), (n))
 
+      # Original loop
+      # for (b in 1:n) {
+      #   for (a in 1:n) {
+      #     if (b <= a) {
+      #       value <- subset(values, values[, 2] == b)
+      #       if (var(value[, 4]) == 0 | length(value[, 1]) < 2) {
+      #         G[a, b] <- 0
+      #       } else {
+      #         mea <- mean(value[, 4])
+      #         vari <- var(value[, 4])
+      #         fun <- function(x) {
+      #           dnorm(
+      #             x,
+      #             mean = (l[b] + (size_bin_cm / 2) + mea),
+      #             sd = sqrt(vari)
+      #           )
+      #         }
+      #         G[a, b] <- integrate(fun, l[a], l[a + 1])$value
+      #       }
+      #     }
+      #   }
+      # }
+
+      # Alternative UPDATED 2025-10-16
       for (b in 1:n) {
         for (a in 1:n) {
           if (b <= a) {
@@ -905,16 +956,10 @@ for (sce in unique(multiplier_for_biolsce_all_pops$sce)) {
             if (var(value[, 4]) == 0 | length(value[, 1]) < 2) {
               G[a, b] <- 0
             } else {
-              mea <- mean(value[, 4])
-              vari <- var(value[, 4])
-              fun <- function(x) {
-                dnorm(
-                  x,
-                  mean = (l[b] + (size_bin_cm / 2) + mea),
-                  sd = sqrt(vari)
-                )
-              }
-              G[a, b] <- integrate(fun, l[a], l[a + 1])$value
+              G[a, b] <- mean(
+                value[, 1] + value[, 4] > l[a] &
+                  value[, 1] + value[, 4] < l[a + 1]
+              )
             }
           }
         }
@@ -923,15 +968,34 @@ for (sce in unique(multiplier_for_biolsce_all_pops$sce)) {
       G <- round(G, 4)
       if (all(G == 0)) {
         G[1, 1] <- 1
-      } # e.g. blue mussels
+      }
 
       # G should sum to 1 in columns
+      # if (!all(apply(G[1:14, 1:14], 2, sum) == 1)) {
+      #   idx2 <- apply(G[1:14, 1:14], 2, function(x) {
+      #     ss <- which(x != 0)
+      #     sss <- ss[length(ss)]
+      #     if (length(sss) <= 0) {
+      #       sss <- 14
+      #     }
+      #     return(sss)
+      #   })
+      #   a_leak <- 1 - apply(G[,, drop = FALSE], 2, sum)
+      #   for (j in 1:14) {
+      #     G[idx2[j], j] <- G[idx2[j], j] + a_leak[j]
+      #   } # a fix to avoid leaks
+      # }
+
+      # UPDATED 2025-10-09.
+      # Prevent 1s to be added at the last bin which would increase the individuals largest bin size.
+      # That, by extension, was dramatically increasing SSB after the first pop iteration and and increasing total SSB
       if (!all(apply(G[1:14, 1:14], 2, sum) == 1)) {
-        idx2 <- apply(G[1:14, 1:14], 2, function(x) {
+        idx2 <- sapply(seq_len(14), function(z) {
+          x <- G[1:14, z]
           ss <- which(x != 0)
           sss <- ss[length(ss)]
           if (length(sss) <= 0) {
-            sss <- 14
+            sss <- z
           }
           return(sss)
         })
@@ -967,10 +1031,48 @@ for (sce in unique(multiplier_for_biolsce_all_pops$sce)) {
       ))
 
       #build size distribution vector L
-      # UPDATED the 2025-06-16
       # surv <- round(exp(-(0.12 * 27 * (l + (size_bin_cm / 2))^(-1))), 4) #length dependent mortality vector using the lower bound length (+1 to ignore 0) to get survival
       # mort <- round((1 - surv), 4)
-      mort <- rep(nat_M, length.out = length(l)) # For our case study, antural mortality is the same across all sizes
+
+      # UPDATED the 2025-06-16
+      # mort <- rep(nat_M, length.out = length(l)) # For our case study, natural mortality is the same across all sizes
+
+      # UPDATED the 2025-10-23
+      # Length bin midpoints
+      # lbin_cm_mids <- l + (size_bin_cm / 2)
+      # # Target natural mortality
+      # m_avg <- nat_M
+      # # weights: 1 = simple average; or use N_i
+      # w <- rep(1, length(lbin_cm_mids))
+      # # compute scaling constant and M_i
+      # w <- w / sum(w) # even weights
+      # c_scale <- m_avg / sum(w * (1 / lbin_cm_mids))
+      # mort <- c_scale / lbin_cm_mids
+
+      # UPDATED the 2025-10-23
+      # Define mortality up to larges size bin
+      # Length bin midpoints
+      # lbin_cm_mids <- l + (size_bin_cm / 2)
+      # lbin_cm_mids <- lbin_cm_mids[
+      #   lbin_cm_mids <= lbin_cm_mids[values[, 2] |> max()]
+      # ]
+      # # Target natural mortality
+      # m_avg <- nat_M
+      # # weights: 1 = simple average; or use N_i
+      # w <- rep(1, length(lbin_cm_mids))
+      # # compute scaling constant and M_i
+      # w <- w / sum(w) # even weights
+      # c_scale <- m_avg / sum(w * (1 / lbin_cm_mids))
+      # mort <- c_scale / lbin_cm_mids
+
+      # UPDATED the 2025-10-23
+      # Define mortality using original routine definition.
+      # Define mortality up to larges size bin
+      # Length bin midpoints
+      lbin_cm_mids <- l + (size_bin_cm / 2)
+      M_len <- nat_M * Linf / lbin_cm_mids # instantaneous M(L) (using natural mortality as mortality inf)
+      surv <- exp(-M_len) # annual survival at that L
+      mort <- 1 - surv
 
       if (nrow(multiplier_for_biolsce) != 0) {
         mort <- mort *

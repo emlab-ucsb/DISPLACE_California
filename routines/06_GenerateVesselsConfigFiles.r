@@ -440,7 +440,12 @@ for (i in 1:nrow(vessel_specifications)) {
       byrow = TRUE
     ) # 0 means not adding to the effect
     create_file_for_fuel_price_per_vessel_size <- TRUE # u15m, 15-18m 18-24m 24-40m
-    some_fuel_price_per_vessel_size <- c(1.28, 1.28, 1.28, 1.28, 1.28) # dollar per litre (TODO: will need to be substituted with vessel specs ones in the c++ code)
+    some_fuel_price_per_vessel_size <- rep(
+      vessel_specifications$fuel_price_liter |> unique(),
+      5
+    ) # dollar per litre (TODO: will need to be substituted with vessel specs ones in the c++ code)
+    # Prices were originally hardcoded as c(1.28, 1.28, 1.28, 1.28, 1.28)
+
     step_in_share_credits <- vessel_specifications[i, "nb_vessels"] /
       sum(vessel_specifications[, "nb_vessels"]) # i.e. % of the credits will be booked for these new vessels
 

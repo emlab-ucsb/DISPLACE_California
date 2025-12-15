@@ -86,29 +86,49 @@ for (sce in fleetsce$sce) {
 
     cat(paste("Read graph...done\n"))
 
-    # extract abundance (or whatever name)
-    e <- terra::ext(terra::vect(shp))
-    r <- terra::rast(
-      e,
-      ncols = 5000,
-      nrows = 5000,
-      crs = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"
-    )
-    shp_WGS84_rast <- terra::rasterize(
-      terra::vect(shp),
-      field = name_gis_layer_field,
-      r,
-      fun = mean
-    )
-    shp_WGS84_rast_values_on_coord <- terra::extract(
-      shp_WGS84_rast,
-      as.matrix(coord[, c(1, 2)])
-    )
+    # # COMMENTED 2025-11-20
+    # # extract abundance (or whatever name)
+    # e <- terra::ext(terra::vect(shp))
+    # r <- terra::rast(
+    #   e,
+    #   ncols = 5000,
+    #   nrows = 5000,
+    #   crs = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"
+    # )
+    # shp_WGS84_rast <- terra::rasterize(
+    #   terra::vect(shp),
+    #   field = name_gis_layer_field,
+    #   r,
+    #   fun = mean
+    # )
+    # shp_WGS84_rast_values_on_coord <- terra::extract(
+    #   shp_WGS84_rast,
+    #   as.matrix(coord[, c(1, 2)])
+    # )
 
-    coord <- cbind(coord, abundance = shp_WGS84_rast_values_on_coord)
+    # coord <- cbind(coord, abundance = shp_WGS84_rast_values_on_coord)
 
-    # keep only nodes where an abundance is informed i.e. where the stock distributes
-    coord <- coord[!is.na(coord[, name_gis_layer_field]), ]
+    # # keep only nodes where an abundance is informed i.e. where the stock distributes
+    # coord <- coord[!is.na(coord[, name_gis_layer_field]), ]
+
+    # UPDATED 2025-11-20
+    coord_sf <- coord |>
+      as.data.frame() |>
+      st_as_sf(
+        coords = c("x", "y"),
+        crs = st_crs(shp)
+      )
+
+    shp_WGS84_values_on_coord_sf <- st_join(coord_sf, shp) |> na.omit()
+
+    # Transforme sf to dataframe. Get original coord now with pop density
+    coord <- shp_WGS84_values_on_coord_sf |>
+      dplyr::mutate(
+        x = sf::st_coordinates(geometry)[, "X"],
+        y = sf::st_coordinates(geometry)[, "Y"]
+      ) |>
+      sf::st_drop_geometry() |>
+      dplyr::select(x, y, harb, pt_graph, GRIDCODE)
 
     # if there are some locations included then....
     if (nrow(coord) != 0) {
@@ -124,10 +144,20 @@ for (sce in fleetsce$sce) {
         1000 # convert in kg from tons
 
       # ...and dispatch (just an assumption, one can do otherwise provided the data format is respected)
-      coord <- cbind(
-        coord,
-        landings = total_catches_this_year_in_kg / nrow(coord) / 12
-      ) # e.g. catches are evenly dispatched among the relevant nodes and given 12 months
+      if (TRUE) {
+        # Catches are proportionally dispatched among the relevant nodes and given 12 months given the initial population densities
+        coord <- coord |>
+          dplyr::mutate(
+            GRIDCODE_prop = GRIDCODE / sum(GRIDCODE, na.rm = TRUE),
+            landings = GRIDCODE_prop * total_catches_this_year_in_kg / 12
+          )
+      } else {
+        # Catches are evenly dispatched among the relevant nodes and given 12 months
+        coord <- cbind(
+          coord,
+          landings = total_catches_this_year_in_kg / nrow(coord) / 12
+        )
+      }
 
       # caution: other_land likely to be 0 (because rounded at the end of the day) if a small amount is dispatched over a large amount of nodes....
 

@@ -1039,15 +1039,15 @@ for (sce in 1) {
 
       # UPDATED the 2025-10-23
       # Length bin midpoints
-      # lbin_cm_mids <- l + (size_bin_cm / 2)
-      # # Target natural mortality
-      # m_avg <- nat_M
-      # # weights: 1 = simple average; or use N_i
-      # w <- rep(1, length(lbin_cm_mids))
-      # # compute scaling constant and M_i
-      # w <- w / sum(w) # even weights
-      # c_scale <- m_avg / sum(w * (1 / lbin_cm_mids))
-      # mort <- c_scale / lbin_cm_mids
+      lbin_cm_mids <- l + (size_bin_cm / 2)
+      # Target natural mortality
+      m_avg <- nat_M
+      # weights: 1 = simple average; or use N_i
+      w <- rep(1, length(lbin_cm_mids))
+      # compute scaling constant and M_i
+      w <- w / sum(w) # even weights
+      c_scale <- m_avg / sum(w * (1 / lbin_cm_mids))
+      mort <- c_scale / lbin_cm_mids
 
       # UPDATED the 2025-10-23
       # Define mortality up to larges size bin
@@ -1069,10 +1069,10 @@ for (sce in 1) {
       # Define mortality using original routine definition.
       # Define mortality up to larges size bin
       # Length bin midpoints
-      lbin_cm_mids <- l + (size_bin_cm / 2)
-      M_len <- nat_M * Linf / lbin_cm_mids # instantaneous M(L) (using natural mortality as mortality inf)
-      surv <- exp(-M_len) # annual survival at that L
-      mort <- 1 - surv
+      # lbin_cm_mids <- l + (size_bin_cm / 2)
+      # M_len <- nat_M * Linf / lbin_cm_mids # instantaneous M(L) (using natural mortality as mortality inf)
+      # surv <- exp(-M_len) # annual survival at that L
+      # mort <- 1 - surv
 
       if (nrow(multiplier_for_biolsce) != 0) {
         mort <- mort *

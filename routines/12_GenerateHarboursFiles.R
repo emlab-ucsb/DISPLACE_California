@@ -51,6 +51,21 @@ cat(paste("Read port names...done\n"))
 max_idx <- max(port_names$idx_port)
 c(1:max_idx)[!c(1:max_idx) %in% port_names$idx.port] # should return integer(0)
 
+filename <- file.path(
+  general$main_path_gis,
+  "FISHERIES",
+  "vessels_specifications_per_harbour_metiers.csv"
+)
+vessel_specifications <- read.csv2(
+  file = filename,
+  sep = ",",
+  header = TRUE,
+  dec = "."
+)
+vessel_specifications <- cbind.data.frame(
+  vessel_specifications,
+  id = 1:nrow(vessel_specifications)
+)
 
 #load
 # Updated from frabas to work on newest R versions
@@ -258,7 +273,10 @@ cat(paste("Write names_harbours.dat in /harboursspe...done\n"))
 # obtain a c++ map with fuel price per vessel size category
 for (i in port_names$pt_graph) {
   write.table(
-    cbind(vessel_size = 0:4, fuel_price = c(1.28, 1.28, 1.28, 1.28, 1.28)), # dollar per litre
+    cbind(
+      vessel_size = 0:4,
+      fuel_price = rep(vessel_specifications$fuel_price_liter |> unique(), 5)
+    ), # dollar per litre. Originally hardcoded as c(1.28, 1.28, 1.28, 1.28, 1.28)
     file = file.path(
       general$main.path.ibm,
       paste("harboursspe_", general$application, sep = ''),
@@ -268,7 +286,10 @@ for (i in port_names$pt_graph) {
     quote = FALSE
   )
   write.table(
-    cbind(vessel_size = 0:4, fuel_price = c(1.28, 1.28, 1.28, 1.28, 1.28)), # dollar per litre
+    cbind(
+      vessel_size = 0:4,
+      fuel_price = rep(vessel_specifications$fuel_price_liter |> unique(), 5)
+    ), # dollar per litre
     file = file.path(
       general$main.path.ibm,
       paste("harboursspe_", general$application, sep = ''),
@@ -278,7 +299,10 @@ for (i in port_names$pt_graph) {
     quote = FALSE
   )
   write.table(
-    cbind(vessel_size = 0:4, fuel_price = c(1.28, 1.28, 1.28, 1.28, 1.28)), # dollar per litre
+    cbind(
+      vessel_size = 0:4,
+      fuel_price = rep(vessel_specifications$fuel_price_liter |> unique(), 5)
+    ), # dollar per litre
     file = file.path(
       general$main.path.ibm,
       paste("harboursspe_", general$application, sep = ''),
@@ -288,7 +312,10 @@ for (i in port_names$pt_graph) {
     quote = FALSE
   )
   write.table(
-    cbind(vessel_size = 0:4, fuel_price = c(1.28, 1.28, 1.28, 1.28, 1.28)), # euro per litre
+    cbind(
+      vessel_size = 0:4,
+      fuel_price = rep(vessel_specifications$fuel_price_liter |> unique(), 5)
+    ), # euro per litre
     file = file.path(
       general$main.path.ibm,
       paste("harboursspe_", general$application, sep = ''),

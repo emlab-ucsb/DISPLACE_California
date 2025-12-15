@@ -474,6 +474,7 @@ for (namefile in namefiles) {
         file = file.path(
           general$main_path_gis,
           "GRAPH",
+
           paste("coord", general$igraph, ".dat", sep = "")
         )
       ) # build from the c++ gui
@@ -488,7 +489,13 @@ for (namefile in namefiles) {
         file = file.path(
           general$main_path_gis,
           "GRAPH",
-          paste("graph", general$igraph, ".dat", sep = "")
+
+          paste(
+            "GRAPH",
+            general$igraph,
+            ".dat",
+            sep = ""
+          )
         )
       ) # build from the c++ gui
       graph <- matrix(as.numeric(as.character(graph[, 1])), ncol = 3)
@@ -497,7 +504,12 @@ for (namefile in namefiles) {
       #-------------------------------------------------------------------------------
       # make a circle as a proxy for geographical range---------------------------
       harbours <- read.table(
-        file.path(general$main_path_gis, "GRAPH", name_file_ports),
+        file.path(
+          general$main_path_gis,
+          "GRAPH",
+
+          name_file_ports
+        ),
         sep = ";",
         row.names = NULL,
         header = TRUE
@@ -535,6 +547,7 @@ for (namefile in namefiles) {
       lst <- getPolyAroundACoord(harbours, a_dist_m = vessel_range_km * 1000)
       circle <- SpatialPolygons(lst, 1:nrow(harbours))
 
+      # COMMENTED 2025-11-13 does not seems necessary given the other updates on this same date
       library(raster)
       raster::projection(circle) <- CRS(paste(
         "+proj=utm +zone=",
@@ -567,88 +580,126 @@ for (namefile in namefiles) {
       ))
       handmade$metier_reg <- metierids[imetier]
 
-      handmade_WGS84 <- handmade
+      handmade_WGS84 <- st_as_sf(handmade)
       #handmade_WGS84 <- spTransform(handmade, CRS("+proj=longlat +datum=WGS84"))    # convert to longlat
 
-      names(handmade_WGS84) # see     name_gis_layer_field
+      # COMMENTED 2025-11-13 see update below
+      # names(handmade_WGS84) # see     name_gis_layer_field
 
-      library(terra) ###################################### change field here for layer name in shapefiles
+      # library(terra) ###################################### change field here for layer name in shapefiles
 
-      # extract feffort (or mw_fshn or whatever name)
-      e <- ext(terra::vect(handmade_WGS84))
-      r <- terra::rast(
-        e,
-        ncols = 200,
-        nrows = 200,
-        crs = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"
+      # # extract feffort (or mw_fshn or whatever name)
+      # e <- ext(terra::vect(handmade_WGS84))
+      # r <- terra::rast(
+      #   e,
+      #   ncols = 200,
+      #   nrows = 200,
+      #   crs = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"
+      # )
+      # handmade_WGS84_rast <- terra::rasterize(
+      #   terra::vect(handmade_WGS84),
+      #   field = name_gis_layer_field,
+      #   r,
+      #   fun = mean
+      # )
+      # handmade_WGS84_values_on_coord <- extract(
+      #   handmade_WGS84_rast,
+      #   as.matrix(coord[, c(1, 2)])
+      # )
+
+      # coord <- cbind(coord, Value = handmade_WGS84_values_on_coord)
+
+      # ## e.g., WHY IT DOES NOT OVERLAP FOR MET 3?
+      # #plot(handmade_WGS84_rast, xlim=c(-10, -4), ylim=c(35, 38))
+      # #points(vect(as.matrix(coord[, c(1,2)]), crs="+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
+
+      # # extract the circle
+      # vect_circle <- terra::vect(
+      #   circle,
+      #   crs = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"
+      # )
+      # values(vect_circle) <- 1
+      # e <- ext(vect_circle)
+      # r <- terra::rast(e, ncols = 200, nrows = 200)
+      # circle_rast <- terra::rasterize(vect_circle, r, fun = mean)
+      # circle_values_on_coord <- extract(
+      #   circle_rast,
+      #   as.matrix(coord[, c(1, 2)])
+      # )
+
+      # coord <- cbind(coord, in_circle = circle_values_on_coord)
+
+      # # then keep the relevant coord only.
+      # coord_in_metier_area <- coord[!is.na(coord[[name_gis_layer_field]]), ]
+      # coord_in_range <- coord[!is.na(coord$layer), ]
+      # coord_in_metier_area_and_range <- coord_in_metier_area[
+      #   !is.na(coord_in_metier_area$layer),
+      # ]
+
+      # # caution about the below assumption:
+      # if (nrow(coord_in_metier_area_and_range) == 0) {
+      #   coord_in_metier_area_and_range <- coord_in_range
+      #   cat(
+      #     "Metier not found in range! Assume this vessel will stay in range for this metier despite the metier is absent in range. TO DO: fix input data\n"
+      #   )
+      # }
+
+      # UPDATED 2025-11-13 to extract effort vector-based not raster-based
+      # Raster-based approach updates resolution and prevents from knowing which pixels ids are included, from the original feffort grid.
+
+      # Extract overlaping pixels with fishing effort grid
+      coord_sf <- coord |>
+        as.data.frame() |>
+        st_as_sf(
+          coords = c("x", "y"),
+          crs = st_crs(handmade_WGS84)
+        )
+
+      # handmade_WGS84$poly_id <- seq_len(nrow(handmade_WGS84))
+      # UPDATED 2025-11-20 to generate unique cell id based on metier, since each metier has different cells
+      handmade_WGS84$poly_id <- paste0(
+        seq_len(nrow(handmade_WGS84)),
+        "_",
+        metierids[imetier]
       )
-      handmade_WGS84_rast <- terra::rasterize(
-        terra::vect(handmade_WGS84),
-        field = name_gis_layer_field,
-        r,
-        fun = mean
-      )
-      handmade_WGS84_values_on_coord <- extract(
-        handmade_WGS84_rast,
-        as.matrix(coord[, c(1, 2)])
-      )
 
-      coord <- cbind(coord, Value = handmade_WGS84_values_on_coord)
+      coord_in_metier_area_sf <- st_join(coord_sf, handmade_WGS84) |>
+        na.omit()
 
-      ## e.g., WHY IT DOES NOT OVERLAP FOR MET 3?
-      #plot(handmade_WGS84_rast, xlim=c(-10, -4), ylim=c(35, 38))
-      #points(vect(as.matrix(coord[, c(1,2)]), crs="+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
+      if (nrow(coord_in_metier_area_sf) == 0) {
+        stop(cat(
+          "ERROR: Vessel's metier effort outside the GRAPH.\n",
+          "Execution stopped.",
+          "Please fix input data for:\n",
+          namefile
+        ))
+      }
 
-      # extract the circle
-      vect_circle <- terra::vect(
-        circle,
-        crs = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"
-      )
-      values(vect_circle) <- 1
-      e <- ext(vect_circle)
-      r <- terra::rast(e, ncols = 200, nrows = 200)
-      circle_rast <- terra::rasterize(vect_circle, r, fun = mean)
-      circle_values_on_coord <- extract(
-        circle_rast,
-        as.matrix(coord[, c(1, 2)])
+      # Select overlaing pixels within vessel range
+      coord_in_metier_area_and_range_sf <- st_filter(
+        coord_in_metier_area_sf,
+        st_as_sf(circle) |> st_transform(st_crs(coord_in_metier_area_sf)),
+        .predicate = st_intersects # st_intersects if you prefer "touching" to count too; st_within if you prefer "entirely contained" to count too
       )
 
-      coord <- cbind(coord, in_circle = circle_values_on_coord)
-
-      # then keep the relevant coord only.
-      coord_in_metier_area <- coord[!is.na(coord[[name_gis_layer_field]]), ]
-      coord_in_range <- coord[!is.na(coord$layer), ]
-      coord_in_metier_area_and_range <- coord_in_metier_area[
-        !is.na(coord_in_metier_area$layer),
-      ]
+      # Transforme sf to dataframe
+      coord_in_metier_area_and_range <- coord_in_metier_area_and_range_sf |>
+        dplyr::mutate(
+          x = sf::st_coordinates(geometry)[, "X"],
+          y = sf::st_coordinates(geometry)[, "Y"]
+        ) |>
+        sf::st_drop_geometry() |>
+        dplyr::select(x, y, harb, pt_graph, name_gis_layer_field, poly_id)
 
       # caution about the below assumption:
       if (nrow(coord_in_metier_area_and_range) == 0) {
-        coord_in_metier_area_and_range <- coord_in_range
-        cat(
-          "Metier not found in range! Assume this vessel will stay in range for this metier despite the metier is absent in range. TODO: fix input data\n"
-        )
+        stop(cat(
+          "ERROR: Metier effort not found in vessel's range.\n",
+          "Execution stopped.",
+          "Please fix input data for:\n",
+          namefile
+        ))
       }
-
-      # a visual check
-      graphics.off()
-      pts_sf <- st_as_sf(
-        coord,
-        coords = c("x", "y"),
-        crs = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"
-      )
-      #intersected            <- handmade_WGS84[which(unlist(st_intersects(pts_sf, handmade_WGS84)) == 1), "mw_fshn"]
-      # plot(st_coordinates(pts_sf))
-      # plot(circle_rast, add = TRUE, col = rgb(0.1, 0.2, 0.5, 0.2)) # the range...
-      # #points(st_coordinates(handmade_WGS84["mw_fshn"]), col="red")
-      # ##points(st_coordinates(intersected), col="green", pch=19, cex=1)
-      # points(coord_in_metier_area, col = "yellow")
-      # points(coord_in_metier_area_and_range, col = "blue")
-      # text(
-      #   mean(coord_in_metier_area_and_range$x),
-      #   mean(coord_in_metier_area_and_range$y),
-      #   "blue nodes are the ones selected"
-      # )
 
       #-------------------------------------------------------------------------------
       #-------------------------------------------------------------------------------
@@ -666,79 +717,80 @@ for (namefile in namefiles) {
       }
 
       # 2. reduce spatial dimensionality further according to hotspot of effort
-      idx <- 1:nrow(co)
-      prop_to_keep <- 0.03
-      idx_low_effort <- idx[co[, a_var] < quantile(co[, a_var])['50%']]
-      idx_to_keep1 <- sample(
-        x = idx_low_effort,
-        size = ceiling(length(idx_low_effort) * prop_to_keep),
-        replace = FALSE
-      )
-      idx <- 1:nrow(co)
-      prop_to_keep <- 0.06
-      idx_low_effort <- idx[
-        co[, a_var] >= quantile(co[, a_var])['50%'] &
-          co[, a_var] < quantile(co[, a_var])['75%']
-      ]
-      idx_to_keep2 <- sample(
-        x = idx_low_effort,
-        size = ceiling(length(idx_low_effort) * prop_to_keep),
-        replace = FALSE
-      )
-      idx <- 1:nrow(co)
-      prop_to_keep <- 0.1
-      idx_low_effort <- idx[
-        co[, a_var] >= quantile(co[, a_var])['75%'] &
-          co[, a_var] < quantile(co[, a_var], 0.90)['90%']
-      ]
-      idx_to_keep3 <- sample(
-        x = idx_low_effort,
-        size = ceiling(length(idx_low_effort) * prop_to_keep),
-        replace = FALSE
-      )
-      idx <- 1:nrow(co)
-      prop_to_keep <- 0.4
-      idx_low_effort <- idx[
-        co[, a_var] >= quantile(co[, a_var], 0.90)['90%'] &
-          co[, a_var] < quantile(co[, a_var], 0.95)['95%']
-      ]
-      idx_to_keep4 <- sample(
-        x = idx_low_effort,
-        size = ceiling(length(idx_low_effort) * prop_to_keep),
-        replace = FALSE
-      )
-      idx <- 1:nrow(co)
-      prop_to_keep <- 0.9
-      idx_low_effort <- idx[co[, a_var] >= quantile(co[, a_var], 0.95)['95%']]
-      idx_to_keep5 <- sample(
-        x = idx_low_effort,
-        size = ceiling(length(idx_low_effort) * prop_to_keep),
-        replace = FALSE
-      )
+      if (FALSE) {
+        # Unselect this option by default. This will reduce the effort area to only those places were most effort concentrates. UPDATED 2025-11-12
+        idx <- 1:nrow(co)
+        prop_to_keep <- 0.03
+        idx_low_effort <- idx[co[, a_var] < quantile(co[, a_var])['50%']]
+        idx_to_keep1 <- sample(
+          x = idx_low_effort,
+          size = ceiling(length(idx_low_effort) * prop_to_keep),
+          replace = FALSE
+        )
+        idx <- 1:nrow(co)
+        prop_to_keep <- 0.06
+        idx_low_effort <- idx[
+          co[, a_var] >= quantile(co[, a_var])['50%'] &
+            co[, a_var] < quantile(co[, a_var])['75%']
+        ]
+        idx_to_keep2 <- sample(
+          x = idx_low_effort,
+          size = ceiling(length(idx_low_effort) * prop_to_keep),
+          replace = FALSE
+        )
+        idx <- 1:nrow(co)
+        prop_to_keep <- 0.1
+        idx_low_effort <- idx[
+          co[, a_var] >= quantile(co[, a_var])['75%'] &
+            co[, a_var] < quantile(co[, a_var], 0.90)['90%']
+        ]
+        idx_to_keep3 <- sample(
+          x = idx_low_effort,
+          size = ceiling(length(idx_low_effort) * prop_to_keep),
+          replace = FALSE
+        )
+        idx <- 1:nrow(co)
+        prop_to_keep <- 0.4
+        idx_low_effort <- idx[
+          co[, a_var] >= quantile(co[, a_var], 0.90)['90%'] &
+            co[, a_var] < quantile(co[, a_var], 0.95)['95%']
+        ]
+        idx_to_keep4 <- sample(
+          x = idx_low_effort,
+          size = ceiling(length(idx_low_effort) * prop_to_keep),
+          replace = FALSE
+        )
+        idx <- 1:nrow(co)
+        prop_to_keep <- 0.9
+        idx_low_effort <- idx[co[, a_var] >= quantile(co[, a_var], 0.95)['95%']]
+        idx_to_keep5 <- sample(
+          x = idx_low_effort,
+          size = ceiling(length(idx_low_effort) * prop_to_keep),
+          replace = FALSE
+        )
 
-      #browser()
-      # (0.02*0.5)+(0.05*0.25)+(0.1*0.15)+(0.4*0.05)+(0.9*0.05)
-      # (0.03*0.5)+(0.06*0.25)+(0.1*0.15)+(0.4*0.05)+(0.9*0.05)   # percent kept...
+        #browser()
+        # (0.02*0.5)+(0.05*0.25)+(0.1*0.15)+(0.4*0.05)+(0.9*0.05)
+        # (0.03*0.5)+(0.06*0.25)+(0.1*0.15)+(0.4*0.05)+(0.9*0.05)   # percent kept...
 
-      idx_to_keep <- unique(c(
-        idx_to_keep1,
-        idx_to_keep2,
-        idx_to_keep3,
-        idx_to_keep4,
-        idx_to_keep5
-      ))
+        idx_to_keep <- unique(c(
+          idx_to_keep1,
+          idx_to_keep2,
+          idx_to_keep3,
+          idx_to_keep4,
+          idx_to_keep5
+        ))
 
-      if (length(idx_to_keep) == 0) {
-        idx_to_keep <- 1:nrow(coord_in_metier_area_and_range)
-      } # debug
+        if (length(idx_to_keep) == 0) {
+          idx_to_keep <- 1:nrow(coord_in_metier_area_and_range)
+        } # debug
 
-      metname <- as.character(metierids[imetier])
-      coord_gr[[metname]] <- coord_in_metier_area_and_range[idx_to_keep, ]
-
-      #} else{
-      #   metname <- as.character(metierids[imetier])
-      #   coord_gr[[ metname ]] <- coord_in_metier_area_and_range
-      #}
+        metname <- as.character(metierids[imetier])
+        coord_gr[[metname]] <- coord_in_metier_area_and_range[idx_to_keep, ]
+      } else {
+        metname <- as.character(metierids[imetier])
+        coord_gr[[metname]] <- coord_in_metier_area_and_range
+      }
 
       # visual check
       pts_sf <- st_as_sf(
@@ -770,17 +822,16 @@ for (namefile in namefiles) {
     coord_grds <- do.call("rbind", coord_gr)
     an <- function(x) as.numeric(as.character(x))
     for (a.quarter in c("Q1", "Q2", "Q3", "Q4")) {
-      name_gis_layer_field <- name_gis_layer_field ############################ EDIT PETER "feffort" has become 'Value'
-
-      #############
-      ############       DISCUSS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      ############
-
       # dispatch the feffort among nodes by dividing proba in area per the number of included graph nodes
       if ("x" %in% colnames(coord_grds)) {
         fgrounds_this_quarter <- aggregate(
           coord_grds[, name_gis_layer_field],
-          list(coord_grds$pt_graph, coord_grds$x, coord_grds$y),
+          list(
+            coord_grds$poly_id,
+            coord_grds$pt_graph,
+            coord_grds$x,
+            coord_grds$y
+          ),
           sum,
           na.rm = TRUE
         )
@@ -788,39 +839,81 @@ for (namefile in namefiles) {
       # required if several GIS layers when more than 1 metier
 
       colnames(fgrounds_this_quarter) <- c(
+        "poly_id",
         "pt_graph",
         "CELL_LONG",
         "CELL_LATI",
         "feffort"
       )
 
-      fgrounds_this_quarter <- cbind.data.frame(
-        fgrounds_this_quarter,
-        quarter = a.quarter
-      ) # init
+      fgrounds_this_quarter <- fgrounds_this_quarter |>
+        # mutate(poly_id = poly_id - 1, poly_id = as.character(poly_id)) |> UPDATED 2025-11-20 (related to updates above for that day)
+        arrange(pt_graph, poly_id)
 
-      fgrounds_this_quarter$freq_feffort <- an(fgrounds_this_quarter$feffort) /
-        sum(an(fgrounds_this_quarter$feffort))
-      #=> scale to 1 to obtain a proba of visit per node
+      # COMMENTED 2025-11-13 see updates below
+      # fgrounds_this_quarter <- cbind.data.frame(
+      #   fgrounds_this_quarter,
+      #   quarter = a.quarter
+      # ) # init
 
-      fgrounds_this_quarter$freq_feffort <- replace(
-        fgrounds_this_quarter$freq_feffort,
-        is.na(fgrounds_this_quarter$freq_feffort),
-        1
-      ) # debug
+      #  fgrounds_this_quarter$freq_feffort <- an(fgrounds_this_quarter$feffort) /
+      #   sum(an(fgrounds_this_quarter$feffort))
+      # #=> scale to 1 to obtain a proba of visit per node
 
-      # check
-      if (
-        nrow(fgrounds_this_quarter[
-          duplicated(fgrounds_this_quarter$pt_graph),
-        ]) >
-          0
-      ) {
-        print("duplicated grounds")
+      # fgrounds_this_quarter$freq_feffort <- replace(
+      #   fgrounds_this_quarter$freq_feffort,
+      #   is.na(fgrounds_this_quarter$freq_feffort),
+      #   1
+      # ) # debug
+
+      # UPDATED 2025-11-13 consider how many nodes fall wihtin each grid cell.
+      # The original code assummed nodes fell on a single pixel from the raster,
+      # but since the raster resolution is different than the feffort resolution this migh create conflicts when reagregating the data.
+      # The new approach uses vector-based calculations instead of raster-based.
+      fgrounds_this_quarter <- fgrounds_this_quarter |>
+        dplyr::add_count(poly_id, name = "nb_nodes_in_this_cat") |>
+        dplyr::mutate(
+          quarter = a.quarter,
+          effort_on_node = feffort / nb_nodes_in_this_cat,
+          freq_feffort = effort_on_node / sum(effort_on_node)
+        )
+
+      if (TRUE) {
+        fgrounds_this_quarter <- fgrounds_this_quarter |>
+          group_by(pt_graph, CELL_LONG, CELL_LATI, quarter) |>
+          summarise(
+            poly_id = paste0(poly_id, collapse = ","),
+            feffort = sum(feffort, na.rm = TRUE),
+            nb_nodes_in_this_cat = paste0(nb_nodes_in_this_cat, collapse = ","),
+            effort_on_node = sum(effort_on_node, na.rm = TRUE),
+            freq_feffort = sum(freq_feffort, na.rm = TRUE)
+          ) |>
+          ungroup() |>
+          dplyr::select(
+            poly_id,
+            pt_graph,
+            CELL_LONG,
+            CELL_LATI,
+            feffort,
+            nb_nodes_in_this_cat,
+            quarter,
+            effort_on_node,
+            freq_feffort
+          )
+      } else {
+        # check
+        if (
+          nrow(fgrounds_this_quarter[
+            duplicated(fgrounds_this_quarter$pt_graph),
+          ]) >
+            0
+        ) {
+          print("duplicated grounds")
+        }
+        fgrounds_this_quarter <- fgrounds_this_quarter[
+          !duplicated(fgrounds_this_quarter$pt_graph),
+        ]
       }
-      fgrounds_this_quarter <- fgrounds_this_quarter[
-        !duplicated(fgrounds_this_quarter$pt_graph),
-      ]
 
       fgrounds <- rbind.data.frame(fgrounds, fgrounds_this_quarter)
 
@@ -952,7 +1045,12 @@ for (namefile in namefiles) {
       # vesselsspe_freq_harbours_quarter[xx].dat
       ## get back the port name
       port_names <- read.table(
-        file.path(general$main_path_gis, "GRAPH", name_file_ports),
+        file.path(
+          general$main_path_gis,
+          "GRAPH",
+
+          name_file_ports
+        ),
         sep = ";",
         row.names = NULL,
         header = TRUE

@@ -105,7 +105,7 @@ for (a_file in namefiles) {
       cat(paste("Read the GIS layer for", a_file, "\n"))
 
       library(sf)
-      library(terra)
+      # library(terra)
       shp <- st_read(file.path(
         general$main_path_gis,
         "POPULATIONS",
@@ -116,61 +116,95 @@ for (a_file in namefiles) {
         shp,
         crs = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"
       ) # convert to longlat
+
       shp <- shp[, name_gis_layer_field]
       # shp$abundance <- shp[[name_gis_layer_field]]
       shp$pop <- popids
 
-      # extract abundance (or whatever name)
-      e <- terra::ext(terra::vect(shp[name_gis_layer_field]))
-      r <- terra::rast(
-        e,
-        ncols = 5000,
-        nrows = 5000,
-        crs = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"
-      )
-      shp_WGS84_rast <- terra::rasterize(
-        terra::vect(shp),
-        field = name_gis_layer_field,
-        r,
-        fun = mean
-      )
-      shp_WGS84_rast_values_on_coord <- extract(
-        shp_WGS84_rast,
-        as.matrix(coord[, c(1, 2)])
-      )
+      # # COMMENTED 2025-11-20 see updates below
+      # # extract abundance (or whatever name)
+      # e <- terra::ext(terra::vect(shp[name_gis_layer_field]))
+      # r <- terra::rast(
+      #   e,
+      #   ncols = 5000,
+      #   nrows = 5000,
+      #   crs = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"
+      # )
+      # shp_WGS84_rast <- terra::rasterize(
+      #   terra::vect(shp),
+      #   field = name_gis_layer_field,
+      #   r,
+      #   fun = mean
+      # )
+      # shp_WGS84_rast_values_on_coord <- extract(
+      #   shp_WGS84_rast,
+      #   as.matrix(coord[, c(1, 2)])
+      # )
 
-      #nb nodes with presence for this stock
-      sum(shp_WGS84_rast_values_on_coord[[name_gis_layer_field]], na.rm = TRUE)
+      # #nb nodes with presence for this stock
+      # sum(shp_WGS84_rast_values_on_coord[[name_gis_layer_field]], na.rm = TRUE)
 
-      #!#!#!#!#!#!#!
-      #!#!#!#!#!#!#!
-      #!#!#!#!#!#!#!
-      # CAUTION: TO BE REMOVED/ADAPTED WHEN THE DYNAMIC MODELLING OF POPS WILL BE IMPLEMENTED:
-      # reomve some presence on nodes to greatly speed up the shapefile creation, which will anyway not be used when pop are just implicit.
-      # shp_WGS84_rast_values_on_coord$abundance   <- sapply(shp_WGS84_rast_values_on_coord$abundance, function(x) {idx <- rbinom(length(x[x==1]), 1, (1-prop_to_keep) ); x[x==1 & idx] <- NA; x})
-      #=> keep 40% of presence randomly, just to make sure to create the required DISPLACE input avai.dat files for the demonstrator app
-      #=> also avoid using the 30000 nodes where we know only a part of it would cover spat distrib of the stocks
-      #!#!#!#!#!#!#!
-      #!#!#!#!#!#!#!
-      #!#!#!#!#!#!#!
+      # # #!#!#!#!#!#!#!
+      # # #!#!#!#!#!#!#!
+      # # #!#!#!#!#!#!#!
+      # # # CAUTION: TO BE REMOVED/ADAPTED WHEN THE DYNAMIC MODELLING OF POPS WILL BE IMPLEMENTED:
+      # # # reomve some presence on nodes to greatly speed up the shapefile creation, which will anyway not be used when pop are just implicit.
+      # # # shp_WGS84_rast_values_on_coord$abundance   <- sapply(shp_WGS84_rast_values_on_coord$abundance, function(x) {idx <- rbinom(length(x[x==1]), 1, (1-prop_to_keep) ); x[x==1 & idx] <- NA; x})
+      # # #=> keep 40% of presence randomly, just to make sure to create the required DISPLACE input avai.dat files for the demonstrator app
+      # # #=> also avoid using the 30000 nodes where we know only a part of it would cover spat distrib of the stocks
+      # # #!#!#!#!#!#!#!
+      # # #!#!#!#!#!#!#!
+      # # #!#!#!#!#!#!#!
 
-      # FINAL nb nodes with presence for this stock
-      cat(paste(
-        "NB OF NODES KEPT-----------------",
-        sum(!is.na(shp_WGS84_rast_values_on_coord[[name_gis_layer_field]])),
-        "\n",
-        "TOTAL ABUNDANCE CONSIDERED-----------------",
-        sum(
-          shp_WGS84_rast_values_on_coord[[name_gis_layer_field]],
-          na.rm = TRUE
+      # # # FINAL nb nodes with presence for this stock
+      # # cat(paste(
+      # #   "NB OF NODES KEPT-----------------",
+      # #   sum(!is.na(shp_WGS84_rast_values_on_coord[[name_gis_layer_field]])),
+      # #   "\n",
+      # #   "TOTAL ABUNDANCE CONSIDERED-----------------",
+      # #   sum(
+      # #     shp_WGS84_rast_values_on_coord[[name_gis_layer_field]],
+      # #     na.rm = TRUE
+      # #   )
+      # # ))
+
+      # coord <- cbind(
+      #   coord,
+      #   GRIDCODE = shp_WGS84_rast_values_on_coord,
+      #   xfold = 1
+      # )
+
+      # UPDATED 2025-11-20
+      coord_sf <- coord |>
+        as.data.frame() |>
+        st_as_sf(
+          coords = c("x", "y"),
+          crs = st_crs(shp)
         )
-      ))
 
-      coord <- cbind(
-        coord,
-        GRIDCODE = shp_WGS84_rast_values_on_coord,
-        xfold = 1
-      )
+      shp_WGS84_values_on_coord_sf <- st_join(coord_sf, shp)
+
+      # Transforme sf to dataframe. Get original coord now with pop density
+      coord <- shp_WGS84_values_on_coord_sf |>
+        dplyr::mutate(
+          x = sf::st_coordinates(geometry)[, "X"],
+          y = sf::st_coordinates(geometry)[, "Y"]
+        ) |>
+        sf::st_drop_geometry() |>
+        dplyr::select(x, y, harb, pt_graph, GRIDCODE) |>
+        dplyr::mutate(xfold = 1)
+
+      # # FINAL nb nodes with presence for this stock
+      # cat(paste(
+      #   "NB OF NODES KEPT-----------------",
+      #   sum(!is.na(coord |> pull(name_gis_layer_field))),
+      #   "\n",
+      #   "TOTAL ABUNDANCE CONSIDERED-----------------",
+      #   sum(
+      #     coord |> pull(name_gis_layer_field),
+      #     na.rm = TRUE
+      #   )
+      # ))
 
       # check
       if (do_plot) {

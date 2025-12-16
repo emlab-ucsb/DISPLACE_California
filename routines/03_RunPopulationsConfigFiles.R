@@ -299,26 +299,124 @@ for (a_file in namefiles) {
     an <- function(x) as.numeric(as.character(x))
     options(scipen = 999)
     for (a.semester in c("S1", "S2")) {
-      avai_allszgroups_this_sp$avai <- round(avai_allszgroups_this_sp$avai, 8)
+      # COMMENTED 2025-12-16
+      # avai_allszgroups_this_sp$avai <- round(avai_allszgroups_this_sp$avai, 8)
+      # # a check
+      # #tapply(an(avai_allszgroups$avai), list(avai_allszgroups$semester, avai_allszgroups$szgroups), sum, na.rm=TRUE  ) # should be full of 1
+      # # save .dat files
+      # avai_allszgroups_this_sp$pt_graph <- as.numeric(as.character(
+      #   avai_allszgroups_this_sp$pt_graph
+      # )) -
+      #   1 ##!!! OFFSET FOR C++ !!!##
+      # avai_allszgroups_this_sp <- orderBy(
+      #   ~pt_graph,
+      #   data = avai_allszgroups_this_sp
+      # )
+      # # ...and collect stock presence/absence distribution
+      # idx_nodes <- unique(avai_allszgroups_this_sp[
+      #   avai_allszgroups_this_sp$semester == a.semester,
+      #   c('pt_graph')
+      # ])
+      # lst_nodes_idx_distrib <- rbind.data.frame(
+      #   lst_nodes_idx_distrib,
+      #   cbind.data.frame(
+      #     pt_graph = idx_nodes,
+      #     popid = popids,
+      #     semester = a.semester
+      #   )
+      # )
+      # popsspe_avai_semester <- avai_allszgroups_this_sp[
+      #   avai_allszgroups_this_sp$semester == a.semester,
+      #   c('pt_graph', 'avai')
+      # ]
+      # write.table(
+      #   popsspe_avai_semester[, c('pt_graph', 'avai')], # the szgroup dim is implicit....
+      #   file = file.path(
+      #     general$main.path.ibm,
+      #     paste("popsspe_", general$application, sep = ''),
+      #     "static_avai",
+      #     paste(
+      #       popids,
+      #       "spe_full_avai_szgroup_nodes_semester",
+      #       gsub("S", "", a.semester),
+      #       ".dat",
+      #       sep = ''
+      #     )
+      #   ),
+      #   col.names = TRUE,
+      #   row.names = FALSE,
+      #   sep = ' ',
+      #   quote = FALSE,
+      #   append = FALSE
+      # )
+      # cat(paste(
+      #   "Write",
+      #   popids,
+      #   "spe_full_avai_szgroup_nodes_semester",
+      #   gsub("S", "", a.semester),
+      #   ".dat....done \n"
+      # ))
+      # popsspe_avai_semester_this_pop_these_sz <- avai_allszgroups_this_sp[
+      #   avai_allszgroups_this_sp$semester == a.semester &
+      #     avai_allszgroups_this_sp$szgroups %in% selected_szgroups,
+      #   c('pt_graph', 'avai')
+      # ]
+      # write.table(
+      #   popsspe_avai_semester_this_pop_these_sz[, c('pt_graph', 'avai')], # the szgroup dim is implicit....
+      #   file = file.path(
+      #     general$main.path.ibm,
+      #     paste("popsspe_", general$application, sep = ''),
+      #     "static_avai",
+      #     paste(
+      #       popids,
+      #       "spe_avai_szgroup_nodes_semester",
+      #       gsub("S", "", a.semester),
+      #       ".dat",
+      #       sep = ''
+      #     )
+      #   ),
+      #   col.names = TRUE,
+      #   row.names = FALSE,
+      #   sep = ' ',
+      #   quote = FALSE,
+      #   append = FALSE
+      # )
+      # cat(paste(
+      #   "Write",
+      #   popids,
+      #   "spe_avai_szgroup_nodes_semester",
+      #   gsub("S", "", a.semester),
+      #   ".dat....done \n"
+      # ))
+
+      # UPDATED 2025-12-16
+      avai_allszgroups_this_spe <- avai_allszgroups_this_sp
+
+      avai_allszgroups_this_spe$avai <- round(avai_allszgroups_this_spe$avai, 8)
 
       # a check
+
       #tapply(an(avai_allszgroups$avai), list(avai_allszgroups$semester, avai_allszgroups$szgroups), sum, na.rm=TRUE  ) # should be full of 1
 
       # save .dat files
-      avai_allszgroups_this_sp$pt_graph <- as.numeric(as.character(
-        avai_allszgroups_this_sp$pt_graph
+
+      avai_allszgroups_this_spe$pt_graph <- as.numeric(as.character(
+        avai_allszgroups_this_spe$pt_graph
       )) -
         1 ##!!! OFFSET FOR C++ !!!##
-      avai_allszgroups_this_sp <- orderBy(
+
+      avai_allszgroups_this_spe <- orderBy(
         ~pt_graph,
-        data = avai_allszgroups_this_sp
+        data = avai_allszgroups_this_spe
       )
 
       # ...and collect stock presence/absence distribution
-      idx_nodes <- unique(avai_allszgroups_this_sp[
-        avai_allszgroups_this_sp$semester == a.semester,
+
+      idx_nodes <- unique(avai_allszgroups_this_spe[
+        avai_allszgroups_this_spe$semester == a.semester,
         c('pt_graph')
       ])
+
       lst_nodes_idx_distrib <- rbind.data.frame(
         lst_nodes_idx_distrib,
         cbind.data.frame(
@@ -328,8 +426,8 @@ for (a_file in namefiles) {
         )
       )
 
-      popsspe_avai_semester <- avai_allszgroups_this_sp[
-        avai_allszgroups_this_sp$semester == a.semester,
+      popsspe_avai_semester <- avai_allszgroups_this_spe[
+        avai_allszgroups_this_spe$semester == a.semester,
         c('pt_graph', 'avai')
       ]
 
@@ -362,9 +460,9 @@ for (a_file in namefiles) {
         ".dat....done \n"
       ))
 
-      popsspe_avai_semester_this_pop_these_sz <- avai_allszgroups_this_sp[
-        avai_allszgroups_this_sp$semester == a.semester &
-          avai_allszgroups_this_sp$szgroups %in% selected_szgroups,
+      popsspe_avai_semester_this_pop_these_sz <- avai_allszgroups_this_spe[
+        avai_allszgroups_this_spe$semester == a.semester &
+          avai_allszgroups_this_spe$szgroups %in% selected_szgroups,
         c('pt_graph', 'avai')
       ]
 
